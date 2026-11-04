@@ -20,6 +20,8 @@
 | 13 | [13-evaluation.md](13-evaluation.md) | 좋아졌는지 어떻게 알까? |
 | 14 | [14-observability-and-cost.md](14-observability-and-cost.md) | 근거를 어떻게 남기고 비용을 어떻게 줄일까? |
 | 15 | [15-working-habits.md](15-working-habits.md) | 에이전트에게 어떻게 일을 잘 시킬까? |
+| 참고 | [resources.md](resources.md) | 강의에서 공유된 외부 저장소는? |
+| 소스 | [sources.md](sources.md) | 어떤 강의 자료가 언제 반영됐나? |
 | 사례 | [case-menu-tagging.md](case-menu-tagging.md) | 싱글에서 멀티로 실제로 어떻게 진화했나? |
 
 - `decisions/`: 최적화·구조 변경 근거 기록(`templates/optimization-log.md` 형식)

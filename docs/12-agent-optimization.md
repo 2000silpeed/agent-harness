@@ -27,4 +27,4 @@
 - 구현보다 **분석을 먼저** 시킵니다. 끝나면 "진짜 개선이 됐는지"를 검토합니다.
 - 근거는 `docs/decisions/YYYY-MM-DD-<name>.md`([`templates/optimization-log.md`](../templates/optimization-log.md))에 남깁니다.
 
-스킬 `optimize-agent`가 이 과정을 안내합니다.
+강의 지시문 원문은 [`templates/optimize-prompt.md`](../templates/optimize-prompt.md)에 있습니다. 스킬 `optimize-agent`가 이 과정을 안내합니다.
