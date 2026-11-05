@@ -22,16 +22,33 @@
 - **create_agent**: 노드 하나짜리 LangGraph를 추상화한 함수. 백본은 LangGraph. 직접 LangGraph로 짜면 한 땀 한 땀 제어 가능하지만 어려우므로 함수로 제공. 입력: model, tools, response_format, state.
 - **Read 도구 스펙**: 설명·필드 설명을 생략한 `read` 클래스(파라미터 3개: 경로, 몇 번째 줄부터 몇 번째 줄까지)만으로도 파일 읽기 도구임을 알 수 있음 → Claude Code의 Read와 유사(정확한 스펙은 공개된 적 없음, 실제 실행기는 다름). "이게 그 도구의 스펙입니다."
 - **Deep Agent (create_deep_agent)**: LangChain이 만든 에이전트. `create_agent`에 우리 컴퓨터에서 돌 수 있는 도구(주로 파일 시스템: 프로세스 실행, 파일 읽기/쓰기 등)를 추가한 것.
-- **미들웨어(FilesystemMiddleware, SubAgentMiddleware)**: 기본 도구를 넣어주는 역할. 파일 시스템 미들웨어는 `ls`, `read`, `write`, `edit`, `delete`, `glob` 등 리눅스 CLI 같은 시스템을 툴로 만들어 넣음.
+- **미들웨어(FilesystemMiddleware, SubAgentMiddleware)**: 기본 도구를 넣어주는 역할. 파일 시스템 미들웨어는 `ls`, `read`, `write`, `edit`, `delete`, `glob` 등 리눅스 CLI 같은 시스템을 툴로 만들어 넣음. (저장소 확인: 실제 도구 이름은 `ls`·`read_file`·`write_file`·`edit_file`·`delete`·`glob`·`grep`, 실행 가능한 backend일 때 `execute`가 더해짐 — `Day08/dcode-analysis/deepagents/libs/deepagents/deepagents/middleware/filesystem.py:1860-1867`)
 - **ToolMessage**: 도구 결과를 프로그램으로 확인해 정상이면 정상 메시지, 오류면 오류 메시지를 우리가 구성해 반환(예: `grep`류 도구 호출 에러 → ToolMessage 반환).
 - **도구를 늘리지 말고 규칙을 주기**: "이런 도구를 계속 뒤로 늘리는 건 별로 좋은 방향이 아니에요." 이미 있는 파일 시스템 도구로 JSON 파일을 저장하도록 규칙(시스템 프롬프트)을 주는 것이 가장 좋음.
 
 ### 실습/데모 내용 (명령어, 파일 구조, 프롬프트, 코드 조각 등 원문 그대로 보존)
-1. **노트북**: Part 2 → 챕터 4 "구조화된 출력"(Structured Output) 노트북(전사상 `랭그래프 structure.off` 파일).
+1. **노트북**: Part 2 → 챕터 4 "구조화된 출력"(Structured Output) 노트북(전사상 `랭그래프 structure.off` 파일 → 저장소 확인: `Day01/PART02-에이전트/Ch04-구조화된-출력/05-LangGraph-Structured-Output.ipynb`).
    - LangSmith 추적 설정 코드는 **주석 처리**, 환경 변수 로드 셀은 실행.
 2. **Pydantic 예제**: `ContactInfo`(name, email, phone: str + 필드 설명) → 모델을 Sonnet으로 바꿔 `create_agent(model, tools, response_format, ...)`에 메시지 넣어 호출 → name/email/phone 결과 확인.
-3. **Read 스키마 시연**: 설명을 생략한 `read` 클래스(파라미터 3개)를 정의하자 Copilot이 바로 알아챔.
-4. **create_deep_agent 소스 읽기**: 함수 끝 `return`만 보면 됨 → `create_agent(...)` 호출: model, system prompt 조합, tools, middleware, response_format, context schema, checkpointer 등 → `.with_config(...)`의 recursion limit **9999**("일단 그냥 멈추지 않는다"). tools 추적 → FilesystemMiddleware, SubAgentMiddleware.
+3. **Read 스키마 시연**: 설명을 생략한 `read` 클래스(파라미터 3개)를 정의하자 Copilot이 바로 알아챔. 2·3항의 노트북 원문(저장소 확인: `Day01/PART02-에이전트/Ch04-구조화된-출력/05-LangGraph-Structured-Output.ipynb` 셀 #6, 0부터 센 셀 번호, 독스트링 생략):
+   ```python
+   class ContactInfo(BaseModel):
+       name: str = Field(description="The name of the person")  # 이름
+       email: str = Field(description="The email address of the person")  # 이메일 주소
+       phone: str = Field(description="The phone number of the person")  # 전화번호
+
+   class Read(BaseModel):
+       file_path: str
+       start: int
+       end: int
+
+   model = init_chat_model("claude-sonnet-5-5")
+   agent = create_agent(model=model, tools=[], response_format=ContactInfo)
+   result = agent.invoke({"messages": [{"role": "user",
+       "content": "Extract contact info from: John Doe, john@example.com, (555) 123-4567"}]})
+   print(result["structured_response"])
+   ```
+4. **create_deep_agent 소스 읽기**: 함수 끝 `return`만 보면 됨 → `create_agent(...)` 호출: model, system prompt 조합, tools, middleware, response_format, context schema, checkpointer 등 → `.with_config(...)`의 recursion limit **9999**("일단 그냥 멈추지 않는다"). tools 추적 → FilesystemMiddleware, SubAgentMiddleware. (저장소 확인: `Day08/dcode-analysis/deepagents/libs/deepagents/deepagents/graph.py:956-971` — `return create_agent(...).with_config({"recursion_limit": 9_999, ...})`. 저장소의 deepagents 소스 사본은 0.7.14, 실습 환경은 루트 README 기준 0.7.32)
 5. **실습 1** (노트북 맨 아래 새 셀):
    ```python
    from deepagents import create_deep_agent
@@ -41,6 +58,22 @@
    - 단일 셀에서 두 가지 작업:
      - **TODO 1**: Tavily 도구를 붙여 실행(질문도 Tavily를 쓰도록 변경).
      - **TODO 2**: Tavily 조회 결과를 날리지 않고 저장(경로는 강사가 지정).
+   - 저장소 노트북의 이 셀(저장소 확인: `Day01/PART02-에이전트/Ch04-구조화된-출력/05-LangGraph-Structured-Output.ipynb` 셀 #35, 발췌). 저장 경로는 `Day01/sample_data/tavily/`이고, 강사 리뷰처럼 저장용 도구 `save_tavily_result`를 따로 둔 형태다:
+     ```python
+     from deepagents import create_deep_agent
+     from langchain_tavily import TavilySearch
+
+     SAVE_DIR = DAY01_DIR / "sample_data" / "tavily"
+     tavily = TavilySearch(max_results=3)          # TODO 1
+
+     @tool
+     def save_tavily_result(query: str, results: list[dict]) -> str:   # TODO 2
+         """Tavily 검색 결과를 Day01/sample_data/tavily/ 에 JSON 파일로 저장한다."""
+         ...
+
+     agent = create_deep_agent(model=model, tools=[tavily, save_tavily_result],
+         system_prompt="웹 검색이 필요하면 Tavily 검색 도구를 사용한다. ...")
+     ```
    - 모델: Sonnet high 정도면 충분, Opus까지 갈 필요 없음. 단일 파일 작업이면 VS Code 익스텐션도 무방, 또는 Claude Code 세션.
 6. **강사 결과 리뷰**:
    - Claude가 처음에 Tavily search를 감싸 메모리 백엔드에 쓰는 래핑 도구를 직접 만들겠다고 함 → "약간 바보 같은 생각"(이미 파일 시스템 도구가 있음) → "그거 말고 직접 파일 시스템에 저장하는 도구를 호출하도록 구성해라"로 재지시.
@@ -51,6 +84,7 @@
    - Day 01 폴더 **전체**를 읽어, 어떤 내용을 가르치는 자료인지 설명(요약)하는 딥 에이전트 구현.
    - 요약을 다시 Day 01 폴더에 파일로 저장(출력이 길어지므로).
    - 에이전트에게 반드시 지시: "Tavily 도구 외에 새로운 도구를 만들 수 없도록" (기본 도구로 해결).
+   - 저장소 노트북에 이 과제의 구현 셀이 있다(저장소 확인: `Day01/PART02-에이전트/Ch04-구조화된-출력/05-LangGraph-Structured-Output.ipynb` 셀 #36). 요점: `tools=[]`로 새 도구 없이 기본 파일 도구만 쓰고, backend를 `CompositeBackend(default=FilesystemBackend(root_dir=DAY01_DIR, virtual_mode=True), routes={"/_agent_scratch/": StateBackend()}, ...)`로 바꿔 실제 Day01을 보게 하며, `FilesystemPermission`으로 `.env` 등 점 파일·그림·PDF 읽기와 요약 폴더 밖 쓰기를 막는다. 요약은 `/sample_data/summary/day01_overview.md`에 저장하고, `config={"recursion_limit": 80}`으로 상한을 직접 준다. 결과 파일도 저장소에 있다(`Day01/sample_data/summary/day01_overview.md`).
    - 설계부터 Claude Code와 대화해도 됨. 다음(마지막 시간)은 멀티턴 실습으로 이어져 오늘 이론을 코드로 연결.
 
 ### 강사 팁·주의사항
@@ -75,11 +109,11 @@
 - [ ] 작업 난이도에 맞게 모델/effort를 선택한다(단순 코드 작업은 Sonnet).
 
 > 확인 필요: (전사가 불명확한 부분, 무발화 구간)
-> - 노트북 파일명 "랭그래프 structure.off"는 전사 그대로이며 실제 파일명 확인 필요.
-> - 22:43 "스카운트 같은 것도 두고 있고요" — 도구명 미확인. 22:50 이후 "그래프 툴"은 `grep` 도구로 추정되나 전사상 "그래프"로만 나옴.
+> - ~~노트북 파일명 "랭그래프 structure.off"는 전사 그대로이며 실제 파일명 확인 필요.~~ → 해결: `05-LangGraph-Structured-Output.ipynb` (저장소 확인: `Day01/PART02-에이전트/Ch04-구조화된-출력/05-LangGraph-Structured-Output.ipynb`).
+> - 22:43 "스카운트 같은 것도 두고 있고요" — 도구명 미확인. 22:50 이후 "그래프 툴"은 `grep` 도구로 추정되나 전사상 "그래프"로만 나옴. → deepagents 파일 시스템 도구에 `grep`이 실제로 있다 (저장소 확인: `Day08/dcode-analysis/deepagents/libs/deepagents/deepagents/middleware/filesystem.py:1860-1866`). '스카운트'는 저장소에서 확인되지 않음.
 > - 23:59 "reg를 해야 되기 때문에" — 의미 미확인.
-> - `from deepagents import create_deep_agent`는 전사("from deep agent, import create deep agent")와 분석 요약 기준 표기 — 실제 패키지명 확인 필요.
-> - `ContactInfo`, `read` 클래스, deep agent 셀의 실제 코드 원문은 전사에 없음.
-> - Tavily 결과 저장 경로를 강사가 "이렇게 정의해드리도록" 했으나 화면 내용(정확한 경로 문자열)은 전사에 없음(결과는 `sample_data/tavily`).
+> - ~~`from deepagents import create_deep_agent`는 전사("from deep agent, import create deep agent")와 분석 요약 기준 표기 — 실제 패키지명 확인 필요.~~ → 해결: 패키지명 `deepagents`, 표기 그대로 맞다 (저장소 확인: `Day01/PART02-에이전트/Ch04-구조화된-출력/05-LangGraph-Structured-Output.ipynb` 셀 #35, 루트 `README.md` "`deepagents` 0.7.32 기준").
+> - ~~`ContactInfo`, `read` 클래스, deep agent 셀의 실제 코드 원문은 전사에 없음.~~ → 해결: 위 3항·5항·7항에 저장소 노트북 원문을 넣었다(셀 #6·#35·#36). `read` 클래스의 실제 이름은 `Read`, 파라미터는 `file_path`·`start`·`end`. 저장소 노트북은 수업 뒤 정리된 상태일 수 있다.
+> - ~~Tavily 결과 저장 경로를 강사가 "이렇게 정의해드리도록" 했으나 화면 내용(정확한 경로 문자열)은 전사에 없음(결과는 `sample_data/tavily`).~~ → 해결: `SAVE_DIR = DAY01_DIR / "sample_data" / "tavily"` (저장소 확인: `Day01/PART02-에이전트/Ch04-구조화된-출력/05-LangGraph-Structured-Output.ipynb` 셀 #35). 저장된 JSON 2개도 `Day01/sample_data/tavily/`에 있다.
 > - 45:13 "두 개로 구현하는 멀티턴"의 구체 내용 미확인.
 > - 25:03~26:08, 30:40~34:45, 41:33~43:57, 46:24~47:12 실습 대기 무발화 구간.

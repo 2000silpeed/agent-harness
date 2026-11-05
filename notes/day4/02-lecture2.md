@@ -25,14 +25,14 @@
 - RAG의 문서 검색도 같은 방향: 찾아 들어가서 쓸모 있는지 빨리 판단하고 필요한 것만 넣어 주는 식으로 정제해서 전달.
 
 **3. 저가 모델의 가격 (jev 모델 사례)**
-- 강사가 전날 수강생에게 API 키로 준 jev 모델: 남은 잔액 1.74달러, 많은 수강생과 강사가 호출했는데도 어제 쓴 비용은 약 **0.1달러**.
-- 가격 문서상 **100만 토큰당 0.042**(달러), **입력만 과금, 출력은 0원**이라고 설명. 비교: **Opus는 입력 10달러, 출력 50달러** → 약 1000배 차이.
+- 강사가 전날 수강생에게 API 키로 준 jev 모델(저장소 확인: **Jev**, TypeSafe AI의 System One 디시전 모델 — `used_jev_deepagents/corpus/01-jev-system-one.md:3`): 남은 잔액 1.74달러, 많은 수강생과 강사가 호출했는데도 어제 쓴 비용은 약 **0.1달러**.
+- 가격 문서상 **100만 토큰당 0.042**(달러), **입력만 과금, 출력은 0원**이라고 설명. (저장소 확인: `Day02_new/README.md:123` — 입력 10억 토큰당 $42(= 100만 토큰당 $0.042, 출처 typesafe.ai 2026-11-01), 출력 단가는 공식 페이지에 없고 2차 출처 기준 무료로 가정) 비교: **Opus는 입력 10달러, 출력 50달러** → 약 1000배 차이.
 - 성능은 뛰어나지 않지만 번호를 고르는 용도에는 충분하다. (장표 주석: 가격은 강사가 문서를 보며 말한 값, 이후 업데이트 가능. 컨텍스트가 256K로 늘었다는 언급도 있으나 어느 모델·버전인지 불분명.)
 - 결론: 도구는 "처음에는 일단 그냥 단순히 추가하는 게 제일 좋아요." 많아져서 문제가 되면 그때 모델이 찾게 기술적으로 해결.
 
 **4. Agent Skills 공식 문서와 SKILL.md 구조**
 - 강사는 "꼭 공식 문서를 봅니다" — "agent skills"로 검색하면 공식 사이트가 나옴. 자료로 만드는 것보다 공식 문서를 보는 게 중요.
-- Agent Skills는 최근 리눅스 파운데이션과 같은 오픈소스 재단(전사상 "AI 파운데이션", 정확한 재단명 미확인)에 기부되어 "모두의 기술"이 되었고, 사용이 굳어져 크게 바뀌지는 않을 것.
+- Agent Skills는 최근 리눅스 파운데이션과 같은 오픈소스 재단(전사상 "AI 파운데이션", 정확한 재단명 미확인 — 수업 저장소에서도 재단명은 찾지 못함)에 기부되어 "모두의 기술"이 되었고, 사용이 굳어져 크게 바뀌지는 않을 것.
 - SKILL.md는 두 부분: 위쪽 **YAML frontmatter(메타데이터)** + 아래쪽 **markdown 본문**. "front matter라는 녀석이 꼭 필요합니다."
 - **필수 필드는 두 가지뿐: name, description.**
   - **name**: max 64 characters, lowercase letters·numbers·hyphens only, must not start or end with a hyphen. **한국어 불가.**
@@ -59,7 +59,7 @@
 - 파일 참조는 그냥 **마크다운 문법**으로 쓰면 된다.
 
 **8. 검증 도구, skill-creator, description 최적화**
-- 스펙이 제공하는 검증(전사상 "SKILL.REF", 정확한 이름 미확인)의 VALIDATE 기능: name·description 존재, 1024자 이내, 본문 5000토큰 이내만 검사 → "쓰실 필요가 없어요."
+- 스펙이 제공하는 검증(전사상 "SKILL.REF" → 저장소 확인: **`skills-ref`** 검증 도구, `github.com/agentskills/agentskills/tree/main/skills-ref` — `Day08/dcode-analysis/docs_official/sdk/skills.md:247`, `Day08/dcode-analysis/docs_official/sdk/skills.md:1784`)의 VALIDATE 기능: name·description 존재, 1024자 이내, 본문 5000토큰 이내만 검사 → "쓰실 필요가 없어요."
 - **skill-creator(스킬을 만드는 스킬)**: Anthropic, OpenAI 제공(Gemini는 모름). 베스트 프랙티스를 만족시키게 동작한다. 베스트 프랙티스는 양이 많아 읽지 않을 테니, **"베스트 프랙티스대로 스킬을 정리해 달라"고 요청**해 볼 계획.
 - **Optimizing skill descriptions**: name은 명확하게 짓기 쉽지만 description은 쓰다 보면 when(그리고 what도)이 계속 길어진다 → 이를 줄이는 가이드가 문서에 있음.
 
@@ -133,6 +133,7 @@
   → (출력) ... 다음으로 3.sh를 실행하십시오.
   ```
   단계가 확정되면 `run.sh` 하나로 합치고 케이스별로 분기(`run 1.sh`, `run 2.sh` 등)해 더 줄일 수 있음.
+  - 저장소 참고(위 시연 자체의 원문은 아님): 진입점 하나에 작업명으로 분기하는 실제 스킬 예가 `Day04/build_mcp/skills/requirements-interview-new/SKILL.md`에 있다. 본문이 `scripts/run.py`를 실행하라고 안내하고, `start_interview`·`record_answer`·`get_session`·`freeze_seed` 등 작업명과 JSON 입력으로 분기한다(`python "$SKILL_ROOT/scripts/run.py" --db ... start_interview <<'JSON' ...`).
 - 과제/실습 예정:
   - 자기 PC의 Claude 스킬 폴더에서 `allowed-tools` 필드 확인(나중에 같이 보기).
   - skill-creator로 "베스트 프랙티스대로 스킬을 정리해 달라"고 요청해 보기.
@@ -153,7 +154,7 @@
 - 항상 로드돼야 하는 스킬은 트리거 평가로 고생하지 말고 **SessionStart 훅으로 강제 로드**하라.
 - 텍스트만 많은 스킬은 컨텍스트가 쌓인 상태에서 누락이 생긴다 → 처음엔 텍스트로 쓰고, 중요하고 단계가 많으면 **스크립트 단계별 로드(코드 모드)**로 리팩터링하라.
 - 코드 모드는 중간 실패 시 전체 실패 → 스크립트가 성공/실패 결과를 모두 출력에 담도록 짜라.
-- (장표 표기) 확인 필요: 'UCG'·'크래빅'(사용량 화면/무료 크레딧 추정), 'AI 파운데이션'(재단명), 'SKILL.REF'(검증 도구명).
+- (장표 표기) 확인 필요: 'UCG'·'크래빅'(사용량 화면/무료 크레딧 추정), 'AI 파운데이션'(재단명, 저장소에서 미확인), ~~'SKILL.REF'(검증 도구명)~~ → 해결: `skills-ref` (저장소 확인: `Day08/dcode-analysis/docs_official/sdk/skills.md:247`).
 
 ### 실제 프로젝트에 적용할 체크리스트 (이 강의 내용으로 실제 프로젝트를 만들 때 따라할 단계, 행동 지침 형태)
 1. [ ] 에이전트에 도구를 우선 단순히 추가하고, 도구 수가 많아져 선택 오류·컨텍스트 낭비가 보이면 Tool Search(Anthropic/OpenAI 제공 기능 또는 작은 모델에 번호 선택시키는 방식)를 도입한다.

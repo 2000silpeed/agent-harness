@@ -41,7 +41,7 @@
   - `before_*`는 앞에서부터: `middleware=[M1, M2]` → M1, M2 순서(순차)
   - `after_*`는 뒤에서부터: M2, M1 순서로 돌아 나옴(역순)
   - `wrap_*`는 겹쳐 감쌈: M1이 가장 바깥, handler를 0번·1번·여러 번 부를 수 있음(중첩)
-- **도구 출력 전달 여부 판단** [이미지 · 전사 2강 16:43, 3강 41:24 · 추정]: 도구 실행 결과가 길 수 있음 → PostToolUse 자리(`wrap_tool_call`에서 결과를 받음) → 필요한가?(Jev 같은 디시전 모델이 판단) → 필요 없으면 짧은 ToolMessage. 판서: `ToolMessage("필요 없었다")`, `>> Jev`. Jev(제브)는 2강·3강에서 다룬 빠른 디시전 모델. 판서 1의 Decision Model(like Jev)과 같은 흐름으로, "적게, 정확히 넣어 컨텍스트를 아낀다".
+- **도구 출력 전달 여부 판단** [이미지 · 전사 2강 16:43, 3강 41:24 · 추정]: 도구 실행 결과가 길 수 있음 → PostToolUse 자리(`wrap_tool_call`에서 결과를 받음) → 필요한가?(Jev 같은 디시전 모델이 판단) → 필요 없으면 짧은 ToolMessage. 판서: `ToolMessage("필요 없었다")`, `>> Jev`. Jev(제브)는 2강·3강에서 다룬 빠른 디시전 모델(저장소 확인: TypeSafe AI의 System One 모델, 텍스트를 생성하지 않고 정해진 질문에 구조화 답과 확률을 돌려줌 — `used_jev_deepagents/corpus/01-jev-system-one.md:3`). 판서 1의 Decision Model(like Jev)과 같은 흐름으로, "적게, 정확히 넣어 컨텍스트를 아낀다".
 - **멀티턴(예고)** [전사 6강 44:55, 2강 45:58, 3강 28:08 · 이미지 Day01_01 · 추정]: 판서 1에 "멀티턴은 사용자에게만 멀티턴". 사용자가 보는 것: 대화가 이어지는 멀티턴, 화면에 모든 턴이 보임. 기술적으로는: 매번 싱글턴 호출, 압축·요약한 맥락을 다시 넣음, Context Change를 감지해 압축. Day01 Ch09 요약 미들웨어(`SummarizationMiddleware`)와 연결. 실제로 다뤘는지는 모름.
 
 ### 실습/데모 내용 (명령어, 파일 구조, 프롬프트, 코드 조각 등 원문 그대로 보존)
@@ -68,6 +68,20 @@
    2. `backend=FilesystemBackend(root_dir=..., virtual_mode=True)` — 파일 도구가 볼 폴더를 Day01로 한정
    3. `system_prompt`: 기본 파일 도구만 쓰고 새 도구는 만들지 말 것 — 읽기 → 요약 → `write_file`로 저장
    4. `middleware`: `wrap_tool_call`로 도구 호출 기록 — 어떤 도구를 몇 번 불렀는지 확인
+   - 저장소 확인: 6강 노트북 마지막 셀에 이 과제의 실제 구현이 있다(`Day01/PART02-에이전트/Ch04-구조화된-출력/05-LangGraph-Structured-Output.ipynb` 셀 #36). 위 뼈대와 다른 점: backend는 `CompositeBackend(default=FilesystemBackend(root_dir=DAY01_DIR, virtual_mode=True), routes={"/_agent_scratch/": StateBackend()}, artifacts_root="/_agent_scratch")`, `FilesystemPermission` 목록으로 점 파일·그림·PDF 읽기와 요약 폴더 밖 쓰기를 막음, `tools=[]`·`middleware=[]`(도구 호출 기록 미들웨어는 없음), 저장 경로 `/sample_data/summary/day01_overview.md`, `config={"recursion_limit": 80}`. 발췌:
+     ```python
+     agent = create_deep_agent(
+         model=model,  # 위에서 만든 model 을 그대로 쓴다
+         tools=[],  # 새 도구 없음: 기본 파일 도구만 쓴다
+         middleware=[],
+         system_prompt=system_prompt,
+         backend=backend,
+         permissions=permissions,
+     )
+     result = agent.invoke({"messages": [{"role": "user",
+         "content": "Day01 폴더를 읽고 어떤 내용을 가르치는 자료인지 요약해서 저장해줘."}]},
+         config={"recursion_limit": 80})
+     ```
 
 ### 강사 팁·주의사항
 - (녹음 없음) 강사가 말로 한 팁은 확인 불가. 아래는 판서·앞 강의 전사에서 확인되는 지침만 정리.
@@ -92,6 +106,6 @@
 > - 판서 훅 6종을 어떤 순서로, 어떤 예로 설명했는지 모름.
 > - Claude Code 훅 ↔ LangChain 미들웨어 짝짓기는 장표의 해석이며 강사가 직접 대응시켰는지 모름.
 > - 판서의 `>> Jev` 의미(디시전 모델을 이 자리에 쓰자는 뜻)는 장표의 해석.
-> - 실습 코드·결과 화면이 없음 — 코드 뼈대는 과정 문서 예시를 줄인 것으로 수업 실제 코드가 아님.
+> - 실습 코드·결과 화면이 없음 — 코드 뼈대는 과정 문서 예시를 줄인 것으로 수업 실제 코드가 아님. → 일부 해결: 저장소 노트북에 과제 구현 셀(`Day01/PART02-에이전트/Ch04-구조화된-출력/05-LangGraph-Structured-Output.ipynb` 셀 #36)과 결과 파일(`Day01/sample_data/summary/day01_overview.md`)이 있다(실습 3항 참고). 수업 중 화면과 같은 코드인지는 확인할 수 없다.
 > - 멀티턴 구현을 실제로 다뤘는지 모름(녹음·판서에 구현 장면 없음).
-> - 6강 전사에서는 파일 시스템 도구를 `ls, read, write, edit, delete, glob`으로 언급했으나, 장표(과정 페이지 기준)는 `ls · read_file · write_file · edit_file · glob · grep`으로 표기 — 실제 도구명은 설치된 deepagents 버전으로 확인 필요.
+> - ~~6강 전사에서는 파일 시스템 도구를 `ls, read, write, edit, delete, glob`으로 언급했으나, 장표(과정 페이지 기준)는 `ls · read_file · write_file · edit_file · glob · grep`으로 표기 — 실제 도구명은 설치된 deepagents 버전으로 확인 필요.~~ → 해결: 둘 다 일부만 맞다. 실제 도구는 `ls`·`read_file`·`write_file`·`edit_file`·`delete`·`glob`·`grep`이고, 실행 가능한 backend면 `execute`가 더해진다 (저장소 확인: `Day08/dcode-analysis/deepagents/libs/deepagents/deepagents/middleware/filesystem.py:1470-1473`, `:1860-1867`, 소스 사본 0.7.14 기준).

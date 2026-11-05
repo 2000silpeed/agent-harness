@@ -90,8 +90,8 @@
 > - 19:15 "상풀해줘라고 하면은" — 실행 예시 입력으로 보이나 뜻 불분명.
 > - 32:05 "골드 프롬프트니까 프롬프트 말고요" — 뜻 불분명.
 > - 34:50~35:41 Claude에게 준 지시문 원문 — 인식이 끊겨 정확한 문장 확인 불가.
-> - 38:47 '엑사이' — effort 단계 중 xhigh로 추정.
+> - 38:47 '엑사이' — effort 단계 중 xhigh로 추정. → 근거 보강: `xhigh`는 실제 effort 단계 이름이다(`Day08/dcode-analysis/docs_official/code/hooks.md:184`; 과정 코드에서도 `_DEFAULT_JUDGE_EFFORT = "xhigh"` — `Day05_new/eval_lab/settings.py:16`).
 > - 39:20 '네네네…' 반복 — 인식 오류 구간(내용 없음).
-> - 40:58·43:51 도구 이름(classify_intent, answer_faq, ask_clarification, decline, handoff 등) — 구두 열거라 정확한 표기 미확인. 41:39 '핸서프'는 handoff로 추정. 도구 개수도 강사가 "8개? 6개, 7개?"로 불확실하게 말함.
+> - 40:58·43:51 도구 이름(classify_intent, answer_faq, ask_clarification, decline, handoff 등) — 구두 열거라 정확한 표기 미확인. 41:39 '핸서프'는 handoff로 추정. 도구 개수도 강사가 "8개? 6개, 7개?"로 불확실하게 말함. (저장소 검색: `classify_intent`·`answer_faq`·`ask_clarification` 모두 없음 — 수업 중 Claude가 만든 코드라 저장소에 올라가지 않은 것으로 보임)
 > - 무발화 구간: 07:02~15:15(LangGraph 실습), 22:58~30:12(Deep Agent basic 실습), 37:04~37:19, 41:53~42:11 부근.
 > - 'Sonnet 5.5', 'Opus', 'RAG', 'Deep Agent' 등은 전사 오인식('쏘넷 5.5', '오프스', '레그', '디베이전트')을 분석본 기준으로 보정한 표기.

@@ -1,5 +1,22 @@
 # 4일차 종합 정리 — MCP · Skills로 에이전트 능력 개선하기
 
+## 실습 코드 위치
+
+수업 저장소 `github.com/HyunjunJeon/sds_ax_advanced_2026` 기준 경로입니다. 각 폴더의 README로 확인했습니다.
+
+| 강의 | 저장소 위치 | 근거 |
+|---|---|---|
+| 교재·판서 | `Day04/Day4_Advanced_Agent_MCP_Skills_이론자료.pdf`, `Day04/Day04_01.png`~`Day04_04.png` | 00-deck의 원본과 같은 주제(파일명은 다름) |
+| 2강 SKILL.md 작성법 | `Day04/SKILLS_GUIDE.md`(description 1–1024자, 본문 약 5,000토큰 권장), 코드 모드형 스킬 예 `Day04/build_mcp/skills/requirements-interview-new/` | `Day04/SKILLS_GUIDE.md:59`, `:79` |
+| 4강 내 업무 스킬화 | `Day04_new/my_day04_practice/guide.md` (참고 스킬·도구 링크) | 4강 노트가 직접 언급 |
+| 5강 스킬 비교 | `.agents/skills/diagram-design/SKILL.md`(못 쓴 예), `.agents/skills/deep-agents-core/SKILL.md` 외 deep-agents 스킬(잘 쓴 예) | 5강 노트가 직접 언급 |
+| 6강 MCP 도구 설계 | `Day04/build_mcp/`(`MCP_GUIDE.md`, `reference/server.py`, `client.py`, `mcp_langchain.py`) | `Day04/README.md` 2번 실습 |
+| 노트북 과정 | `Day04_new/00-Setup` → `01-Agent-Capability` → `02-Tool-Interface` → `03-MCP-Basics` → `04-Production-MCP` → `05-Skill-and-MCP` → `06-Lab-Capability-Eval` → `07-Lab-Improvement` (코드 `cap_lab/`, 스킬 `skills/requirements-interview/`) | `Day04_new/README.md` "노트북 표" |
+| Claude Code 실습 | `Day04_new/use_cc/` (`part1/mission.md`, `challenge/challenge.md`, 참고 `challenge/reference/ouroboros-mcp-architecture.md`) | `Day04_new/use_cc/` 폴더 |
+| 스크립트판 | `Day04/coding_skills/`(코딩 에이전트 + Skills), `Day04/build_mcp/`(질문 강화 에이전트 + MCP) | `Day04/README.md` |
+
+> 근거 칸이 강의 노트(직접 언급)가 아닌 행은 같은 날 주제에 맞는 저장소 자료입니다. 수업에서 그 폴더를 직접 열었는지는 노트로 확인되지 않습니다.
+
 > 출처: 구글 드라이브 강의 폴더의 `4일차 1~6강 다시보기·장표` + 교재 `Day4_Advanced_Agent_MCP_Skills_Eval.pdf`
 > 강의별 상세 정리는 아래 파일에 있습니다. 이 문서는 하루 전체를 한 장으로 묶은 요약입니다.
 
@@ -74,8 +91,9 @@
 
 ## 5. 확인이 필요한 부분 (전사가 불명확했던 곳)
 
-- 1강: "Git 넥서스"의 실제 제품명
-- 2강: "AI 파운데이션"(Agent Skills를 기부받은 재단 이름), "SKILL.REF"(검증 도구 이름), "UCG"·"크래빅"
+- ~~1강: "Git 넥서스"의 실제 제품명~~ → 해결: **GitNexus** 코드 그래프 (저장소 확인: `Day08/dcode-analysis/AGENTS.md:246-256`)
+- 2강: "AI 파운데이션"(Agent Skills를 기부받은 재단 이름, 저장소에서 미확인), ~~"SKILL.REF"(검증 도구 이름)~~ → 해결: `skills-ref` (저장소 확인: `Day08/dcode-analysis/docs_official/sdk/skills.md:247`), "UCG"·"크래빅"
 - 4강: 약 11분 이후는 실습 시간이라 발화 기록이 없음
-- 5강: 16:52~약 21:50 무발화 구간, "다트"(DART 추정), "인헨스"(Enhans 추정), 42:44 출력 토큰 절감 도구 이름 등
+- 5강: 16:52~약 21:50 무발화 구간, "다트"(DART 추정), "인헨스"(Enhans 추정), 42:44 출력 토큰 절감 도구 이름 등 (`Day04_new/my_day04_practice/guide.md`의 링크 목록과 대조했으나 미확정)
+- 공통: "jev"는 **Jev**, TypeSafe AI의 System One 디시전 모델이다 (저장소 확인: `used_jev_deepagents/corpus/01-jev-system-one.md:3`).
 - 6강: 13:15~13:54 무발화 구간, 08:34 계산기 도구 예시 부분

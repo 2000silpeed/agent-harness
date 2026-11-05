@@ -57,7 +57,7 @@
 - 흐름: 사용자 PC를 뺏어가는 걸 극도로 싫어하므로 뒤에서 가상 컴퓨터를 돌리고, 그 인프라를 클라우드에 둔다 → "인프라 장사는 죽지 않는다". 컴퓨터 유즈 모델만 파던 국내 회사(Enhans로 추정)는 모델 성능의 비약적 향상으로 가치가 밀렸다고 언급.
 - (여담) 팔란티어 FDE/FDSE 한국 채용 공고: 영업, 탄탄한 공학 배경, 경영진까지 고객 소통, 전략 수립, 근무시간 50%까지 출장, 영어 능통 등. Deployment Strategist 공고는 AWS SA(솔루션즈 아키텍트)와 비슷해 보였다는 감상.
 
-**8. 브라우저 유즈: jev-ultrafast (browser-use 제작)**
+**8. 브라우저 유즈: jev-ultrafast (browser-use 제작)** (저장소 확인: `https://github.com/browser-use/jev-ultrafast` — `Day04_new/my_day04_practice/guide.md:35`)
 - browser-use는 브라우저 유즈 전문 회사(browser-use, browser harness 등). 브라우저 툴콜링이 매우 느려서 이를 제어하려는 목적.
 - 모든 브라우저 조작을 도구로 제공하고, jev(디시전 전용 모델)는 상황에 맞게 다음 도구를 고르기만 반복("실행하고 결과 주고"). 예시: 런던 가는 비행기 표를 7초 만에 예약(전사상 출발지 "시리에서", 불명확).
 - 처음 페이지 읽기와 최종 페이지 도달 후에만 LLM이 들어가고, 중간 클릭·드래그에는 거의 끼어들지 않는다.
@@ -68,7 +68,7 @@
 
 **10. Spotify: Claude Code 토큰 90% 절감**
 - 핵심: "리드하는 IO를 비싼 모델에 맡기지 않았다." 읽고 엑기스만 뽑는 건 작은 모델(예: Haiku)도 한다.
-- 도구: Portal AI 플러그인(`portal-ai-plugins`) 중 **shunt**. IO 헤비 작업을 자체 명명한 모드("에이카", 표기 불명)로 돌림.
+- 도구: Portal AI 플러그인(`portal-ai-plugins`) 중 **shunt**(저장소 확인: 글 `https://engineering.atspotify.com/2026/9/portal-by-spotify-cut-my-claude-code-token-usage-by-90`, 플러그인 `https://github.com/sorantis/portal-ai-plugins/tree/add-shunt-claude/plugins/shunt` — `Day04_new/my_day04_practice/guide.md:33-34`). IO 헤비 작업을 자체 명명한 모드("에이카", 표기 불명)로 돌림.
 - 방법: **훅**으로 큰 파일을 읽을 때 `bulk read` 스킬을 강제로 호출 — "부탁하는 게 아니라 강제로 실시합니다". bulk read 스킬에는 스크립트가 있고 실행(invocation)은 작은 모델로 돈다.
 - 강사도 돌려 보니 실제로 줄었다고 함. 링크는 `guide.md`에 정리 예정.
 
@@ -142,4 +142,4 @@
 11. [ ] 자주 바뀌는 계산·법령·문서 파싱은 이미 공개된 MCP(세금 계산, 한국 법령, 한글 문서 파싱 등)가 있는지 먼저 찾아본다.
 12. [ ] `guide.md`에 정리된 링크(Spotify 글 등)를 직접 읽어 본다.
 
-> 확인 필요(전사 불명확): 25:31 "코드가 선으로 되어 있습니다"(뜻 불명), 29:37 "다트"(DART 추정), 32:19 "인헨스"(Enhans 추정), 36:48 "리모를 제작"(데모 추정)·"보리 에세이"(AWS SA 추정), 42:44 출력 토큰 절감 도구 이름 불명, 44:31 "에이카" 모드 표기 불명.
+> 확인 필요(전사 불명확): 25:31 "코드가 선으로 되어 있습니다"(뜻 불명), 29:37 "다트"(DART 추정), 32:19 "인헨스"(Enhans 추정), 36:48 "리모를 제작"(데모 추정)·"보리 에세이"(AWS SA 추정), 42:44 출력 토큰 절감 도구 이름 불명, 44:31 "에이카" 모드 표기 불명. (저장소 확인: `Day04_new/my_day04_practice/guide.md:32-39`의 도구 목록 — Spotify/shunt, jev-ultrafast, agent-desktop, tembo/voxl, korean-tax-calc-mcp, auto-ontology — 을 대조했으나 42:44 도구와 "에이카", DART·Enhans는 확정할 근거가 없음)

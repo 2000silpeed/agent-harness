@@ -82,6 +82,6 @@
 > - "스키나 스킬을 먼저 싱글로"의 '스키나' 부분 불명확 (06:55).
 > - "만약 오픈아웃도 없어도 됩니다"의 '오픈아웃' 의미 불명확 (25:43).
 > - 16:40 "이거는 이제 승인 정책에 대한 이야기입니다" — 해당 장표 내용이 전사에 없어 불명확.
-> - '소넷의 미디움'은 Sonnet 모델의 medium effort로 추정.
+> - '소넷의 미디움'은 Sonnet 모델의 medium effort로 추정. → 근거 보강: effort 단계에 `medium`이 실제로 있고(`none`·`low`·`medium`·`high`·`xhigh`·`max` — `Day08/dcode-analysis/docs_official/code/hooks.md:184`), 이 과정 노트북의 기본값도 `claude-sonnet-5-5` + `medium`이다(`Day03_new/.env.example` `DAY02_MODEL`·`DAY02_EFFORT`). 강사가 이 뜻으로 말했는지는 발화로만 판단 가능.
 > - 무발화 구간: 약 28:39~32:14(1719~1934초, architecture.md 작성 시간으로 추정), 19:20~19:55, 32:41~34:32 부근 등 실습 중 발화가 거의 없음.
-> - 'jev API 키', 'jev라고 하는 디시전 모델'은 보정본에서 사용자 확인으로 반영된 표기(원 전사: '제브').
+> - 'jev API 키', 'jev라고 하는 디시전 모델'은 보정본에서 사용자 확인으로 반영된 표기(원 전사: '제브'). → 저장소 확인: 정식 표기 **Jev**, TypeSafe AI의 System One 디시전 모델이며 키 변수는 `TYPESAFE_API_KEY`(`used_jev_deepagents/corpus/01-jev-system-one.md:3`, `Day02_new/.env.example`). 단 현재 저장소의 `Day03_new/.env.example`에는 `ANTHROPIC_API_KEY`·`EXA_API_KEY`만 있고 Jev 키 칸이 없다 — 수업 때 손으로 추가한 것으로 보이나 확인 불가.

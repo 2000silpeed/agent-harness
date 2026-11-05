@@ -1,5 +1,20 @@
 # 2일차 종합 — RAG, 멀티턴, LangGraph·Deep Agent 첫 실습
 
+## 실습 코드 위치
+
+수업 저장소 `github.com/HyunjunJeon/sds_ax_advanced_2026` 기준 경로입니다. 각 폴더의 README로 확인했습니다.
+
+| 강의 | 저장소 위치 | 근거 |
+|---|---|---|
+| 4강 실습 환경 | `Day01/` — LangGraph V1 튜토리얼(원본 `braincrew-lab/langgraph-v1-tutorial` 스냅샷), `.env.example`에 Anthropic·Tavily 키 | `Day01/README.md`, `Day01/UPSTREAM.md:5` |
+| 5강 LangGraph 챗봇 | `Day01/PART02-에이전트/Ch02-에이전트/02-LangGraph-ChatBot.ipynb` | 강의 속 "agent 02 → 챕터 02 → 랭그래프 챗봇", 노트북에 수업 시연 값(`claude-sonnet-5-5`, 가상 주가)이 남아 있음 |
+| 6강 Structured Output·Deep Agent | `Day01/PART02-에이전트/Ch04-구조화된-출력/05-LangGraph-Structured-Output.ipynb` (셀 #35 Tavily 저장, 셀 #36 Day01 요약), 결과 `Day01/sample_data/tavily/`, `Day01/sample_data/summary/day01_overview.md` | 노트북 마지막 두 셀 |
+| 7(딥에이전트 실습·훅) | 위 6강 노트북 셀 #36, 미들웨어는 `Day01/PART03-에이전트-확장/Ch06-미들웨어/01-LangGraph-Middleware.ipynb`, 스킬 문서 `.agents/skills/deep-agents-core/SKILL.md` | 07 노트의 과정 페이지 출처 |
+| 1~3강 RAG 이론의 실습판 | `Day02/` (스크립트 `00`~`13`, `Day2_Production_RAG_수업자료.pdf`), 병렬 새 버전 `Day02_new/` 노트북 `00-Setup`~`06-Lab-DeepAgents-RAG` | `Day02/README.md`, `Day02_new/README.md`. 강의 녹음에서 이 폴더를 직접 연 장면은 없음 |
+| 디시전 모델 Jev | `used_jev_deepagents/` (Jev + Deep Agents RAG 예제), `.agents/skills/langgraph-decision-models/` | `used_jev_deepagents/README.md:1-4` |
+
+> 근거 칸이 강의 노트(직접 언급)가 아닌 행은 같은 날 주제에 맞는 저장소 자료입니다. 수업에서 그 폴더를 직접 열었는지는 노트로 확인되지 않습니다.
+
 | 파일 | 내용 |
 |---|---|
 | [01-lecture1.md](01-lecture1.md) | 1강: RAG의 핵심, 잘 찾아오기와 잘 이야기하기 (+ 10일 과정 로드맵) |

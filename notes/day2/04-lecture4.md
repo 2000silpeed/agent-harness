@@ -76,7 +76,7 @@
 
 > 확인 필요: (전사가 불명확한 부분, 무발화 구간)
 > - 전날 글의 모델명 "GPT-6 아스트라", "Qwen 0.5B·0.8B 류"는 전사 보정 결과이며 원 출처 링크는 언급되지 않음(장표도 특정 연구의 성과·모델명은 제외).
-> - 수업 자료 저장소 주소: "비틀리에 SDS AX AD"라고 했다가 "클래스라고 하는 D 주소"로 정정 — 정확한 URL 불명확. "브레이크루 랩의 랭그래프 V1 튜토리얼" 저장소명도 불명확.
+> - 수업 자료 저장소 주소: "비틀리에 SDS AX AD"라고 했다가 "클래스라고 하는 D 주소"로 정정 — 정확한 URL 불명확. "브레이크루 랩의 랭그래프 V1 튜토리얼" 저장소명도 불명확. → 일부 해결: 수업 저장소는 `https://github.com/HyunjunJeon/sds_ax_advanced_2026`(저장소 git remote), 단축 주소는 07 노트가 기록한 `bit.ly/sds-ax-ad-class`(저장소에는 없음, 저장소의 bit.ly는 프로젝트용 `bit.ly/sds-ax-advanced-project`뿐 — `Day08/project_guide.md:15`). "브레이크루 랩"은 **braincrew-lab** — Day01은 `https://github.com/braincrew-lab/langgraph-v1-tutorial`의 스냅샷이다 (저장소 확인: `Day01/UPSTREAM.md:5`, `Day01/README.md:1` "LangGraph V1 튜토리얼").
 > - "API 키 받기" 메뉴가 일부 계정에서 보이지 않음 — 발급·전달 완료 여부 미확인.
 > - 37:23~37:56 `code .` 시연 구간은 "말 안 듣네요" 등으로 실제 동작이 불명확.
 > - 13:14~13:33, 18:26~19:29, 43:08 등 무발화·대기 구간 다수(수강생 작업 대기).

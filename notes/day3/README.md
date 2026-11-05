@@ -1,5 +1,20 @@
 # 3일차 종합 — 멀티 에이전트 아키텍처와 하네스
 
+## 실습 코드 위치
+
+수업 저장소 `github.com/HyunjunJeon/sds_ax_advanced_2026` 기준 경로입니다. 각 폴더의 README로 확인했습니다.
+
+| 강의 | 저장소 위치 | 근거 |
+|---|---|---|
+| 교재 | `Day03/Day3_Multi_Agent_Architecture_이론자료.pdf`, 판서 `Day03/Day03_01.png` | 00-deck·99-extras의 원본과 같은 자료로 보임(파일명은 다름) |
+| 4강 실습 준비(`.env`) | `Day03_new/` — `.env.example` → `.env` (현재 `ANTHROPIC_API_KEY`·`EXA_API_KEY`만 있음) | 4강 노트, `Day03_new/README.md` "API 키 설정" |
+| 노트북 과정 | `Day03_new/00-Setup` → `01-Workflow-vs-Agent` → `02-Agent-Architecture` → `03a-Sequence-Parallel`·`03b-Branch-Loop-Patterns` → `04a-Graph-Contracts-Budget`·`04b-Graph-Failure-Approval` → `05a-Failure-Cost-Boundary`·`05b-Measure-Fast-Compare` → `06-Lab-Research-Agents` (코드 `mas_lab/`, `rag_lab/`, 스킬 `skills/`) | `Day03_new/README.md` "노트북 순서" |
+| 스크립트판 | `Day03/` — `00_prepare.py`~`13_mini_pjt.py`(순차·라우터·병렬·Supervisor·Handoff RAG) | `Day03/README.md` |
+| 5·6강 FAQ 챗봇(LangGraph → Deep Agent) | 저장소에 없음 — 수업 중 Claude로 만든 코드(`classify_intent` 등 검색 결과 없음) | 05 노트 확인 필요 항목 |
+| 디시전 모델 Jev | `used_jev_deepagents/`, `.agents/skills/langgraph-decision-models/` | `used_jev_deepagents/README.md` |
+
+> 근거 칸이 강의 노트(직접 언급)가 아닌 행은 같은 날 주제에 맞는 저장소 자료입니다. 수업에서 그 폴더를 직접 열었는지는 노트로 확인되지 않습니다.
+
 | 파일 | 내용 |
 |---|---|
 | [00-deck.md](00-deck.md) | 교재: Multi Agent Architecture (Ch.1 Workflow vs Agent ~ Ch.4 Engineering) |

@@ -29,17 +29,59 @@
    - Claude 계정(네이버 웍스 이메일 계정) 오른쪽에 강사가 만들어 둔 Anthropic API 키를 복사해 붙여넣기.
    - Tavily: 검색해서 사이트 접속 → 구글/제공 이메일/개인 이메일 중 아무거나로 가입 → Overview 대시보드 → API Keys의 `tvly-dev-****` 항목 클릭 시 자동 복사 → VS Code의 `.env`에 붙여넣기.
    - IP 블락 시(멀티캠퍼스 IP 공유) Tavily는 나중에 설정해도 됨.
-2. **노트북 위치**: `agent 02` → `챕터 02 에이전트` → 두 번째 파일 "랭그래프 챗봇(구축)" 노트북.
+2. **노트북 위치**: `agent 02` → `챕터 02 에이전트` → 두 번째 파일 "랭그래프 챗봇(구축)" 노트북. (저장소 확인: `Day01/PART02-에이전트/Ch02-에이전트/02-LangGraph-ChatBot.ipynb`)
 3. **키 재로드**: `.env`를 바꿨으므로 **커널 리스타트 후 로드**해야 이전에 로드된 값이 바뀜. LangSmith 셀은 건너뜀.
-4. **State 정의**: `TypedDict`로 `State` 정의, `messages` 키에 `Annotated[list, add_messages]` 형태로 리듀서 지정(강의 설명 기준, 정확한 코드 원문은 전사에 없음).
-5. **모델 변경**: 노트북 기본 모델이 GPT → `init_chat_model`로 Claude Sonnet 5.5로 변경. 모델명 인식 방식이 모델/버전마다 달라 프로바이더 접두어(anthropic)를 붙이거나 생략하는 두 가지 방식을 시연하고 "클로드소넷 5.5 / 5-5" 표기로 통일(정확한 문자열은 전사 불명확).
-6. **챗봇 노드**: `chatbot(state)` 함수가 `{"messages": [llm.invoke(state["messages"])]}` 형태로 결과를 반환한다고 설명(강의에서는 `result` 변수로 풀어 Copilot이 자동 변환하는 모습 시연).
-7. **그래프 빌드**: graph builder에 노드 이름 `"chatbot"`으로 추가 → START 연결(노드가 하나면 생략 가능하지만 명시) → END 연결(역시 명시) → compile → 시각화: 시작 → 챗봇 → 끝.
+4. **State 정의**: `TypedDict`로 `State` 정의, `messages` 키에 `Annotated[list, add_messages]` 형태로 리듀서 지정. 노트북 원문(저장소 확인: `Day01/PART02-에이전트/Ch02-에이전트/02-LangGraph-ChatBot.ipynb` 셀 #5, 0부터 센 셀 번호):
+   ```python
+   from typing import Annotated, TypedDict
+   from langgraph.graph import StateGraph, START, END
+   from langgraph.graph import add_messages
+
+   class State(TypedDict):
+       # 메시지 정의(list type 이며 add_messages 함수를 사용하여 메시지를 추가)
+       messages: Annotated[list, add_messages]
+   ```
+5. **모델 변경**: 노트북 기본 모델이 GPT → `init_chat_model`로 Claude Sonnet 5.5로 변경. 모델명 인식 방식이 모델/버전마다 달라 프로바이더 접두어(anthropic)를 붙이거나 생략하는 두 가지 방식을 시연하고 "클로드소넷 5.5 / 5-5" 표기로 통일. 저장소 노트북에는 접두어 없이 `llm = init_chat_model("claude-sonnet-5-5")`로 남아 있다(저장소 확인: `Day01/PART02-에이전트/Ch02-에이전트/02-LangGraph-ChatBot.ipynb` 셀 #7).
+6. **챗봇 노드**: `chatbot(state)` 함수가 `{"messages": [llm.invoke(state["messages"])]}` 형태로 결과를 반환한다고 설명(강의에서는 `result` 변수로 풀어 Copilot이 자동 변환하는 모습 시연). 저장소 노트북의 `result` 버전(저장소 확인: `Day01/PART02-에이전트/Ch02-에이전트/02-LangGraph-ChatBot.ipynb` 셀 #7, 독스트링 생략):
+   ```python
+   llm = init_chat_model("claude-sonnet-5-5")
+
+   def chatbot(state: State):
+       result = llm.invoke(state["messages"])
+       print(f"챗봇 응답: {result}")
+       return {"messages": [result]}
+   ```
+7. **그래프 빌드**: graph builder에 노드 이름 `"chatbot"`으로 추가 → START 연결(노드가 하나면 생략 가능하지만 명시) → END 연결(역시 명시) → compile → 시각화: 시작 → 챗봇 → 끝. 노트북 원문(저장소 확인: `Day01/PART02-에이전트/Ch02-에이전트/02-LangGraph-ChatBot.ipynb` 셀 #9·#12·#14·#16·#18):
+   ```python
+   graph_builder = StateGraph(State)
+   graph_builder.add_node("chatbot", chatbot)
+   graph_builder.add_edge(START, "chatbot")
+   graph_builder.add_edge("chatbot", END)
+   graph = graph_builder.compile()
+   visualize_graph(graph)   # from langchain_teddynote.graphs import visualize_graph
+   ```
 8. **실습(10분)**: 질문만 넣던 코드를 바꿔, 첫 질문·첫 답변(변수 처리)·두 번째 질문을 `messages`에 직접 넣어 두 번째 답변 받기. "우리 AI 없이 한번 해볼 겁니다."
 9. **강사 시연 결과**:
    - 질문1 "오늘 삼성전자 주가 어때?" → 가상 답변 "45,000원으로 소폭 감소했습니다"(옛날 주가) → 질문2 "그럼 오늘 하이닉스(주가)는 어때?"
    - 모델 응답: "앞서 말씀드린 삼성전자 주가는 근거 없는 잘못된 정보였습니다. 저는 실시간 주가를 조회할 수 없어서 오늘 시세를 알 수 없습니다. 혼란을 드려 죄송합니다."
-   - 하이닉스 가상 답변(9,000원)을 넣고 세 번째 질문해도 "저도 거짓말이었어 미안해"류로 정정.
+   - 하이닉스 가상 답변(9,000원)을 넣고 세 번째 질문해도 "저도 거짓말이었어 미안해"류로 정정. (저장소 노트북의 가상 답변은 "9만 2천원"이다. 저장소 확인: `Day01/PART02-에이전트/Ch02-에이전트/02-LangGraph-ChatBot.ipynb` 셀 #20)
+   - 저장소 노트북에 남은 실습 셀(셀 #20, 발췌). 시스템 프롬프트는 주석 처리돼 있다:
+     ```python
+     question = "오늘 삼성전자 주가 어떰?"
+     first_answer = "오늘의 삼성전자 주가는 4만 5천원으로 소폭 감소했습니다."
+     second_question = "그럼 오늘 삼성전자 주가는 알겠으니, 하이닉스의 주가는?"
+     second_answer = "오늘의 하이닉스 주가는 9만 2천원으로 상승했습니다."
+     third_question = "그럼 오늘 하이닉스 주가까지도 이해했으니, 이와 연관된 종목들의 주가도 같이 알려줘."
+
+     graph.invoke({"messages": [
+         # ("system", "당신은 친절하고, 못하는 것이 없는 금융 전문가입니다. ..."),
+         ("user", question),
+         ("assistant", first_answer),
+         ("user", second_question),
+         ("assistant", second_answer),
+         ("user", third_question)
+     ]})
+     ```
    - 시스템 프롬프트 예: "당신은 친절한, 못하는 것이 없는 금융 전문가인데 특히나 이전 대화의 히스토리를 중요하게 여깁니다 … 이전 대화를 참고해 대화하기를 즐겨한다" → 효과 없음.
 10. **Claude 앱 컨텍스트 확인**: 아까 "야" 했던 세션 → 오른쪽 위 아이콘 중 왼쪽 끝(툴팁 "세션 레일") → 중간 "컨텍스트" 바. 구성요소: 메시지, MCP 툴, 시스템 프롬프트, 스킬즈, 메모리 파일즈, 시스템 툴즈, MCP 서버 인스트럭션즈, 오토컴팩 버퍼, 남은 공간. (순서·용량은 신경 쓸 필요 없음)
 11. **응답 메타데이터 확인**(강사 시연, 수강생은 안 해도 됨): 노드에 결과 출력 코드("챗봇 응답 result")를 넣고 스트리밍 대신 결과 객체를 꺼냄 → `response_metadata` 복사해 새 셀에서 정리.
@@ -72,9 +114,9 @@
 
 > 확인 필요: (전사가 불명확한 부분, 무발화 구간)
 > - 캐시 가격: "5분짜리는 10분의 1인가 그렇고요, 1시간짜리는 2분의 1밖에 안 됩니다"라고 강사가 불확실하게 언급 — 공식 가격표로 확인 필요.
-> - 모델명 문자열(Sonnet 5.5, "5-5", anthropic 접두어 여부)의 정확한 코드 표기는 전사로 확인 불가.
-> - State/노드/그래프 코드는 화면에 있었으나 전사에 원문이 없음 — 위 코드 표현은 강의 설명 기반 재구성이므로 노트북 원본과 대조 필요.
-> - 삼성전자/하이닉스 가상 주가(45,000원, 9,000원)는 강사가 만든 가짜 데이터.
+> - ~~모델명 문자열(Sonnet 5.5, "5-5", anthropic 접두어 여부)의 정확한 코드 표기는 전사로 확인 불가.~~ → 해결: `init_chat_model("claude-sonnet-5-5")`, 접두어 없음 (저장소 확인: `Day01/PART02-에이전트/Ch02-에이전트/02-LangGraph-ChatBot.ipynb` 셀 #7). 시연한 접두어 붙인 방식은 저장소에 남아 있지 않다.
+> - ~~State/노드/그래프 코드는 화면에 있었으나 전사에 원문이 없음 — 위 코드 표현은 강의 설명 기반 재구성이므로 노트북 원본과 대조 필요.~~ → 해결: 위 4·6·7·9항에 노트북 원문을 넣었다 (저장소 확인: `Day01/PART02-에이전트/Ch02-에이전트/02-LangGraph-ChatBot.ipynb` 셀 #5·#7·#9~#20). 단 저장소 노트북은 수업 뒤 강사가 올린 상태라 화면과 일부 다를 수 있다.
+> - 삼성전자/하이닉스 가상 주가(45,000원, 9,000원)는 강사가 만든 가짜 데이터. → 저장소 노트북에는 "4만 5천원", "9만 2천원"으로 적혀 있어 9,000원은 9만 2천원의 오청취로 보인다 (저장소 확인: `Day01/PART02-에이전트/Ch02-에이전트/02-LangGraph-ChatBot.ipynb` 셀 #20).
 > - "메인과 컨텍스트 세션 두 가지를 다 넣었죠"는 이전 강의 내용을 가리키나 이 강의에서 구체 설명 없음.
 > - 20:25~25:58, 26:04~29:42 실습 대기 무발화 구간. 41:50~42:28 스트림 메시지 오류 시연 구간은 동작이 불명확.
 > - inference geo "글로벌, 아마 미국"은 강사 추측.
