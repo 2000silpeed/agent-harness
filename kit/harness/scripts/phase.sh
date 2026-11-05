@@ -10,13 +10,13 @@ PHASES=(
   "00-brief|P0 킥오프|project-kickoff"
   "01-workflow|P1 워크플로우|workflow-to-architecture"
   "02-architecture|P2 아키텍처|workflow-to-architecture"
-  "03-knowledge|P3 지식·메모리|-"
-  "04-tools-skills|P4 도구·스킬|skill-authoring, tool-design-review, plan-review"
+  "03-knowledge|P3 지식·데이터|-"
+  "04-tools-skills|P4 도구·스킬|skill-authoring, tool-design-review"
   "05-build|P5 구현·기준선|-"
-  "06-harness|P6 하네스·관측|tool-design-review"
+  "06-harness|P6 하네스·안전|tool-design-review"
   "07-eval|P7 평가|agent-eval"
-  "08-optimization|P8 자기개선·최적화|self-improve-loop, optimize-agent"
-  "09-release|P9 릴리스·회고|criteria-check"
+  "08-optimization|P8 최적화|optimize-agent"
+  "09-release|P9 릴리스·회고|-"
 )
 
 # 게이트 절의 미체크 항목 출력

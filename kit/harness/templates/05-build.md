@@ -7,7 +7,7 @@
 ```
 
 ## 구현 선택
-- 프레임워크 (LangGraph / Deep Agents / 기타)와 이유:
+- 프레임워크 사용 여부와 이유 (직접 구현 / LangGraph / Deep Agents / 기타):
 - 모델과 effort:
 - 기록 저장 위치(대화·트레이스):
 - 프롬프트 캐시 설정:
