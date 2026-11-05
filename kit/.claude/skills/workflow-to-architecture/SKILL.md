@@ -30,7 +30,9 @@ description: 사용자의 업무 워크플로우를 5단계 이하로 정리하�
    - Swarm/Handoff: 대화 이전. 체어맨·투표·최대 턴 같은 종료 장치가 필수다
 4. 서브에이전트가 있으면 입출력 계약을 적는다(입력 task_id, goal, facts, allowed_tools / 출력 status, facts, evidence_refs, uncertainty).
 5. 상태 키, 종료 조건(성공·보류·사람 전환·실패)을 적는다.
-6. 결정마다 `design/decisions.md`에 한 줄을 남긴다.
+6. **dcode 확장 지점을 고른다.** 기능(계획 작성, 리뷰, 승인 게이트, 메모리 검색, 개선안, 로그)마다 스킬 / 서브에이전트 / 훅 / 미들웨어 / goal·rubric 중 하나를 고르고 한계를 적는다. 근거는 `harness/reference/dcode.md` §2와 §3의 매핑표다.
+7. **하네스 6책임 표를 채운다**(Day06): 지침, 도구, 실행 제어, 상태, 검증, 기록마다 "dcode가 이미 하는 것 / 추가할 것 / 근거 수준"을 적는다. 평가기·정답·테스트·권한 정책 같은 신뢰기반의 위치를 따로 적는다.
+8. 결정마다 `design/decisions.md`에 한 줄을 남긴다.
 </step_architecture>
 
 <reference_case>

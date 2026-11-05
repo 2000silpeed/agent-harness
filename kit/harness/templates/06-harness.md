@@ -1,31 +1,46 @@
-# P6. 하네스·안전
+# P6. 하네스·관측
 
-## 권한
-| 대상 | 읽기 | 쓰기 | 승인 필요 | 막는 위치(Host/서버/게이트웨이) |
+## 계획 승인 게이트 (평가 2-4)
+- 구현 위치 (PreToolUse 훅 / wrap_tool_call 미들웨어):
+- 차단 대상 도구: Write, Edit, Bash(execute) ...
+- 승인 판정: 계획 파일 `status: approved` + 수정 경로가 "수정 대상" 안에 있는가
+- 차단 시 모델에 돌려주는 메시지:
+- 판정기 오류 시: 차단 (fail-closed)
+- 서브에이전트 경로에서도 걸리는지 검증 방법:
+
+## 권한·예산·종료
+| 대상 | 읽기 | 쓰기 | 승인 필요 | 막는 위치 |
 |---|---|---|---|---|
 
-## 예산·종료
-- 최대 턴 / 토큰 / 시간:
-- 재시도 정책(멱등 작업만):
+- 승인 모드 (Manual 권장, YOLO·`-S all` 시연 금지):
+- 최대 턴 / 시간 / 재시도:
 - 종료 상태: 완료 / 보류 / 사람 전환 / 실패
 
-## 오류 정책
-| 실패 유형 | 예 | 모델에 전달? | 다음 행동 |
-|---|---|---|---|
-| 근거 부족 |  |  |  |
-| 정책 불가 |  |  |  |
-| 시스템 오류(500류) |  | 숨김 |  |
-| 잘못된 요청(400류) |  | 안내와 함께 전달 |  |
+## 이벤트 로그 (평가 4-1, 4-2)
+- 경로: `logs/<run_id>.jsonl` (append-only, 같은 이름이면 거부)
+- 공통 필드: run_id, thread_id, turn_index, phase, event, call_id, parent_id, ts, duration_ms, status, error, version
+- phase: plan / review / code / test / result / memory / improve
+- event: llm_call, tool_call, memory_retrieve, memory_write, improve_proposal, improve_eval, improve_adopt, gate_block
+- 비밀 마스킹 규칙:
 
-## 외부 쓰기 안전장치
-- 체크포인트:
-- idempotency key:
+## 지표 (평가 4-3)
+`logs/<run_id>.summary.json`
+| 지표 | 원천 | 모를 때 |
+|---|---|---|
+| 총 소요 |  | null |
+| LLM 호출 수 |  | null |
+| 도구 호출 수 |  | null |
+| 재시도 수 (model_attempt.attempt>0 등) |  | null |
+| 루브릭 반복 수 |  | null |
+| 토큰 / 비용 |  | null |
 
-## 트레이스
-- 저장 위치와 필드:
+## 조회 (평가 4-4)
+- 명령: `trace_query --run <id> [--errors] [--phase test]`
+- 출력: 첫 실패 이벤트 + 직전 맥락 + 원인 후보
 
 ## 게이트 (모두 체크해야 다음 단계)
-- [ ] 쓰기 작업 앞에 실제로 차단되는 승인 게이트가 있다
-- [ ] 예산과 종료 상태가 코드에 구현됐다
-- [ ] 오류 유형별 처리가 구현됐다
-- [ ] 트레이스가 저장된다
+- [ ] 승인 전 코드 변경과 범위 밖 수정이 실제로 차단된다 (차단 로그로 확인)
+- [ ] 한 요청의 plan→review→code→test→result가 로그에 시간순으로 남는다
+- [ ] summary.json이 생성되고 모르는 값은 null이다
+- [ ] 조회 도구가 실패 run의 첫 실패 지점을 찾는다
+- [ ] 로그에 키·비밀이 없다
