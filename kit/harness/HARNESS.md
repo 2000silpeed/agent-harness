@@ -1,6 +1,6 @@
 # 에이전트 프로젝트 하네스 — 작업 규칙
 
-이 프로젝트는 `harness/PLAYBOOK.md`의 P0~P9 단계를 따라 완성품까지 간다. 기본 대상은 최종 프로젝트 **dcode 기반 Coding Assistant**다(평가 40점: 코드 기준·계획 리뷰·메모리와 자기개선·모니터링). 아래 규칙은 매 세션 적용된다.
+이 프로젝트는 `harness/PLAYBOOK.md`의 P0~P9 단계를 따라 완성품까지 간다. 아래 규칙은 매 세션 적용된다.
 
 <workflow>
 - 세션을 시작하면 SessionStart 훅이 `phase.sh` 결과(현재 단계와 남은 게이트)를 보여준다. 훅 출력이 없으면 직접 `bash harness/scripts/phase.sh`를 실행한다.
@@ -8,7 +8,7 @@
 - 새 단계는 `bash harness/scripts/start-phase.sh <번호>`로 템플릿을 복사해서 시작한다.
 - 게이트 항목은 실제로 확인했을 때만 `- [x]`로 바꾼다. 확인 방법(명령, 수치, 파일)을 항목 옆에 적는다.
 - **코드를 바꾸기 전에는 `plan-review` 스킬로 계획 → 독립 리뷰 → 사용자 승인을 거친다.** 범위가 바뀌면 다시 리뷰한다.
-- 단계의 상세 지침은 `harness/PLAYBOOK.md`의 해당 절만 읽는다. dcode 세부는 `harness/reference/dcode.md`, 평가·자기개선 규칙은 `harness/reference/eval-rsi-rules.md`에서 필요한 절만 찾아 읽는다.
+- 단계의 상세 지침은 `harness/PLAYBOOK.md`의 해당 절만 읽는다. 평가·자기개선 규칙은 `harness/reference/eval-rsi-rules.md`에서 필요한 절만 찾아 읽는다.
 </workflow>
 
 <design_principles>
@@ -25,7 +25,7 @@
 <evidence_rules>
 - 사실 주장에는 출처(`파일:줄`, 로그 경로, 명령 출력)를 붙인다. 근거 수준을 구분한다: 실행 경로에서 확인 / 코드 정의만 / 문서만 / 추정.
 - 실패 분석은 fact / hypothesis / alternative / evidence_ids를 나눠 쓴다.
-- 문서와 코드가 다르면 코드를 따르고 차이를 알린다(dcode 문서와 코드 불일치 목록: `reference/dcode.md` §5.2).
+- 문서와 코드가 다르면 코드를 따르고 차이를 알린다.
 - 모르는 값은 0이 아니라 null로 둔다. 확인하지 못한 것은 "확인 필요"라고 쓴다.
 </evidence_rules>
 
@@ -36,7 +36,7 @@
 - 실패한 실행이나 로그 행을 지우기, 잘 나온 반복만 남기기
 - mock·scripted 결과를 개선율로 보고하기
 - `.env` 값이나 키를 출력·로그·커밋에 남기기
-- YOLO 모드나 `-S all`로 시연하기
+- 승인 게이트를 끄거나 모든 명령을 무조건 허용한 상태로 시연하기
 </never>
 
 <working_style>
@@ -56,5 +56,5 @@
 - `agent-eval`: P7. 평가셋과 채점, 실패 분석.
 - `self-improve-loop`: P8. 개선안 생성 → 같은 조건 비교 → ADOPT/HOLD 판정 → 채택 기록.
 - `optimize-agent`: P8. 동작을 유지한 성능 최적화.
-- `rubric-check`: P9와 중간 점검. 40점 항목을 증거와 함께 자가 점검한다.
+- `criteria-check`: P9와 중간 점검. brief의 인수 기준을 증거와 함께 자가 점검한다.
 </skills>

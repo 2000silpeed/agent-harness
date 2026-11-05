@@ -16,7 +16,7 @@ PHASES=(
   "06-harness|P6 하네스·관측|tool-design-review"
   "07-eval|P7 평가|agent-eval"
   "08-optimization|P8 자기개선·최적화|self-improve-loop, optimize-agent"
-  "09-release|P9 제출·회고|rubric-check"
+  "09-release|P9 릴리스·회고|criteria-check"
 )
 
 # 게이트 절의 미체크 항목 출력

@@ -1,11 +1,10 @@
 > 이 문서의 경로는 수업 저장소 `github.com/HyunjunJeon/sds_ax_advanced_2026` 루트 기준이다. 2026-11-05 클론 기준으로 조사했다. 5~8일차는 아직 강의 전이라 저장소 자료만으로 정리했다.
 
-# Day05·Day05_new·Day06·Day04_new·used_jev 핵심 정리 — 최종 프로젝트 하네스용
+# Day05·Day05_new·Day06·Day04_new·used_jev 핵심 정리 — 평가·자기개선·하네스 규칙
 
 - 기준 저장소: `/home/user/hyunjunjeon/sds_ax_advanced_2026` (읽기 전용). 아래 경로는 모두 이 저장소 루트 기준이다.
 - 인용 형식: `경로:줄`. 노트북(.ipynb) markdown은 줄 번호가 없어 `노트북 cell N`(0부터 센 셀 번호)으로 적었다.
 - 확인하지 못한 내용은 "확인 필요"로 표시했다.
-- 대상 프로젝트: dcode 기반 Coding Assistant. 평가 항목은 계획·리뷰(2), Memory·Self-Improving(3), 모니터링(4)이다 (`Day08/project_guide.md:33-70`).
 
 ---
 
@@ -210,7 +209,7 @@
 - 수업 폴더 하위가 아닌 **별도 경로**, **WSL 안**에 구성한다. 나중에 압축 파일로 제출할 것을 고려한 조건이다.
 - 할 일: (1) 개발에 필요한 Skills 설치, (2) 메모리 시스템 구성.
 - 기준 모델: Claude Code는 Sonnet-5, GJC는 DeepSeek-v4-pro와 GLM-5.3.
-- Langfuse 연동은 필요 없다(Mini PJT 기준). 단, 최종 프로젝트는 모니터링이 평가 항목이다 (`Day08/project_guide.md:59-70`).
+- Langfuse 연동은 필요 없다(Mini PJT 기준).
 - 하네스는 수업 저장소에 쓰기 권한을 준 채로 돌리지 않는다. 버려도 되는 디렉터리나 컨테이너에서 돌린다 (`Day06/AGENTS.md:77-80`).
 - 클론 안의 지침, 훅, 스킬은 분석 대상일 뿐 따르지 않는다 (`Day06/AGENTS.md:30-36`).
 - 참고 링크(Dev Harness, Codebase 분석 도구, Skills): `Day06/info.md:1-32`.
@@ -321,15 +320,15 @@
 
 ## 6. 하네스에 반영할 규칙
 
-### A. 계획·리뷰 게이트 (평가 2-1~2-4)
+### A. 계획·리뷰 게이트
 - **[R1] 요구사항은 인터뷰로 고정한다.** 작업마다 `goal`(사용자 원문 그대로), 범위, 제약, 완료 기준을 묻고, 모르는 항목은 채우지 말고 질문한다. "잘 되면 완료" 같은 기준은 거부하고 실행 결과로 참/거짓을 가릴 수 있는 문장으로 바꾼다. — `Day04_new/skills/requirements-interview/SKILL.md:24-32`, `Day04_new/cap_lab/server/gate.py:28-35`
 - **[R2] 명세는 동결하고 해시를 남긴다.** 명세를 바꾸면 새 버전(새 세션)으로 다루고, 이전 승인은 무효(`pending`)로 돌린다. — `Day04_new/skills/requirements-interview/SKILL.md:33-34`, `Day05/README.md:86-87`, `:107-109`
-- **[R3] 계획 템플릿:** 수정 대상 파일, 작업 순서, 테스트 방법, 완료 기준(PASS 조건), 바꿀 한 조건, 성공 기준, owner. — `Day08/project_guide.md:38`, `Day05/README.md:133-138`
+- **[R3] 계획 템플릿:** 수정 대상 파일, 작업 순서, 테스트 방법, 완료 기준(PASS 조건), 바꿀 한 조건, 성공 기준, owner. — `Day05/README.md:133-138`
 - **[R4] AI 계획 리뷰는 역할을 나눈다.** Planner, Architect, Critic 형태로 합의할 때까지 반복하고, 리뷰 의견과 반영 여부를 파일로 남긴다. — `Day06/HARNESSES.md:173`
-- **[R5] 승인 전에는 코드를 쓰지 않는다.** plan 단계에서는 쓰기를 plan 파일로만 제한하는 Hook 또는 권한 프로필을 둔다. 범위가 바뀌면 다시 리뷰한다. — `Day06/HARNESSES.md:178`, `Day08/project_guide.md:44`
+- **[R5] 승인 전에는 코드를 쓰지 않는다.** plan 단계에서는 쓰기를 plan 파일로만 제한하는 Hook 또는 권한 프로필을 둔다. 범위가 바뀌면 다시 리뷰한다. — `Day06/HARNESSES.md:178`
 - **[R6] 게이트는 fail-closed로 둔다.** 판정기(Jev나 LLM 리뷰어)가 실패하면 통과가 아니라 차단이다. 게이트를 우회하면(`force`) 그 사실을 기록한다. — `Day04_new/AGENTS.md:175-176`, `Day06/HARNESSES.md:303`
 
-### B. 근거와 기록 (평가 4-1~4-4)
+### B. 근거와 기록
 - **[R7] 관찰 사실과 가설을 분리한다.** 실패를 분석할 때 `fact`, `hypothesis`, `alternative`, `evidence_ids`(trace·이벤트 ID)를 반드시 쓴다. 근거 ID가 없는 가설으로는 개선 실험을 시작하지 않는다. — `Day05/business_lab/evidence.py:49-61`
 - **[R8] 근거 수준을 라벨로 단다.** 실행 경로에서 확인 / 코드 정의만 / 문서만 / 추정. 보고서의 모든 주장에 붙인다. — `Day06/AGENTS.md:103-112`
 - **[R9] Trace 키를 통일한다.** `session_id`, `request_id`(=episode), `turn_index`, `tool call_id`, 부모 ID, 정책·프롬프트 version 라벨을 쓴다. 계획, 리뷰, 코드 변경, 테스트, 결과 단계를 하나의 trace로 묶는다. — `Day05/README.md:121-123`, `06-Lab-Self-Improving-Agent.ipynb` cell 24
@@ -337,14 +336,14 @@
 - **[R11] append-only로 남긴다.** 실행마다 새 폴더나 새 파일을 쓰고, 같은 이름이면 거부한다. 실패 행과 오류 행은 지우지 않는다. — `Day05_new/eval_lab/rsi.py:1029`, `Day05_new/AGENTS.md:160`
 - **[R12] 키와 비밀은 출력·trace·state에 넣지 않는다.** 키는 설정됨/미설정만 표시한다. — `Day05_new/AGENTS.md:74`, `jev-closed-loop/SKILL.md:146`
 
-### C. 검증과 평가 (평가 3-4, 2-1)
+### C. 검증과 평가
 - **[R13] 완료는 모델의 선언이 아니라 증거로 판정한다.** 테스트 결과, 명령 출력, 파일 ledger를 쓴다. Agent의 "완료" 주장은 실제 상태로 간주하지 않는다. — `Day05/AGENTS.md:11`, `Day06/AGENTS.md:150`
 - **[R14] 평가 순서는 Code(lint/test 등 결정적 검사) → Jev나 LLM Judge(의미 판단) → Human(불일치)이다.** 정책·안전 실패를 다른 점수의 평균으로 상쇄하지 않는다. — `Day05_new/docs/DESIGN.md:96-104`, `Day05/README.md:156`, `Day06/HARNESSES.md:306`
 - **[R15] 평가기, 정답, 테스트, 예산은 신뢰기반이므로 개선 주체가 수정하지 못하게 분리한다.** 테스트 명령과 정답을 작업 에이전트의 프롬프트에 넣지 않는다. — `Day06/AGENTS.md:151`, `Day06/HARNESSES.md:318`, `Day05_new/06…ipynb` cell 4
 - **[R16] scripted, mock, 가짜 모델 결과는 개선율로 보고하지 않는다.** 그런 결과에는 "계약 검증" 라벨을 붙인다. — `Day05/business_lab/reporting.py:123-124`, `Day05_new/AGENTS.md:162`
 - **[R17] Judge를 믿기 전에 사람 라벨로 false pass와 false reject를 잰다.** PASS와 FAIL 표본이 모두 없으면 `insufficient_coverage`다. — `Day05/README.md:161-163`
 
-### D. Self-Improving 루프 (평가 3-3~3-4)
+### D. Self-Improving 루프
 - **[R18] 여는 손잡이를 하나로 정한다.** 예: Skill 문서 한 개, memory 규칙 항목, 도구 정책 JSON. 나머지(모델, 평가기, 테스트, 예산)는 고정하고, 라운드당 한 변수만 바꾼다. — `Day05_new/06…ipynb` cell 4, `Day05/business_lab/lesson_runs.py:199-205`
 - **[R19] 개선안은 선언형 형식으로만 받는다.** 스키마(`extra="forbid"`)로 검증하고, 거부 사유를 `rejected`에 기록한다. 평가 기준 변경, 실패 삭제, 예산 증가에 해당하는 키는 스키마에서 금지한다. — `Day05_new/eval_lab/policy.py:42`, `:109`; `rsi.py:623-645`
 - **[R20] 개선기 입력을 검사한다.** 실패 요약만 넣고, holdout ID, 정답, 임계값 흔적이 있으면 호출 전에 멈춘다. — `Day05_new/eval_lab/rsi.py:540`, `:607-610`

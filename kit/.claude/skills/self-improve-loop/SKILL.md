@@ -1,6 +1,6 @@
 ---
 name: self-improve-loop
-description: 실패 기록과 평가 결과로 개선안(메모리 규칙·스킬·도구 정책)을 만들고, 같은 조건의 before/after 비교와 회귀 검사를 거쳐 채택(ADOPT)·보류(HOLD)를 판정하는 자기개선 루프를 설계·구현·실행한다. 최종 프로젝트 평가 3-3·3-4, P8 단계, "에이전트가 스스로 나아지게" 요청 시 사용.
+description: 실패 기록과 평가 결과로 개선안(메모리 규칙·스킬·도구 정책)을 만들고, 같은 조건의 before/after 비교와 회귀 검사를 거쳐 채택(ADOPT)·보류(HOLD)를 판정하는 자기개선 루프를 설계·구현·실행한다. P8 단계, "에이전트가 스스로 나아지게" 요청 시 사용.
 ---
 
 <principles>
@@ -27,9 +27,8 @@ description: 실패 기록과 평가 결과로 개선안(메모리 규칙·스�
 9. **holdout:** 라운드를 마친 뒤 마지막에 한 번만 holdout으로 확인한다. 그 결과를 보고 다시 고치면 새 라운드다.
 </procedure>
 
-<dcode_notes>
-- dcode `-a/--agent NAME`은 에이전트별로 독립 메모리를 쓴다. baseline과 candidate를 이름으로 분리하면 비교가 깔끔하다.
-- 메모리는 스레드당 1회 로드된다. 같은 스레드에서 반영 효과를 측정하지 않는다.
-- `[memory].auto_save=true`(기본)면 모델이 AGENTS.md를 직접 고쳐서 이 루프를 우회한다. 끄거나 훅으로 막는다.
-- 개선안 생성은 `after_agent` 미들웨어나 `/skill:improve` 형태로 넣을 수 있다(`harness/reference/dcode.md` §3.3).
-</dcode_notes>
+<implementation_notes>
+- baseline과 candidate는 메모리·설정이 섞이지 않게 분리된 프로필(디렉터리, 에이전트 이름 등)로 돌린다.
+- 메모리를 세션 시작 때 한 번만 읽는 구조라면, 반영 효과는 새 세션에서 측정한다.
+- 에이전트가 메모리 파일을 직접 고칠 수 있으면 이 루프를 우회한다. 쓰기를 막거나 개선안 경로로만 받게 한다.
+</implementation_notes>
