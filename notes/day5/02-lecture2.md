@@ -1,7 +1,7 @@
 ## 5일차 2강 — Claude Code 사용 기록을 Langfuse로 남기기 (측정해야 개선할 수 있다)
 
 > 출처: 「5일차 2강 다시보기 (재업로드)」(전사·분석, 44:51), 「5일차 2강 장표 (재업로드)」(15장). SDS AX Advanced · 2026-11-06.
-> 이 강의의 Claude Code 플러그인 연동은 저장소에 대응 파일이 없다. Langfuse Cloud 가입·키 발급 부분만 `Day05_new/use_cc/missions/m0.md`(준비 1)와 `Day05_new/.env.example`에 대응한다.
+> 이 강의의 Claude Code 플러그인 연동은 저장소에 대응 파일이 없다(공식 문서로 확인한 내용은 아래 "확인 필요"에 정리). Langfuse Cloud 가입·키 발급 부분만 `Day05_new/use_cc/missions/m0.md`(준비 1)와 `Day05_new/.env.example`에 대응한다.
 
 ### 핵심 요약 (3~5줄)
 - "결국 측정해야 개선을 할 수 있기 때문에" — 자기 Claude Code 사용을 `history.jsonl` 말고 별도 플랫폼에 쌓아 본 적이 없다면, 오픈소스 관측 도구 **Langfuse**로 측정 단계를 시작한다.
@@ -122,8 +122,8 @@
 > - 00:07 서비스 이름 "바이브 매트릭"이 정확한지 불명.
 > - 08:23 "ARIS"로 전사된 도구는 Arize(Arize AI)로 보이나 확정 못 함.
 > - 08:41 "오픽, 오픽스였나?" — 강사도 이름을 기억 못 한 경쟁 도구.
-> - 15:12 Claude Code가 찾아 준 플러그인의 정확한 이름(전사 "랭큐즈 슬래시 클로드 옵저버빌리티 플러그인")과 설치 명령은 화면에만 있어 미확인. 저장소에도 이 플러그인 관련 파일은 없음.
-> - 22:29 "cc_rankfuse_public key" — 플러그인용 환경 변수의 정확한 이름 불명(CC_ 접두어가 붙은 Langfuse 키 이름으로 추정). 저장소에는 플러그인용 변수명이 없고 `.env`용 `LANGFUSE_*`만 있음.
+> - ~~15:12 플러그인 이름·설치 명령~~ → 해결(공식 문서 확인): Langfuse 공식 플러그인 `langfuse-observability`, 저장소 [`langfuse/Claude-Observability-Plugin`](https://github.com/langfuse/Claude-Observability-Plugin). 설치는 `claude plugin marketplace add langfuse/Claude-Observability-Plugin` → `claude plugin install langfuse-observability@langfuse-observability` → Claude Code 재시작. Stop 훅으로 대화 기록(transcript)을 읽어 trace로 보낸다(강의의 "멈출 때마다 전송"과 일치).
+> - 22:29 "cc_rankfuse_public key" → 일부 해결(공식 README 확인): 플러그인 설정 키는 `LANGFUSE_PUBLIC_KEY`(필수), `LANGFUSE_SECRET_KEY`(필수), `LANGFUSE_BASE_URL`(선택, 없으면 EU `https://cloud.langfuse.com` — Japan 리전이면 반드시 지정), 디버그용 `CC_LANGFUSE_DEBUG`. README가 안내하는 입력 방법은 `/plugin configure langfuse-observability@langfuse-observability` 또는 설치 시 `--config KEY=값`이고, secret key는 OS 키체인에 저장된다고 한다. 강의처럼 `~/.claude/settings.json`의 `env`에 넣는 방식은 README에 없어 버전·설치 경로에 따른 차이로 보인다(미확인). 강의의 `CC_` 접두어는 `CC_LANGFUSE_DEBUG` 같은 플러그인 변수에서 본 것일 수 있다(추정). 출처: [Langfuse Claude Code 연동 문서](https://langfuse.com/integrations/developer-tools/claude-code), [플러그인 README](https://github.com/langfuse/Claude-Observability-Plugin).
 > - 24:22~25:12 "settings.json 경로" 질의응답 중 일부 발화가 끊김("이거 실행하면 그냥 만들어지는 거라서" 등 맥락 불완전).
 > - 26:21 "CV라는 키값으로 세팅을 하고 있습니다"의 뜻 불명(바로 뒤 "요 위에 거 3개는 입력 안 하셔도 되고"와 함께 화면 의존).
 > - 35:53 여러 PC 세션 설명 중 일부가 끊겨 문맥 불완전.

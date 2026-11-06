@@ -19,7 +19,7 @@
 | 강의 | 저장소 위치 | 비고 |
 |---|---|---|
 | 교재·1강 이론 | `Day05/Day5_이론자료.pdf`, `Day05_new/use_cc/concepts/m1.md`·`m2.md` | 1강은 이론만. 실습은 `Day05_new`에서 시작한다고 안내 |
-| 2강 Langfuse 연동 | `Day05_new/use_cc/missions/m0.md`, `Day05_new/.env.example` | Claude Code 플러그인 연동 자체는 저장소에 없음 |
+| 2강 Langfuse 연동 | `Day05_new/use_cc/missions/m0.md`, `Day05_new/.env.example` | 플러그인은 저장소 밖: 공식 `langfuse/Claude-Observability-Plugin` |
 | 3강 Dataset·Evaluator | `Day05_new/02-Offline-Golden-Dataset.ipynb`, `03a-Online-Eval-Trace-Selection.ipynb`, `use_cc/concepts/m2.md`·`m3a.md`, `eval_lab/decisions.py`(Jev 질문 유형) | 강사는 미션 카드 대신 화면에서 직접 시연 |
 | 4~6강 Jev 딥 에이전트 | `used_jev_deepagents/`, `Day05_new/task.md`, 판서 `Day05_new/Day05_01.png` | 노트북 없음 |
 | 스크립트판 평가 파이프라인 | `Day05/00~09_*.py`, `business_lab/` | 덱 내용을 코드로 구현한 트랙. 강의에서 직접 열지는 않음 |
@@ -39,7 +39,7 @@
 
 ## 확인 필요 (요약)
 
-- 2강: Claude Code ↔ Langfuse 공식 플러그인 이름과 환경변수 이름(저장소에 없음).
+- ~~2강: Claude Code ↔ Langfuse 공식 플러그인 이름~~ → `langfuse-observability`(`langfuse/Claude-Observability-Plugin`), 키는 `LANGFUSE_PUBLIC_KEY`·`LANGFUSE_SECRET_KEY`·`LANGFUSE_BASE_URL`. 강의의 `settings.json` `env` 입력 방식은 공식 README와 달라 미확인(02 노트 참고).
 - 4강: 강사는 "백엔드에 PDF 지원이 없다"고 했지만 `used_jev_deepagents/src/attachments.py`에 PDF 처리 코드가 있다. 시연 실패 원인은 미확인.
 - 5강: 문장 번호 표기 형식(판서 그림의 `<1>문장1</1>`, `[2]문장2` 중 무엇을 썼는지).
 - 5·6·8강: 실습·자습 시간이 길어 무발화 구간이 많다(각 파일 "확인 필요" 참고).
