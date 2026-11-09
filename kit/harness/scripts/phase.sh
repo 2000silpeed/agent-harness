@@ -13,7 +13,7 @@ PHASES=(
   "03-knowledge|P3 지식·데이터|-"
   "04-tools-skills|P4 도구·스킬|skill-authoring, tool-design-review"
   "05-build|P5 구현·기준선|-"
-  "06-harness|P6 하네스·안전·관측|tool-design-review, plan-review"
+  "06-harness|P6 하네스·안전·관측|hook-design, plan-review, tool-design-review"
   "07-eval|P7 평가|golden-dataset, agent-eval"
   "08-optimization|P8 최적화·개선|optimize-agent"
   "09-release|P9 릴리스·회고|-"

@@ -9,6 +9,7 @@
 | 3일차 | 멀티 에이전트 아키텍처, 하네스, Claude Code 팁 | [day3/README.md](day3/README.md) |
 | 4일차 | MCP · Skills · Eval로 에이전트 능력 개선 | [day4/README.md](day4/README.md) |
 | 5일차 | 에이전트 평가(Golden Set·Trace·Judge), 판단 모델을 LLM 앞으로 | [day5/README.md](day5/README.md) |
+| 6일차 | Claude Code 하네스: 메모리·스킬·훅 | [day6/README.md](day6/README.md) |
 
 이 노트를 실제 프로젝트 진행 순서로 재구성한 것이 [`../kit/harness/PLAYBOOK.md`](../kit/harness/PLAYBOOK.md)다.
 
