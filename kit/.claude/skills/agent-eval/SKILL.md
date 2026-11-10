@@ -1,6 +1,6 @@
 ---
 name: agent-eval
-description: 동결된 시나리오 평가셋으로 에이전트를 실행해 Outcome/Trajectory/Final Response(스킬이면 Activation 포함)로 채점하고, 평가기를 반례로 검증하고, baseline과 candidate를 같은 조건에서 비교해 design/07-eval.md를 채운다. P7 단계, 프롬프트·스킬·모델을 바꾼 뒤 "나아졌나" 확인, 회귀 테스트에 사용. 평가셋 만들기는 golden-dataset이 맡는다.
+description: 동결된 시나리오 평가셋으로 에이전트를 실행해 Outcome/Trajectory/Final Response(스킬이면 Activation 포함)로 채점하고, 평가기를 반례로 검증하고, baseline과 candidate를 같은 조건에서 비교해 design/01-eval.md를 채운다. S1 단계, 프롬프트·스킬·모델을 바꾼 뒤 "나아졌나" 확인, 회귀 테스트에 사용. 평가셋 만들기는 golden-dataset이 맡는다.
 ---
 
 <principles>

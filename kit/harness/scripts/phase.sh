@@ -1,63 +1,60 @@
 #!/usr/bin/env bash
-# 현재 단계를 design/ 산출물의 게이트 체크박스로 판정한다.
+# 단계별 상태를 보여준다: 완료 / 진행 중 / 지금 시작할 수 있음(병렬 가능) / 선행 단계 대기.
 # 사용: bash harness/scripts/phase.sh [--brief]
 set -euo pipefail
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="$(cd "$HERE/../.." && pwd)"
 DESIGN="$ROOT/design"
 BRIEF="${1:-}"
+source "$HERE/stages.sh"
 
-PHASES=(
-  "00-brief|P0 킥오프|project-kickoff"
-  "01-workflow|P1 워크플로우|workflow-to-architecture"
-  "02-architecture|P2 아키텍처|workflow-to-architecture"
-  "03-knowledge|P3 지식·데이터|-"
-  "04-tools-skills|P4 도구·스킬|skill-authoring, tool-design-review"
-  "05-build|P5 구현·기준선|serving-plan"
-  "06-harness|P6 하네스·안전·관측|hook-design, plan-review, tool-design-review"
-  "07-eval|P7 평가|golden-dataset, agent-eval"
-  "08-optimization|P8 최적화·개선|optimize-agent"
-  "09-release|P9 릴리스·회고|-"
-)
-
-# 게이트 절의 미체크 항목 출력
-open_gates() {
-  awk '/^## 게이트/{g=1;next} /^## /{g=0} g && /^- \[ \]/' "$1"
-}
-
-log() {
-  mkdir -p "$DESIGN"
-  printf '%s\t%s\n' "$(date '+%Y-%m-%dT%H:%M:%S')" "$1" >> "$DESIGN/.phase-log"
-}
-
-done_count=0
-for entry in "${PHASES[@]}"; do
-  IFS='|' read -r file name skills <<<"$entry"
-  path="$DESIGN/$file.md"
-  num="${file%%-*}"
-  if [[ ! -f "$path" ]]; then
-    echo "[하네스] 현재 단계: $name  (완료 ${done_count}/10)"
-    echo "  - 산출물 없음 → bash harness/scripts/start-phase.sh $num"
-    echo "  - 지침: harness/PLAYBOOK.md 의 '$name' 절"
-    [[ "$skills" != "-" ]] && echo "  - 사용할 스킬: $skills"
-    log "current=$name missing"
-    exit 0
-  fi
-  gates="$(open_gates "$path")"
-  if [[ -n "$gates" ]]; then
-    echo "[하네스] 현재 단계: $name  (완료 ${done_count}/10)"
-    echo "  - 산출물: design/$file.md"
-    [[ "$skills" != "-" ]] && echo "  - 사용할 스킬: $skills"
-    echo "  - 남은 게이트:"
-    if [[ "$BRIEF" == "--brief" ]]; then
-      echo "$gates" | head -5 | sed 's/^/    /'
-    else
-      echo "$gates" | sed 's/^/    /'
-      echo "  - 지침: harness/PLAYBOOK.md 의 '$name' 절"
-    fi
-    log "current=$name open_gates=$(echo "$gates" | wc -l | tr -d ' ')"
-    exit 0
-  fi
-  done_count=$((done_count+1))
+declare -A STATE NAME
+for e in "${STAGES[@]}"; do
+  IFS='|' read -r n file name deps skills <<<"$e"
+  STATE[$n]="$(stage_state "$DESIGN" "$file")"; NAME[$n]="$name"
 done
-echo "[하네스] 모든 단계(P0~P9) 게이트 통과. 완성품 릴리스 완료 상태입니다."
-log "all_done"
+
+done_n=0; doing=(); ready=(); blocked=()
+for e in "${STAGES[@]}"; do
+  IFS='|' read -r n file name deps skills <<<"$e"
+  case "${STATE[$n]}" in
+    done) done_n=$((done_n+1)) ;;
+    doing) doing+=("$e") ;;
+    none)
+      wait_for=""
+      for d in $deps; do [[ "${STATE[$d]}" == done ]] || wait_for+="S$d "; done
+      if [[ -z "$wait_for" ]]; then ready+=("$e"); else blocked+=("$name ← ${wait_for% } 완료 필요"); fi ;;
+  esac
+done
+
+total=${#STAGES[@]}
+if (( done_n == total )); then
+  echo "[하네스] 모든 단계(S0~S8) 완료 기준 통과. 운영 루프(기록 → 평가셋 승격 → 개선)를 이어 간다."
+  exit 0
+fi
+echo "[하네스] 완료 ${done_n}/${total}"
+if (( ${#doing[@]} )); then
+  echo "진행 중:"
+  for e in "${doing[@]}"; do
+    IFS='|' read -r n file name deps skills <<<"$e"
+    gates="$(open_gates "$DESIGN/$file.md")"
+    echo "  - $name (design/$file.md, 남은 완료 기준 $(echo "$gates" | wc -l | tr -d ' ')개)"
+    if [[ "$BRIEF" == "--brief" ]]; then echo "$gates" | head -3 | sed 's/^/      /'; else echo "$gates" | sed 's/^/      /'; fi
+    [[ "$skills" != "-" ]] && echo "      스킬: $skills"
+  done
+fi
+if (( ${#ready[@]} )); then
+  (( ${#ready[@]} > 1 )) && echo "지금 시작할 수 있음 (서로 병렬 가능):" || echo "지금 시작할 수 있음:"
+  for e in "${ready[@]}"; do
+    IFS='|' read -r n file name deps skills <<<"$e"
+    line="  - $name → bash harness/scripts/start-phase.sh $n"
+    [[ "$skills" != "-" ]] && line+="  (스킬: $skills)"
+    echo "$line"
+  done
+fi
+if (( ${#blocked[@]} )) && [[ "$BRIEF" != "--brief" ]]; then
+  echo "선행 단계 대기:"
+  for b in "${blocked[@]}"; do echo "  - $b"; done
+fi
+[[ "$BRIEF" == "--brief" ]] || echo "지침: harness/METHOD.md 의 해당 단계 절. 병렬로 만들되 반영은 하나씩, 반영할 때마다 평가를 돌린다."
+mkdir -p "$DESIGN"; printf '%s\tdone=%s doing=%s ready=%s\n' "$(date '+%Y-%m-%dT%H:%M:%S')" "$done_n" "${#doing[@]}" "${#ready[@]}" >> "$DESIGN/.phase-log"

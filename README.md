@@ -1,64 +1,62 @@
 # agent-harness
 
-8일 과정 강의와 수업 저장소([HyunjunJeon/sds_ax_advanced_2026](https://github.com/HyunjunJeon/sds_ax_advanced_2026))를 바탕으로, **새 에이전트 프로젝트를 시작해서 완성품까지 끌고 가는 하네스**다. 강의가 하루 끝날 때마다 [`UPDATING.md`](UPDATING.md) 절차로 갱신한다. 현재 2~7일차까지 반영했다.
-특정 프레임워크를 전제하지 않는다. 강의 실습 도구(LangGraph, Deep Agents)는 예시로만 쓴다.
-Claude Code가 이 하네스를 읽고 단계별로 진행한다. 사람은 이 하네스를 설명서로 따라가면 된다.
+8일 과정 강의와 수업 저장소([HyunjunJeon/sds_ax_advanced_2026](https://github.com/HyunjunJeon/sds_ax_advanced_2026))에서 **두 가지 목적에 필요한 것만** 골라 정리한 저장소다. 강의가 올라올 때마다 [`UPDATING.md`](UPDATING.md) 절차로 갱신한다. 현재 2~7일차까지 반영했다.
+
+| 축 | 질문 | 읽을 문서 |
+|---|---|---|
+| ① 내 Claude 세팅 | 내 Claude Code를 어떻게 세팅해서 쓰면 좋은가 | [`claude-setup/GUIDE.md`](claude-setup/GUIDE.md) |
+| ② 회사 코딩 에이전트 구축 | 어떤 순서로 만들고, 단계마다 무엇을 고민하고, 어떻게 검증하고, 언제 끝났다고 보고, 무엇을 병렬로 할 수 있는가 | [`kit/harness/METHOD.md`](kit/harness/METHOD.md) |
+
+두 문서 모두 단계마다 **왜 / 고민할 것 / 진행 / 검증 / 끝났다는 기준 / 순서와 병렬**을 적었다. 특정 프레임워크를 전제하지 않는다.
 
 ## 구성
 
 ```
 agent-harness/
-├── UPDATING.md             # 하루 강의 반영 절차와 반영 기록
-├── notes/                  # 강의 정리 (일차별 종합 + 강의별 상세)
-│   └── _pending/           # 아직 강의 전인 날의 저장소 조사 자료 (하네스 미반영)
-├── kit/                    # 프로젝트에 설치되는 하네스 본체
+├── claude-setup/           # 축 ①
+│   ├── GUIDE.md            # A0~A10: 전역 정리 → 지침 → 설정 → 기록 → 스킬 → 훅 → 검증, 승격 규칙
+│   ├── templates/          # CLAUDE.md, 경로 규칙, 설정 파일 템플릿
+│   └── hooks/              # 필요할 때 켜는 훅 예시 (계획 승인 게이트, 수정 후 테스트, 지침 리마인더)
+├── kit/                    # 축 ②: 코딩 에이전트 프로젝트에 설치하는 것
 │   ├── harness/
-│   │   ├── PLAYBOOK.md     # P0~P9 단계별 설명서 (입력 → 할 일 → 산출물 → 게이트)
-│   │   ├── HARNESS.md      # Claude가 매 세션 따르는 작업 규칙 (CLAUDE.md에서 import)
-│   │   ├── hooks/          # 필요할 때 켜는 훅 예시 (계획 승인 게이트, 수정 후 테스트, 지침 리마인더)
-│   │   ├── templates/      # 단계별 산출물 템플릿 + 결정 기록 + 최적화 요청 원문
-│   │   └── scripts/
-│   │       ├── phase.sh        # 현재 단계와 남은 게이트를 판정 (순서는 도구가 지킨다)
-│   │       └── start-phase.sh  # 단계 템플릿을 design/에 복사
-│   └── .claude/
-│       ├── settings.json   # SessionStart 훅: 세션마다 현재 단계 표시
-│       └── skills/         # project-kickoff, workflow-to-architecture, skill-authoring,
-│                           # tool-design-review, hook-design, plan-review, serving-plan, golden-dataset, agent-eval, optimize-agent
-└── scripts/install.sh      # kit을 새 프로젝트에 설치
+│   │   ├── METHOD.md       # S0~S8 방법론 본문
+│   │   ├── HARNESS.md      # Claude가 매 세션 따르는 작업 규칙
+│   │   ├── templates/      # 단계별 산출물 양식 (결정 사항, 검증 기록, 완료 기준)
+│   │   └── scripts/        # phase.sh(단계 상태·병렬 가능 여부), start-phase.sh(선행 단계 확인)
+│   └── .claude/            # 단계별 스킬, SessionStart 훅
+├── notes/                  # 강의 원자료 정리 (일차별). 두 문서의 근거
+├── scripts/install.sh
+└── UPDATING.md             # 강의 반영 절차와 기록
 ```
 
 ## 사용법
 
 ```bash
-# 1) 새 프로젝트(또는 기존 저장소)에 설치
-bash scripts/install.sh ~/work/my-agent
+# Claude 세팅만 (지침·규칙·설정 템플릿, 훅 예시)
+bash scripts/install.sh --claude-only ~/work/my-project
 
-# 2) 그 폴더에서 Claude Code 실행 후
-"프로젝트 시작하자"
+# 코딩 에이전트 구축 프로젝트 (Claude 세팅 + 방법론 도구)
+bash scripts/install.sh ~/work/coding-agent
 ```
 
-설치하면 다음이 생긴다.
-- `CLAUDE.md`에 `@harness/HARNESS.md`가 추가된다. 기존 내용은 유지된다.
-- `.claude/settings.json`에 SessionStart 훅이 추가된다. 기존 설정이 있으면 jq로 병합한다.
-- `harness/`, `.claude/skills/`, `design/`이 생긴다. 이미 있는 파일은 덮어쓰지 않는다.
+이미 있는 파일은 덮어쓰지 않는다. 훅 예시는 설치만 되고 켜지지 않는다.
 
-이후 Claude는 매 세션 `phase.sh`로 현재 단계를 확인한다. 해당 단계의 템플릿을 `design/`에 채우고, 게이트가 모두 체크되면 다음 단계로 넘어간다.
+코딩 에이전트 프로젝트에서는 Claude Code를 열면 단계 상태가 보인다. `bash harness/scripts/phase.sh`로도 볼 수 있다.
 
-## 단계
+## 코딩 에이전트 구축 단계 (축 ②)
 
-| 단계 | 산출물 | 핵심 원칙 | 출처 |
-|---|---|---|---|
-| P0 킥오프 | `00-brief.md` | 완료 정의와 성공 지표, 아주 작은 조각 하나 | 3일차 7강, 4일차 3강 |
-| P1 워크플로우 | `01-workflow.md` | 5단계 이하, 판단/생성 꼬리표, HITL | 3일차 2·4·5강 |
-| P2 아키텍처 | `02-architecture.md` | 싱글 우선, 컨텍스트 경계로만 분리 | 3일차 1~3강, 교재 |
-| P3 지식·데이터 | `03-knowledge.md` | 계층 폴더 + index.md, 고정은 앞·변하는 값은 뒤 | 2일차 1~3강 |
-| P4 도구·스킬 | `04-tools-skills.md` | 도구는 적게·명확하게, 스킬은 XML·단계 공개 | 4일차 1·2·5·6강 |
-| P5 구현·기준선 | `05-build.md` | 가장 단순한 버전, 기록 남기기, 기준선 측정, 모델·서빙 결정(용량 = 가중치 + KV) | 2일차 5·6강, 3일차 5강, 7일차 |
-| P6 하네스·안전·관측 | `06-harness.md` | 제안과 실행 분리, 부탁·위임·강제 배치와 훅 설계, 계획 승인 후 코드 변경, 관측 | 3일차 4강, 5일차 2·7강, 6일차 |
-| P7 평가 | `07-eval.md` | 시나리오형 Golden Set, Outcome/Trajectory/Response, 평가기 반례 검증, 조건 잠금 비교 | 4일차, 5일차 |
-| P8 최적화·개선 | `08-optimization.md` | 동작 유지·토글·근거, 서빙 최적화, 기록 기반 개선은 검증 통과분만 반영 | 3일차 6강, 5일차 7강, 7일차 |
-| P9 릴리스·회고 | `09-release.md` | 검증된 것만 배포, Eval 카드, 회고 | 4일차 3강, 교재 Ch.7 |
+```
+S0 범위·기반 ─┬─► S1 시험지·채점기 ───────────┐
+              └─► S2 뼈대·관측 ─────────► [기준선] ─┬─► S3 컨텍스트·메모리 ─┐
+                                                   ├─► S4 도구·스킬 ───────┼─► S6 자기개선 ─┐
+                                                   └─► S5 실행 제어 ───────┤                ├─► S8 배포·운영
+                                                                           └─► S7 최적화 ───┘
+```
+
+- 같은 열에 있는 단계는 동시에 진행할 수 있다(S1과 S2, S3·S4·S5, S6과 S7).
+- 만드는 것은 병렬, 반영하는 것은 하나씩이다. 반영할 때마다 평가를 돌린다.
+- 평가(S1)와 기록(S2)이 먼저다. 재지 못하면 좋아졌는지 알 수 없다.
 
 ## 강의 노트
 
-[`notes/README.md`](notes/README.md)에서 일차별 종합으로 들어갈 수 있다. 전사가 불명확했던 부분은 각 파일의 "확인 필요"에 따로 표시돼 있다.
+[`notes/README.md`](notes/README.md)에서 일차별 정리로 들어간다. 강의에는 두 축과 직접 관련 없는 내용(모델 업계 동향, 추론 엔진 내부 구조 등)도 많다. 그런 내용은 노트에만 두고 두 문서에는 넣지 않았다.

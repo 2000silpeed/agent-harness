@@ -1,6 +1,6 @@
 ---
 name: skill-authoring
-description: 에이전트 스킬(SKILL.md)을 새로 쓰거나 기존 스킬을 고칠 때 강의 기준(What/When description, XML 구역, 5천 토큰, references/scripts/assets 분리)으로 작성하고 점검한다. 스킬 생성, 스킬 리뷰, "스킬이 잘 안 불린다", P4 단계에서 사용.
+description: 에이전트 스킬(SKILL.md)을 새로 쓰거나 기존 스킬을 고칠 때 강의 기준(What/When description, XML 구역, 5천 토큰, references/scripts/assets 분리)으로 작성하고 점검한다. 스킬 생성, 스킬 리뷰, "스킬이 잘 안 불린다", S4 단계에서 사용.
 ---
 
 <structure>

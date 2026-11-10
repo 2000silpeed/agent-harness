@@ -1,6 +1,6 @@
 ---
 name: tool-design-review
-description: 에이전트 도구·MCP 서버 명세나 구현을 검토해 도구 수, description, 인자 타입, 반환 형식, 오류 정책, 권한·승인 게이트 문제를 찾는다. 도구 추가·MCP 서버 설계·"도구를 잘못 고른다"·P4/P6 단계에서 사용.
+description: 에이전트 도구·MCP 서버 명세나 구현을 검토해 도구 수, description, 인자 타입, 반환 형식, 오류 정책, 권한·승인 게이트 문제를 찾는다. 도구 추가·MCP 서버 설계·"도구를 잘못 고른다"·S4·S5 단계에서 사용.
 ---
 
 <checklist>

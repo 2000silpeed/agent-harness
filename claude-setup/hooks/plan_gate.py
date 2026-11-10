@@ -3,7 +3,7 @@
 
 stdin으로 받은 훅 입력(JSON)에서 수정 대상 파일을 읽고,
 design/plans/*.md 중 `status: approved`인 계획이 없으면 exit 2로 차단한다.
-design/, harness/, 문서(.md) 수정은 계획 없이도 허용한다.
+design/, harness/, .claude/, 문서(.md) 수정은 계획 없이도 허용한다.
 """
 import json
 import os
@@ -34,7 +34,7 @@ def main() -> int:
         return 0
     print(
         f"plan_gate: 승인된 계획이 없어 '{rel}' 수정을 막았습니다. "
-        "plan-review 스킬로 design/plans/에 계획을 쓰고 리뷰·승인(status: approved)을 받은 뒤 다시 시도하세요.",
+        "design/plans/에 계획(수정 대상, 순서, 테스트 방법)을 쓰고 리뷰·승인(status: approved)을 받은 뒤 다시 시도하세요.",
         file=sys.stderr,
     )
     return 2

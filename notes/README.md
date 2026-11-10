@@ -12,6 +12,6 @@
 | 6일차 | Claude Code 하네스: 메모리·스킬·훅 | [day6/README.md](day6/README.md) |
 | 7일차 | 모델 서빙: 양자화·KV 캐시·vLLM | [day7/README.md](day7/README.md) |
 
-이 노트를 실제 프로젝트 진행 순서로 재구성한 것이 [`../kit/harness/PLAYBOOK.md`](../kit/harness/PLAYBOOK.md)다.
+이 노트에서 두 가지 목적에 필요한 것만 골라 정리한 것이 [`../claude-setup/GUIDE.md`](../claude-setup/GUIDE.md)(내 Claude 세팅)와 [`../kit/harness/METHOD.md`](../kit/harness/METHOD.md)(코딩 에이전트 구축 방법론)다.
 
 아직 강의하지 않은 날의 저장소 조사 자료는 [`_pending/`](_pending/README.md)에 있다. 하루씩 반영하는 절차는 [`../UPDATING.md`](../UPDATING.md)를 본다.
