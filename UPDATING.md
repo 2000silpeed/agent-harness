@@ -28,3 +28,4 @@
 | 4일차 | MCP · Skills · Eval | `notes/day4/` | P4 도구·스킬, P7 평가, P9 릴리스, 스킬 6종 |
 | 5일차 | 에이전트 평가(Golden Set·Trace·Judge), 판단 모델 앞단 배치 | `notes/day5/` | P3 판단 앞단·원본은 파일에, P6 관측·코드 변경 승인 절차, P7 평가 전면 개정, P8 기록 기반 개선, 스킬 `golden-dataset` 추가·`plan-review` 이동·`agent-eval` 개정 |
 | 6일차 | Claude Code 하네스: 메모리(부탁)·스킬(위임)·훅(강제) | `notes/day6/` | P0 개발 하네스 세팅·포크·빈 폴더 검증, P3 메모리 계층, P4 스킬 호출 제어, P6 부탁·위임·강제 배치와 훅 설계, P8 Ratchet, 훅 예시 `harness/hooks/`(plan_gate·test_after_edit·prompt_reminder), 스킬 `hook-design` 추가 |
+| 7일차 | 모델 서빙: 양자화·KV 캐시·vLLM | `notes/day7/` (6일차 1·2·3·6강 보정본 반영) | P3 캐시를 지키는 프롬프트·컨텍스트 비용, P5 모델·서빙 결정(용량 = 가중치 + KV, 레시피 기준선, 양자화 품질 재측정, 표준 필드), P6 서빙 지표·런북, P8 서빙 최적화, 스킬 `serving-plan` 추가 |

@@ -1,6 +1,6 @@
 # agent-harness
 
-8일 과정 강의와 수업 저장소([HyunjunJeon/sds_ax_advanced_2026](https://github.com/HyunjunJeon/sds_ax_advanced_2026))를 바탕으로, **새 에이전트 프로젝트를 시작해서 완성품까지 끌고 가는 하네스**다. 강의가 하루 끝날 때마다 [`UPDATING.md`](UPDATING.md) 절차로 갱신한다. 현재 2~6일차까지 반영했다.
+8일 과정 강의와 수업 저장소([HyunjunJeon/sds_ax_advanced_2026](https://github.com/HyunjunJeon/sds_ax_advanced_2026))를 바탕으로, **새 에이전트 프로젝트를 시작해서 완성품까지 끌고 가는 하네스**다. 강의가 하루 끝날 때마다 [`UPDATING.md`](UPDATING.md) 절차로 갱신한다. 현재 2~7일차까지 반영했다.
 특정 프레임워크를 전제하지 않는다. 강의 실습 도구(LangGraph, Deep Agents)는 예시로만 쓴다.
 Claude Code가 이 하네스를 읽고 단계별로 진행한다. 사람은 이 하네스를 설명서로 따라가면 된다.
 
@@ -23,7 +23,7 @@ agent-harness/
 │   └── .claude/
 │       ├── settings.json   # SessionStart 훅: 세션마다 현재 단계 표시
 │       └── skills/         # project-kickoff, workflow-to-architecture, skill-authoring,
-│                           # tool-design-review, hook-design, plan-review, golden-dataset, agent-eval, optimize-agent
+│                           # tool-design-review, hook-design, plan-review, serving-plan, golden-dataset, agent-eval, optimize-agent
 └── scripts/install.sh      # kit을 새 프로젝트에 설치
 ```
 
@@ -53,10 +53,10 @@ bash scripts/install.sh ~/work/my-agent
 | P2 아키텍처 | `02-architecture.md` | 싱글 우선, 컨텍스트 경계로만 분리 | 3일차 1~3강, 교재 |
 | P3 지식·데이터 | `03-knowledge.md` | 계층 폴더 + index.md, 고정은 앞·변하는 값은 뒤 | 2일차 1~3강 |
 | P4 도구·스킬 | `04-tools-skills.md` | 도구는 적게·명확하게, 스킬은 XML·단계 공개 | 4일차 1·2·5·6강 |
-| P5 구현·기준선 | `05-build.md` | 가장 단순한 버전, 기록 남기기, 기준선 측정 | 2일차 5·6강, 3일차 5강 |
+| P5 구현·기준선 | `05-build.md` | 가장 단순한 버전, 기록 남기기, 기준선 측정, 모델·서빙 결정(용량 = 가중치 + KV) | 2일차 5·6강, 3일차 5강, 7일차 |
 | P6 하네스·안전·관측 | `06-harness.md` | 제안과 실행 분리, 부탁·위임·강제 배치와 훅 설계, 계획 승인 후 코드 변경, 관측 | 3일차 4강, 5일차 2·7강, 6일차 |
 | P7 평가 | `07-eval.md` | 시나리오형 Golden Set, Outcome/Trajectory/Response, 평가기 반례 검증, 조건 잠금 비교 | 4일차, 5일차 |
-| P8 최적화·개선 | `08-optimization.md` | 동작 유지·토글·근거, 기록 기반 개선은 검증 통과분만 반영 | 3일차 6강, 5일차 7강 |
+| P8 최적화·개선 | `08-optimization.md` | 동작 유지·토글·근거, 서빙 최적화, 기록 기반 개선은 검증 통과분만 반영 | 3일차 6강, 5일차 7강, 7일차 |
 | P9 릴리스·회고 | `09-release.md` | 검증된 것만 배포, Eval 카드, 회고 | 4일차 3강, 교재 Ch.7 |
 
 ## 강의 노트

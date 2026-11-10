@@ -16,3 +16,4 @@
 | 5일차 | `skills/plan-review/` (7강에서 "계획 → 리뷰 → 승인 후에만 코드 변경" 확인) | `kit/.claude/skills/plan-review/` |
 | 5일차 | §1 평가 파이프라인 중 강의·교재로 확인된 원칙(시나리오 계약, 필수 관문, 반례 검증, Judge vs 사람 라벨, 조건 잠금·한 조건 변경, pass@k, holdout 분리, 승인 기준 사전 고정) | `kit/harness/PLAYBOOK.md` P7, `golden-dataset`·`agent-eval` 스킬 |
 | 6일차 | 옮긴 것 없음. 6일차 강의는 Claude Code 하네스 구성(메모리·스킬·훅)을 다뤘고, 보류 자료의 여섯 책임·근거 수준·자기개선 루프는 강의에서 다루지 않았다 | — |
+| 7일차 | 옮긴 것 없음. 7일차는 모델 서빙(vLLM)을 다뤘고 보류 자료와 겹치는 주제가 없다 | — |
