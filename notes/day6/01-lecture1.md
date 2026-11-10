@@ -1,6 +1,6 @@
 ## 6일차 1강 — 하네스 수업 도입과 Claude Code 환경 구성: 웹·앱·CLI 비교, .claude 폴더와 settings.json
 
-> 출처: 「6일차 1강 다시보기 (보정)」(전사·분석, 48:24), 「6일차 1강 장표 (보정)」(16장). SDS AX Advanced · 2026-11-09 (2주차 첫날 오전 앞부분).
+> 출처: 「6일차 1강 다시보기 (보정)」(전사·분석, 48:24), 「6일차 1강 장표 (보정)」(16장). 이후 「6일차 1강 다시보기 (보정2)」·「6일차 1강 장표 (보정2)」와 재대조해 확인 필요 항목을 반영했다. SDS AX Advanced · 2026-11-09 (2주차 첫날 오전 앞부분).
 > 이 강의는 Claude Code 화면·공식 문서·강사 PC의 `~/.claude` 폴더를 띄워 놓고 말로 설명한 시간이다. 대응 저장소 폴더는 `Day06/`(이론 PDF, 공개 하네스 목록)과 `Day06_new/`(Claude Code 실습)이지만, 강의에서 실제로 연 것은 공식 문서와 강사 PC 화면이고 실습 폴더는 열지 않았다.
 
 ### 핵심 요약 (3~5줄)
@@ -34,7 +34,7 @@
 
 **4. 웹의 Code, 앱 vs CLI (14:28~)**
 - 웹의 Code는 "거의 하실 수 있는 게 없다": 내 컴퓨터가 아니라 **클라우드에서** 돌아 GitHub 등을 **무조건 연동**해야 하는 불편함. "웹은 이제 앱의 하위 호환", "기억 속에서 지워버리고".
-- 앱만의 기능: (클라우드 실행 환경도 선택 가능), **아티팩트 관리**(CLI는 불가), **예약된 작업**(어떤 기능으로·어느 환경에서·이 컴퓨터에서만 할지 등 결정), 오른쪽 상단 **브라우저·폴더·iOS 시뮬레이터** 지원, 컨텍스트·서브에이전트 동작을 **그래픽으로** 보기 쉬움. "생각보다 잘 만들어져 있어요 … 여기서만 작업을 하시는 경우도 되게 많습니다."
+- 앱만의 기능: 앱에서는 반대로 **클라우드 세션도 선택**해서 활용 가능(보정본: "반대로 클라우드 세션도 선택해서 활용을 하실 수가 있어요"), **아티팩트 관리**(CLI는 불가), **예약된 작업**(어떤 기능으로·어느 환경에서·이 컴퓨터에서만 할지 등 결정), 오른쪽 상단 **브라우저·폴더·iOS 시뮬레이터** 지원, 컨텍스트·서브에이전트 동작을 **그래픽으로** 보기 쉬움. "생각보다 잘 만들어져 있어요 … 여기서만 작업을 하시는 경우도 되게 많습니다."
 - 앱 단점: **Electron 기반이라 무겁다**(바꾸고 있다고 들었다).
 - 결론: "앱이랑 CLI는 엄청 크게 차이가 나진 않아요." CLI는 **자원 효율**이 좋고 부가 기능 없이 **커스텀하기 좋다**.
 - CLI에도 **보이스 모드**가 있다(앱에만 있다고 오해하는 사람이 많음). 강사는 이동 중 헤드폰으로 말로 많이 시킨다. (공식 문서 확인: https://code.claude.com/docs/en/settings-reference.md — `voice` "Turn on voice dictation and pick hold or tap mode")
@@ -65,7 +65,7 @@
 - 제어 가능하다(내 컴퓨터의 문서니까). 직접 고치거나 Claude에게 시킨다. 방법: "메모리"라고 하지 말고 **"기억해"**, **"지워"**라고 지시.
 - "재밌는 거 **욕하면 기억해요**." 사용자가 짜증 냈거나 좋아한 것, 프로젝트에서 반복되는 작업 등을 Claude가 능동적으로 판단해 기억한다. (강사가 "이따가 테스트 해보세요"라고 함)
 - 강사는 자동으로 쌓이는 방식을 **선호하지 않는다** — "내가 뭘 기억하게 했는지 잘 몰라요." 그래서 **메인으로 보는 작업이면 무조건 직접 수정**한다.
-- 예: 첫 줄 문서 `User Language Korean` — 영어로 자꾸 답해서 "야 한국어로 얘기해 앞으로" 했더니 기억함. 이걸 굳이 문서에 들어가 읽게 하는 건 "홉의 낭비", 목록에 한 줄 써 두면 될 일.
+- 예: 첫 줄 문서 `User Language Korean` — 영어로 자꾸 답해서 "야 한국어로 얘기해 앞으로" 했더니 기억함. 이걸 굳이 문서에 들어가 읽게 하는 건 "읽는 단계의 낭비"(보정본), 목록에 한 줄 써 두면 될 일.
 - **metadata type**: `user`(사용자가 지시한 것), `project`(작업하다 Claude가 중요하다고 판단한 것), `feedback`(사용자 피드백; original session id·수정 시각도 있음). 한국어/영어가 섞여 있기도 함.
 - **강조점**: "이 메모리라는 것 자체는 **여러분들의 컴퓨터에만 저장되는 겁니다. 그래서 협업을 할 땐 안 좋아요.**" 교육용 PC를 새로 세팅하면 "같은 클로드인데 왜 내 거랑 체감이 달라" — "**요 메모리가 달라요.**" 이걸 모르면 "내 PC에서 잘 되는데 왜 쟤는 안돼요"가 된다 → 메모리를 계속 관리하면서 **다른 사람과 공유할 방법을 고민**해야 한다.
   - (저장소 확인: `Day06_new/docs/sources/claude_code/04_state.md:188` — "Auto memory is machine-local."; `Day06_new/use_cc/part3/concept.md:111` — "이 기계 안에만 있다 … 팀과 공유되지 않는다")
@@ -85,7 +85,7 @@
     - 강사 예 ②: 예전엔 **내장 웹서치**도 막았다 — "너무 후졌고 너무 오래 걸려요." 대신 1일차에 본 **Tavily·Exa** 같은 웹서치 API(무료 티어, 안 되면 약간 결제) 또는 웹서치 플러그인을 썼다. 요즘은 성능이 올라와 다시 쓴다("언제 또 삭제해 버릴 수 있습니다").
   - 기본 **모델**(예: Opus — "이따가 공부해 보실 거고요").
   - **status line**: CLI 화면 아래 회색 줄. Claude가 주는 정보 중 보고 싶은 것을 골라 표시, 완전 커스텀 가능. 강사는 **Claude에게 만들어 달라고** 해서 쓴다. (공식 문서 확인: https://code.claude.com/docs/en/settings-reference.md — `statusLine` "Run your own command to render a status line below the prompt")
-  - 그 외: 플러그인, 마켓플레이스, output style, **effort 레벨 기본값**, **모델별 세부 세팅**(모델이 디폴트로 호출됐을 때 effort). (공식 문서 확인: https://code.claude.com/docs/en/settings-reference.md — `effortLevel` "Set a default effort level for models you haven't saved a level for", `outputStyle`, `enabledPlugins`, `extraKnownMarketplaces`)
+  - 그 외: 플러그인, 마켓플레이스, output style, **effort 레벨 기본값**, **모델별 세부 세팅**(모델이 디폴트로 호출됐을 때 effort — 화면 예시에서 강사는 "이거 뭐해, xhigh죠? 이렇게 해놔야 되는데"라고 effort 값 `xhigh`를 짚음, 보정본). (공식 문서 확인: https://code.claude.com/docs/en/settings-reference.md — `effortLevel` "Set a default effort level for models you haven't saved a level for", `outputStyle`, `enabledPlugins`, `extraKnownMarketplaces`)
   - `/config`로 하는 설정도 대부분 여기 들어간다. 시연 중 "아티팩트를 쓰지 말라는 기능이 이렇게 생겼네요" — 별도 키가 생겨 바로 `false`로 바꿈. (공식 문서 확인: https://code.claude.com/docs/en/settings.md — `enableArtifact` "`false` from any scope … nothing turns the Artifact tool back on", `disableArtifact`는 deprecated)
 - **강조점**: "여러분들이 만약에 **pc를 여러 개를 쓰신다라고 하면 아쉽게도 이 settings.json을 가지고 가셔야 됩니다.** 글로벌이잖아요. 이거는 어디서도 복사 안 해주니까." (공식 문서 확인: https://code.claude.com/docs/en/settings.md — User scope `~/.claude/settings.json` "You, in every project on this machine")
 
@@ -102,7 +102,7 @@
 - `.claude` 찾기 프롬프트(원문):
   - "내 홈 폴더 밑에 점 클로드 폴더의 위치가 어디냐"
   - "그 경로 파일 탐색기로 보여줘요"
-- 강사 PC의 `~/.claude` 하위(화면에서 언급된 순서): `agents/`, `backups/`, 캐시, `chrome/`, `daemon/`, `file-history/`, `ide/`, `jobs/`, `paste-cache/`, `plugins/`, `projects/`, 세션 데이터·`session-env`(전사 "세션 EMV"), 스냅샷, `skills/`, `history.jsonl`(강사 PC 화면에 "1154"라는 숫자가 보였다고 언급), 기타 json, `settings.json`.
+- 강사 PC의 `~/.claude` 하위(화면에서 언급된 순서): `agents/`, `backups/`, 캐시, `chrome/`, `daemon/`, `file-history/`, `ide/`, `jobs/`, `paste-cache/`, `plugins/`, `projects/`, 세션 데이터·`session-env`(보정본에서 확정; 이전 전사 "세션 EMV"), 스냅샷, `skills/`, `history.jsonl`(강사 PC 화면에 "1154"라는 숫자가 보였다고 언급), 기타 json, `settings.json`.
 - `projects/` 폴더명 예: "프라이빗 TMP 뭐 클로드 501 어쩌고" 같은 것들, 그리고 홈·데스크탑·폴더 경로를 대시로 이은 이름.
 - 메모리 구조:
   ```
@@ -145,14 +145,14 @@
 - [ ] 여러 기계에서 작업한다면 원격 접근 방식(앱 연동 vs SSH)과 "대상 기계가 켜져 있어야 한다"는 조건을 운영 계획에 넣는다.
 
 > 확인 필요:
-> - 02:21 "비틀리에 SDS AXAED 드라이브" — 자료를 받을 Drive 위치로 보이나 정확한 이름 불명.
+> - ~~02:21 "비틀리에 SDS AXAED 드라이브" — 자료를 받을 Drive 위치로 보이나 정확한 이름 불명.~~ → 해결(보정본): "SDS AX Advanced 구글 드라이브".
 > - 03:03 "하네스 엔지니어링을 정리한 논문"(8월 발표) — 논문 제목이 언급되지 않음. 저장소 `Day06/`에는 이론 PDF 1개만 있고 논문 2편은 없다.
-> - 16:25 "반대로 클라우드도 선택해서" — 앞 문장이 없어 무엇을 선택한다는지 불분명(클라우드 실행 환경 선택으로 추정).
+> - ~~16:25 "반대로 클라우드도 선택해서" — 앞 문장이 없어 무엇을 선택한다는지 불분명(클라우드 실행 환경 선택으로 추정).~~ → 해결(보정본): "반대로 클라우드 세션도 선택해서" — 앱 화면에서 클라우드 세션을 선택한다는 뜻("Claude 세션"일 가능성은 남음).
 > - 20:30 앱에서도 Fast 모드를 켤 수 있는지 강사 스스로 확신하지 못함.
-> - 34:19 "이 홉의 낭비" — 메모리 문서를 한 번 더 열어 읽는 단계를 낭비라고 한 것으로 추정.
-> - 37:26 "세션 EMV" — `session-env` 폴더로 추정.
+> - ~~34:19 "이 홉의 낭비" — 메모리 문서를 한 번 더 열어 읽는 단계를 낭비라고 한 것으로 추정.~~ → 해결(보정본): "이것조차 읽는 단계의 낭비" — 메모리 문서를 열어 읽는 단계를 낭비라고 한 말.
+> - ~~37:26 "세션 EMV" — `session-env` 폴더로 추정.~~ → 해결(보정본): `session-env` 폴더.
 > - 43:49 "차를 웹서치하는 플러그인" — 어떤 플러그인인지 불명.
-> - 45:41 "이거 뭐해, 엑사이죠?" — 모델·effort 설정 예시 중 일부로 보이나 뜻 불명.
+> - ~~45:41 "이거 뭐해, 엑사이죠?" — 모델·effort 설정 예시 중 일부로 보이나 뜻 불명.~~ → 해결(보정본): "이거 뭐해, xhigh죠?" — effort 설정값 `xhigh`.
 > - 46:10 advisor "토큰 차감이 안 된다" — 공식 문서(advisor Cost 절)와 다름. 위 본문 "미확인" 참조.
 > - 40:40 history.jsonl "대화기록 모두" — 공식 문서는 "입력한 프롬프트"로 설명. 위 본문 "미확인" 참조.
 > - 강사가 연 한국어 문서 "핵심 개념" 메뉴 5개의 정확한 목록 — 전사에서는 작동 방식, 확장, .claude 디렉토리, 컨텍스트 윈도우까지만 이름이 나옴(5번째 미확인).

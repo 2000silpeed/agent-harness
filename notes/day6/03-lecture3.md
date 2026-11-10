@@ -1,6 +1,6 @@
 ## 6일차 3강 — Claude Code 훅(Hook) 생애 주기별 활용법
 
-> 출처: 「6일차 3강 다시보기」(전사·분석, 46:40 분량), 「6일차 3강 장표 (보정)」(15장). SDS AX Advanced · 2026-11-09.
+> 출처: 「6일차 3강 다시보기」(전사·분석, 46:40 분량), 「6일차 3강 장표 (보정)」(15장). 이후 「6일차 3강 다시보기 (보정)」·「6일차 3강 장표 (보정2)」와 재대조해 확인 필요 항목을 반영했다. SDS AX Advanced · 2026-11-09.
 > 대응 저장소: `Day06_new/` — 훅 근거 대장 `docs/sources/claude_code/03_control.md`(C13~C21), 훅 시작 틀 `use_cc/lab/hook_templates/`. 강의는 이 자료를 따라가지 않고, 강사가 에이전트 루프 그림을 그리며 공식 훅 문서를 훑고 활용 아이디어를 말로 풀었다. 코드 시연은 없다.
 
 ### 핵심 요약 (3~5줄)
@@ -35,7 +35,7 @@
 
 **4. SessionStart — 메모리·스킬 강제 주입 (14:17~17:28)**
 - 세션 시작 때는 메모리(앞 시간에 다룬 내용)가 기계적으로 로드된다. 그 밖에 **특정 스킬을 강제로 로드**하거나, MEMORY.md 말고 추가로 넣을 내용, **이전 세션에서 쓰던 내용**을 넣어 세션을 이어갈 수 있다.
-- 대표 사례 **claude-mem**(전사 '클로드맵'): Claude 세션 옆에 메모리를 따로 서버로 띄워 관리하고, 세션 시작 때 주입한다. "주입하려면 강제로 코드가 실행이 돼야 되잖아요. 그때 사용하는 대표적인 훅이 세션 스타트입니다." 강사는 "엄청 좋아서 소개하는 건 아니고" 대표 사례라고 했다. (저장소 확인: Day06_new/info.md:11 — https://github.com/thedotmack/claude-mem/) claude-mem README는 worker를 "a local HTTP service managed by Bun"으로 두고 SessionStart·UserPromptSubmit·PostToolUse·Stop·SessionEnd 등 여러 훅에 연결한다(공식 문서 확인: https://github.com/thedotmack/claude-mem).
+- 대표 사례 **claude-mem**(이전 전사 '클로드맵', 보정본에서 claude-mem으로 확정): Claude 세션 옆에 메모리를 따로 서버로 띄워 관리하고, 세션 시작 때 주입한다. "주입하려면 강제로 코드가 실행이 돼야 되잖아요. 그때 사용하는 대표적인 훅이 세션 스타트입니다." 강사는 "엄청 좋아서 소개하는 건 아니고" 대표 사례라고 했다. (저장소 확인: Day06_new/info.md:11 — https://github.com/thedotmack/claude-mem/) claude-mem README는 worker를 "a local HTTP service managed by Bun"으로 두고 SessionStart·UserPromptSubmit·PostToolUse·Stop·SessionEnd 등 여러 훅에 연결한다(공식 문서 확인: https://github.com/thedotmack/claude-mem).
 - 소스 코드에서 훅을 정의한 구간을 찾아보면 동작을 알 수 있지만, 여러 플랫폼을 지원하면서 코드를 숨겨 놔서 찾기 귀찮다.
 - 정리: SessionStart와 세션 종료를 **연동**해 **메모리 강제 주입**을 할 수 있다.
 - 공식 문서 기준 SessionStart의 일반 텍스트 stdout은 Claude의 맥락에 더해진다. (저장소 확인: Day06_new/docs/sources/claude_code/03_control.md:288)
@@ -48,7 +48,7 @@
 **6. PreToolUse / PostToolUse — 가장 중요한 훅 (21:51~29:25)**
 - PreToolUse(도구 사용 전, 도구는 이미 선택돼 넘어온 상태):
   - 쓰면 안 되는 명령을 쓰는지 **검증**. 지금은 Claude 권한(permission)으로 제어할 수 있고, 권한 기능이 생기기 전에 훅으로 제어하던 "되게 오래된 사례"다.
-  - 검증을 넣으면 느려지므로 작은 모델로 빠르게 돌려 **yes/no만** 받는다. "yes가 80%를 못 넘는다 그럼 의심하게 만드는" 식.
+  - 검증을 넣으면 느려지므로 작은 모델로 빠르게 돌려 **yes/no만** 받는다. 강사는 이 검증 절차를 **jev**로 한다("저는 이 검증이라는 절차를 jev로 해요 … 빨리빨리 돕니까", 보정본). "yes가 80%를 못 넘는다 그럼 의심하게 만드는" 식.
   - 수강생 의견으로 **순차(sequential) 호출 순서 제어**도 나왔다.
   - 컨텍스트 관점: "**그거 그만큼 읽어야 돼?**" Read 도구가 문서를 1~200줄 읽으려 할 때 정말 그만큼 필요한지 먼저 묻는다. 사례로 Spotify가 Opus 대신 Haiku에게 읽기를 맡겨 IO를 줄이고 메인 토큰을 아꼈다고 했고, 지난주에 디시전 모델(jev)로 줄이는 고민을 했던 것과 연결했다.
 - PostToolUse(이미 실행된 뒤):
@@ -77,8 +77,8 @@
 
 **10. Notification — 알림과 자동 응답 (42:53~45:42)**
 - Claude가 알림을 줄 때(질문, 멈춤, 끝났다, 도구 실행 전 퍼미션 승인 요청, AskUserQuestion 등) 발동한다. 문서상 Notification은 "어디서나 발생"할 수 있다.
-- 알림을 회사 메신저·Slack·메일로 보내는 건 "너무 쉬운 작업"이다. 강사는 한 단계 더 나아가 **자동으로 대답해 주길** 원한다. 방법은 여러 가지: Computer Use(전사 '컴퓨터 유지', 추정)나 CLI에서 억지로 제어, 다른 Claude·Codex·Antigravity가 대신 대답.
-- 맥북 등에서 사용량(얼마 썼고 언제 리셋되는지)을 보여 주는 도구들도 Notification이나 Stop 훅에 걸어 정보를 계속 갱신한다.
+- 알림을 회사 메신저·Slack·메일로 보내는 건 "너무 쉬운 작업"이다. 강사는 한 단계 더 나아가 **자동으로 대답해 주길** 원한다. 방법은 여러 가지: Computer Use(이전 전사 '컴퓨터 유지', 보정본에서 확정)나 CLI에서 억지로 제어, 다른 Claude·Codex·Antigravity가 대신 대답.
+- 맥북 등에서 사용량(얼마 썼고 언제 리셋되는지)을 보여 주는 도구들(강사가 든 이름: "codex menu가였나" — 보정본)도 Notification이나 Stop 훅에 걸어 정보를 계속 갱신한다.
 - 공식 문서의 Notification matcher 값에는 `permission_prompt`, `idle_prompt`, `elicitation_dialog`, `agent_needs_input`, `agent_completed` 등이 있다(공식 문서 확인: https://code.claude.com/docs/en/hooks.md).
 
 ### 실습/데모 내용 (명령어, 파일 구조, 프롬프트, 코드 조각 등 원문 그대로 보존)
@@ -130,14 +130,14 @@
 
 > 확인 필요:
 > - 08:24 "Setup", "InstructionsLoaded" 훅은 강사도 "배우지 않았다"며 넘어갔다. 문서 정의는 위 3절 공식 문서 링크 참고.
-> - 15:07 '클로드맵'은 claude-mem으로 추정된다(저장소 확인: Day06_new/info.md:11에 claude-mem 링크가 있음). 강의 화면의 프로젝트가 같은 것인지는 화면으로 확인하지 못했다.
+> - ~~15:07 '클로드맵'은 claude-mem으로 추정된다(저장소 확인: Day06_new/info.md:11에 claude-mem 링크가 있음). 강의 화면의 프로젝트가 같은 것인지는 화면으로 확인하지 못했다.~~ → 해결(보정본): claude-mem.
 > - 19:00~20:00 UserPromptSubmit에서 "또 하나 더 할 수 있는 것"을 묻는 부분의 전사가 끊겨 있다. 이어서 Codex·Antigravity 동시 호출 사례로 이어진다.
-> - 22:49 "검증이라는 절차를 제보로 해요"는 작은 모델(또는 jev)로 빠르게 검증한다는 뜻으로 보이나 불확실하다. "yes가 80%를 못 넘는다 → 의심" 기준의 정확한 맥락(무엇의 80%인지)도 불분명하다.
+> - ~~22:49 "검증이라는 절차를 제보로 해요"는 작은 모델(또는 jev)로 빠르게 검증한다는 뜻으로 보이나 불확실하다.~~ → 해결(보정본): "검증이라는 절차를 jev로 해요". 단 "yes가 80%를 못 넘는다 → 의심" 기준의 정확한 맥락(무엇의 80%인지)은 보정본에서도 불분명하다.
 > - 25:06 Spotify가 Haiku로 읽기를 맡겨 IO를 줄였다는 사례는 짧게만 언급됐다. 출처는 말하지 않았다.
-> - 25:50 "제브라는 그 디시저 모델"은 5일차에 다룬 디시전 모델 jev로 보인다.
+> - ~~25:50 "제브라는 그 디시저 모델"은 5일차에 다룬 디시전 모델 jev로 보인다.~~ → 해결(보정본): "jev라는 그 디시저 모델".
 > - 05:15~06:04 프롬프트 캐시 시간을 "모델에 전달된 직후(입력 때)부터" 잰다는 설명은 강사 발언이며 공식 문서로 확인하지 않았다(미확인).
 > - 09:08 "메시지 디스플레이" 훅은 공식 문서의 `MessageDisplay`("While assistant message text is displayed")로 보인다. 강의는 "가로챌 수도 있다"고 했으나 이 훅의 제어 가능 범위는 확인하지 않았다(미확인).
 > - 10:37 "PermissionDenied는 오토 모드일 경우에 발생"은 공식 문서와 일치한다(공식 문서 확인: https://code.claude.com/docs/en/hooks.md).
-> - 43:22~44:07 "컴퓨터 유지"는 Computer Use로 추정된다.
-> - 44:50 맥북 사용량 체크 도구 이름이 "코덱스 메뉴가"로 들리나 정확한 이름을 알 수 없다.
+> - ~~43:22~44:07 "컴퓨터 유지"는 Computer Use로 추정된다.~~ → 해결(보정본): Computer Use.
+> - ~~44:50 맥북 사용량 체크 도구 이름이 "코덱스 메뉴가"로 들리나 정확한 이름을 알 수 없다.~~ → 해결(보정본): "codex menu"(강사 자신도 "codex menu가였나"라고 확신하지 않음).
 > - 강의 중 실제 훅 설정 파일이나 스크립트를 열어 보이지는 않았다. 오후 조합 실습에서 구체 코드가 나올 것으로 보인다.
