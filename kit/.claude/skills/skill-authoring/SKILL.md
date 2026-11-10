@@ -1,6 +1,6 @@
 ---
 name: skill-authoring
-description: 에이전트 스킬(SKILL.md)을 새로 쓰거나 기존 스킬을 고칠 때 강의 기준(What/When description, XML 구역, 5천 토큰, references/scripts/assets 분리)으로 작성하고 점검한다. 스킬 생성, 스킬 리뷰, "스킬이 잘 안 불린다", S4 단계에서 사용.
+description: 에이전트 스킬(SKILL.md)을 새로 쓰거나 기존 스킬을 고칠 때 작성 기준(What/When description, XML 구역, 5천 토큰, references/scripts/assets 분리)으로 작성하고 점검한다. 스킬 생성, 스킬 리뷰, "스킬이 잘 안 불린다", S4 단계에서 사용.
 ---
 
 <structure>
@@ -25,7 +25,7 @@ description: 에이전트 스킬(SKILL.md)을 새로 쓰거나 기존 스킬을 
 - 긴 When to use를 본문 맨 앞에 두지 않는다. 그건 description이 할 일이다.
 - 스킬이 쓰는 도구(MCP, 스크립트, 브라우저 등)마다 **어떤 작업에 어떻게 쓰는지**를 적는다.
 - 순서가 중요한 다단계 절차는 "`scripts/1.sh`를 실행하라"까지만 쓴다. 각 스크립트 출력이 다음 스크립트를 안내하고 실행 시각과 "N단계 완료"를 기록하게 만든다. 안정되면 `run.sh` 하나로 합친다.
-- 업무 스킬의 본문 뼈대(4일차 3강): 공통 규칙 → 베스트 프랙티스 스니펫 → 작업 방식 → 기존 코드나 자료가 있을 때 지침(먼저 읽기, 중복이면 사람에게 묻기).
+- 업무 스킬의 본문 뼈대: 공통 규칙 → 베스트 프랙티스 스니펫 → 작업 방식 → 기존 코드나 자료가 있을 때 지침(먼저 읽기, 중복이면 사람에게 묻기).
 </body_rules>
 
 <review_checklist>

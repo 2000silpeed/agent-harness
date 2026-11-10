@@ -24,9 +24,9 @@ description: 동작하는 에이전트 코드를 동작 변화 없이 최적화�
 </checklist>
 
 <reference_result>
-3일차 6강 강사 사례: 한 턴 약 4초 → 1.42초. Sonnet → Haiku로 약 1.5초, 판단 구간을 디시전 모델로 바꿔 약 1초를 더 줄였다.
+참고 사례: 한 턴 약 4초 → 1.42초. Sonnet → Haiku로 약 1.5초, 판단 구간을 디시전 모델로 바꿔 약 1초를 더 줄였다.
 </reference_result>
 
 <request_template>
-사용자가 직접 요청할 때 쓸 수 있는 원형(3일차 `prompt.txt`)은 `harness/templates/optimize-request.md`에 있다.
+사용자가 직접 요청할 때 쓸 수 있는 원형은 `harness/templates/optimize-request.md`에 있다.
 </request_template>
