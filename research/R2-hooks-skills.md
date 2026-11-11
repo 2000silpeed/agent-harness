@@ -941,7 +941,7 @@ if __name__ == "__main__":
 - **`OTEL_METRICS_EXPORTER=console`을 대화형 세션에서 썼을 때의 화면.** 문서에 옵션으로 있지만 실행해 보지 않았다. 3절에는 OTLP 수집기 방식만 적었다.
 - **Langfuse 플러그인의 전송 시점과 사용하는 훅 이벤트.** README에 없다. 플러그인 소스(`hooks/hooks.json`)는 읽지 않았다. "리전 주소가 틀리면 인증 오류"도 README에는 없다.
 - **`/goal`의 최소 버전.** 문서의 Requirements 절에는 작업 공간 신뢰·`disableAllHooks`·`allowManagedHooksOnly` 조건만 있고 버전 숫자가 없다. 2.1.322의 명령 표에는 있다.
-- **가이드 A9의 60~65%/80% 수치와 A7의 "20턴"의 출처.** 공식 문서에 없다. 강의 메모에서 온 것으로 보이며 대조하지 않았다.
+- **가이드 A9의 60~65%/80% 수치와 A7의 "20턴"의 출처.** 공식 문서에 없다. 출처를 찾지 못했다.
 - **상태줄 `prompt_cache` 객체의 실제 값.** 문서의 스키마와 샘플만 썼다. 실제 세션 입력으로 스크립트를 돌려 보지는 않았다.
 - **Windows 동작.** 훅 경로의 역슬래시, Git Bash 없는 환경의 실패 처리(문서에 별도 절이 있다)는 수정안에 반영하지 않았다. `plan_gate.py`의 `ALLOW_PREFIXES` 비교는 `as_posix()`를 써서 구분자 문제는 없을 것으로 보이나 실행해 보지 않았다.
 - **MCP 문서(`mcp.md`) 전체, 플러그인 마켓플레이스 작성(`create-marketplace`, `marketplace-reference`), 헤드리스 문서 전체.** 필요한 절만 읽었다. 마켓플레이스 파일(`.claude-plugin/marketplace.json`)의 필드는 정리하지 않았다.

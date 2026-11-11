@@ -1,6 +1,6 @@
 # dcode 구현 초안 (전부 실행 검증 안 함)
 
-> [`dcode.md`](dcode.md)의 부록이다. 본문의 "부록 A~E"가 이 파일을 가리킨다. 기준은 deepagents-code 0.2.5(수업 저장소 `Day09/deepagents/libs/code`)이고 경로·줄 번호 표기는 본문과 같다.
+> [`dcode.md`](dcode.md)의 부록이다. 본문의 "부록 A~E"가 이 파일을 가리킨다. 기준은 deepagents-code 0.2.5(기준 저장소 `Day09/deepagents/libs/code`)이고 경로·줄 번호 표기는 본문과 같다.
 
 사본의 기반 클래스·서명·관례를 따라 쓴 초안이다. **한 번도 실행·린트·타입 검사하지 않았다.** 본문 8절 9~11번으로 확인한다. 파일 이름, 폴더 이름, 규칙 ID에 붙는 다음 행동 문구는 제안값이다.
 
@@ -413,14 +413,14 @@ class PlanGateMiddleware(AgentMiddleware):
 제출용 복사본을 만들고 해설 줄을 지운다. 해설 줄은 전부 `# [해설]`로 시작하는 독립된 줄이다.
 
 ```bash
-cp -R <수업 저장소>/Day09/deepagents/libs/code <제출 저장소>/libs/code && cd <제출 저장소>/libs/code
+cp -R <기준 저장소>/Day09/deepagents/libs/code <제출 저장소>/libs/code && cd <제출 저장소>/libs/code
 grep -rlZ '# \[해설\]' deepagents_code | xargs -0 sed -i.bak '/^[[:space:]]*# \[해설\]/d' && find deepagents_code -name '*.bak' -delete
 grep -rc '# \[해설\]' deepagents_code | grep -v ':0$'      # 아무것도 안 나와야 한다
 uv venv --python 3.14 .venv                                # 제출 저장소 안에 둔다(.gitignore)
 uv pip install --no-sources --python .venv/bin/python -e ".[openrouter]" --group test
 ```
 
-- 수업 저장소 안에서 돌릴 때는 두 `uv` 명령에 `--no-config`를 붙인다(본문 2절). 저장소 기록에 있는 것은 임시 가상환경에 `--no-sources -e . --group test`를 넣은 조합까지다 〔저장소 실행 기록〕 `Day09/TEST_MAP.md`. extra를 더한 조합은 〔추정〕이다.
+- 기준 저장소 안에서 돌릴 때는 두 `uv` 명령에 `--no-config`를 붙인다(본문 2절). 저장소 기록에 있는 것은 임시 가상환경에 `--no-sources -e . --group test`를 넣은 조합까지다 〔저장소 실행 기록〕 `Day09/TEST_MAP.md`. extra를 더한 조합은 〔추정〕이다.
 - README에는 평가자가 그대로 따라 할 설치 스크립트(위 마지막 두 줄)와 실행 스크립트(`DEEPAGENTS_HOME`을 정하고 `.venv/bin/dcode`를 부른다. 본보기 `Day09/scripts/dcode`)를 적는다.
 
 `agent.py`의 메인 목록: `agent_middleware: list[AgentMiddleware[Any, Any]] = [git_trace, ConfigurableModelMiddleware(...), EmptyTruncatedReplyMiddleware()]` 리터럴(`:3191-3204`) 바로 뒤, `if not interactive:`(`:3205`) 앞.
@@ -638,7 +638,7 @@ def test_approved_plan_opens_only_its_targets(tmp_path: Path) -> None:
 
 ### E. 가짜 모델 설정 — `<DEEPAGENTS_HOME>/config.toml` (실행 검증 안 함)
 
-모델 호출 없이 도구 호출 경로를 시험할 때 쓴다. 수업 저장소의 `Day09/scripts/trace_dcode.sh:38-52`가 같은 키로 돈다 〔저장소 실행 기록〕.
+모델 호출 없이 도구 호출 경로를 시험할 때 쓴다. 기준 저장소의 `Day09/scripts/trace_dcode.sh:38-52`가 같은 키로 돈다 〔저장소 실행 기록〕.
 
 ```toml
 [models]

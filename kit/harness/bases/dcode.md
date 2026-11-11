@@ -1,10 +1,11 @@
 # 기반 참고: dcode로 Coding Assistant 만들기
 
 > dcode(deepagents-code **0.2.5**, SDK `deepagents==0.7.34`, Python 3.14, 업스트림 커밋 `e20be5f22e87dd088d706525917b51f1a2945c63`)를 기반으로 인수 기준(`../CRITERIA.md`)을 채울 때 보는 문서다. 단계 설명은 `../METHOD.md`에 있다.
-> **이 문서의 어떤 내용도 직접 실행해서 확인하지 않았다.** 수업 저장소 `Day09/`의 코드와 문서를 읽기만 했다. 설치·린트·테스트·실행 결과는 읽고 낸 예상이다. 8절의 명령을 직접 돌려 확정한다.
-> **경로:** 따로 적지 않으면 수업 저장소의 `Day09/deepagents/libs/code/deepagents_code/` 기준이다. `pyproject.toml`, `Makefile`, `scripts/`, `tests/`, `AGENTS.md`, `HOOKS.md`, `EXTENSIONS.md`, `DEVELOPMENT.md`는 `Day09/deepagents/libs/code/` 기준이고, `Day09/…`·`Day08_new/…`처럼 `Day`로 시작하는 경로는 수업 저장소 루트 기준이다. **줄 번호는 `# [해설]` 주석이 들어간 사본 기준이다.** 원본에서는 함께 적은 이름으로 검색한다.
+> **기준 저장소**는 dcode 0.2.5 사본과 설명 문서, 참고 구현이 들어 있는 `github.com/HyunjunJeon/sds_ax_advanced_2026`이다. 사본은 그 저장소의 `Day09/`에 있다.
+> **이 문서의 어떤 내용도 직접 실행해서 확인하지 않았다.** 기준 저장소 `Day09/`의 코드와 문서를 읽기만 했다. 설치·린트·테스트·실행 결과는 읽고 낸 예상이다. 8절의 명령을 직접 돌려 확정한다.
+> **경로:** 따로 적지 않으면 기준 저장소의 `Day09/deepagents/libs/code/deepagents_code/` 기준이다. `pyproject.toml`, `Makefile`, `scripts/`, `tests/`, `AGENTS.md`, `HOOKS.md`, `EXTENSIONS.md`, `DEVELOPMENT.md`는 `Day09/deepagents/libs/code/` 기준이고, `Day09/…`·`Day08_new/…`처럼 `Day`로 시작하는 경로는 기준 저장소 루트 기준이다. **줄 번호는 `# [해설]` 주석이 들어간 사본 기준이다.** 원본에서는 함께 적은 이름으로 검색한다.
 > **SDK 소스는 사본에 없다**(설치 때 PyPI에서 받는다). SDK 동작은 `Day09/` 문서가 적은 내용〔문서〕이나 그 문서의 실행 기록으로만 적었다.
-> **확신도 표기:** 〔코드〕 코드를 읽어 확인(실행은 안 함) · 〔문서〕 문서에만 있음 · 〔저장소 실행 기록〕 수업 저장소 문서가 실행해서 확인했다고 적은 것(`Day09/CLAIM_CHECKS.md`, `TRACE_WALKTHROUGH.md`, `TEST_MAP.md`, `STATE_AND_STORAGE.md`) · 〔추정〕 읽고 낸 예상 · 〔미확인〕 확인 못 함.
+> **확신도 표기:** 〔코드〕 코드를 읽어 확인(실행은 안 함) · 〔문서〕 문서에만 있음 · 〔저장소 실행 기록〕 기준 저장소 문서가 실행해서 확인했다고 적은 것(`Day09/CLAIM_CHECKS.md`, `TRACE_WALKTHROUGH.md`, `TEST_MAP.md`, `STATE_AND_STORAGE.md`) · 〔추정〕 읽고 낸 예상 · 〔미확인〕 확인 못 함.
 
 ## 1. 한눈에 보기
 
@@ -21,15 +22,15 @@
 
 | 결정 | 내용 | 근거 |
 |---|---|---|
-| 출발 소스 | **`Day09/deepagents/libs/code`를 통째로 복사해 제출 저장소의 출발점으로 삼는다.** 수업 스크립트가 설치·실행하는 것이 이 사본이다 〔문서〕. 복사본에서는 `# [해설]` 줄을 지운다. 39개 파일 2,080줄이 모두 독립된 주석 줄이고(코드 뒤에 붙은 것 0건), 그중 1,251줄이 88자를, 1,873줄이 화면 폭 88을 넘어 E501에 걸릴 것으로 본다 〔추정: 글자 수는 읽기 전용 도구로 셌고 ruff는 돌리지 않았다〕. 지우면 원본 커밋과 같은 코드가 된다 〔문서: 주석 줄만 더했다는 설명〕 | `Day09/README.md` |
+| 출발 소스 | **`Day09/deepagents/libs/code`를 통째로 복사해 제출 저장소의 출발점으로 삼는다.** 저장소 스크립트가 설치·실행하는 것이 이 사본이다 〔문서〕. 복사본에서는 `# [해설]` 줄을 지운다. 39개 파일 2,080줄이 모두 독립된 주석 줄이고(코드 뒤에 붙은 것 0건), 그중 1,251줄이 88자를, 1,873줄이 화면 폭 88을 넘어 E501에 걸릴 것으로 본다 〔추정: 글자 수는 읽기 전용 도구로 셌고 ruff는 돌리지 않았다〕. 지우면 원본 커밋과 같은 코드가 된다 〔문서: 주석 줄만 더했다는 설명〕 | `Day09/README.md` |
 | 저장소 구조 | `libs/code`만 있다. `[tool.uv.sources]`가 가리키는 `../deepagents`, `../acp`, `../partners/*`가 없어 그 폴더에서 `uv sync`가 실패한다 〔저장소 실행 기록: `uv sync --frozen --group test` 실패, `Day09/TEST_MAP.md`〕. 설치는 `uv pip install --no-sources`로 하고 SDK는 PyPI에서 받는다 | `pyproject.toml:28`, `:224-231` |
-| 가상환경 | Python `>=3.14,<3.15` 전용이다(괄호 없는 `except A, B:` 문법). 수업 저장소 루트 환경(3.13)과 따로 둔다. 수업 저장소 안에서 `uv`를 부를 때는 루트의 날짜 고정이 상속되지 않게 `--no-config`를 붙인다 〔문서〕 | `pyproject.toml:13`, `Day09/scripts/setup_dcode.sh:13-17` |
+| 가상환경 | Python `>=3.14,<3.15` 전용이다(괄호 없는 `except A, B:` 문법). 기준 저장소 루트 환경(3.13)과 따로 둔다. 기준 저장소 안에서 `uv`를 부를 때는 루트의 날짜 고정이 상속되지 않게 `--no-config`를 붙인다 〔문서〕 | `pyproject.toml:13`, `Day09/scripts/setup_dcode.sh:13-17` |
 | 프로필 | `Day09/scripts/dcode`는 `DEEPAGENTS_HOME`이 비어 있으면 `~/.deepagents-day09`를 쓴다. 키(`.state/auth.json`), `config.toml`, `sessions.db`, 사용자 `AGENTS.md`가 여기 있다. README의 확인 명령에는 `DEEPAGENTS_HOME=<절대경로>`를 적어 평가자의 프로필과 섞이지 않게 한다 | `Day09/scripts/dcode:29`, `_paths.py:78` 〔코드〕 |
-| 작업·시연 위치 | **`git init`한 별도 폴더.** dcode는 `.git`이 있는 가장 가까운 상위 폴더를 프로젝트 루트로 보고, 없으면 프로젝트 메모리·스킬·서브에이전트를 로드하지 않는다. 수업 저장소 안에서 돌리면 그 저장소 루트의 `AGENTS.md`가 지침으로 읽힌다 | `_git.py:139-163`, `project_utils.py:76-98`, `:136-147` 〔코드〕 |
-| 모델 | `-M provider:model`이나 `[models].default`가 있어야 한다. 없으면 `No model configured` 오류가 난다 〔코드. `-n`에서 어떻게 끝나는지는 미확인〕. 과제의 모델 제한은 〔미확인〕. 수업 저장소가 OpenRouter ID로 쓰는 문자열은 `z-ai/glm-5.3-flash`, `deepseek/deepseek-v4.1-flash`, `qwen/qwen3.8-flash`다 〔문서. dcode에서 동작하는지는 미확인〕 | `config.py:6059-6093`, `Day08/README.md`, `Day08_new/guard_lab/lm_guards.py:32-38` |
+| 작업·시연 위치 | **`git init`한 별도 폴더.** dcode는 `.git`이 있는 가장 가까운 상위 폴더를 프로젝트 루트로 보고, 없으면 프로젝트 메모리·스킬·서브에이전트를 로드하지 않는다. 기준 저장소 안에서 돌리면 그 저장소 루트의 `AGENTS.md`가 지침으로 읽힌다 | `_git.py:139-163`, `project_utils.py:76-98`, `:136-147` 〔코드〕 |
+| 모델 | `-M provider:model`이나 `[models].default`가 있어야 한다. 없으면 `No model configured` 오류가 난다 〔코드. `-n`에서 어떻게 끝나는지는 미확인〕. 과제의 모델 제한은 〔미확인〕. 기준 저장소가 OpenRouter ID로 쓰는 문자열은 `z-ai/glm-5.3-flash`, `deepseek/deepseek-v4.1-flash`, `qwen/qwen3.8-flash`다 〔문서. dcode에서 동작하는지는 미확인〕 | `config.py:6059-6093`, `Day08/README.md`, `Day08_new/guard_lab/lm_guards.py:32-38` |
 
 ```bash
-# 수업 저장소 루트에서(제출용 복사본의 같은 절차는 부록 B). 여기까지는 모델을 부르지 않는다
+# 기준 저장소 루트에서(제출용 복사본의 같은 절차는 부록 B). 여기까지는 모델을 부르지 않는다
 bash Day09/scripts/setup_dcode.sh        # Day09/.venv(3.14) + 사본 editable 설치. 검사 도구·OpenRouter는 안 깔린다
 bash Day09/scripts/smoke_dcode.sh        # 가짜 모델로 서버 기동 → 응답 → 종료
 cd Day09/deepagents/libs/code            # 아래 한 줄은 저장소 기록에 없는 조합이다 〔추정〕
@@ -53,8 +54,8 @@ export DEEPAGENTS_HOME=/abs/profile
 | `make lint`·`make test`·`make bootstrap` | **쓰지 않는다.** 전부 `uv run`(잠금 고정)이라 이 구조에서는 실패할 것으로 본다 〔추정〕. `make lint`의 내용은 ruff check, ruff format `--diff`, ty check, 명령 목록 검사, cwd 검사다. `bootstrap`은 git 최상위에 pre-commit 훅을 깐다 | 〔코드〕 `Makefile:5-6`, `:70-76`, `:101-103` |
 | ty 설정 | `[tool.ty.environment] extra-paths`가 없는 폴더(`../deepagents` 등)를 가리킨다. 이 상태에서 ty가 어떻게 도는지는 〔미확인〕 | 〔코드〕 `pyproject.toml:233-241` |
 | OpenRouter | extra 이름은 `openrouter`. `dcode --install openrouter`는 editable 설치에서 거부된다. 위의 `uv pip install -e ".[openrouter]"`로 넣는다 | 〔코드〕 `pyproject.toml:131`, `update_check.py:4586-4630` |
-| 키 우선순위 | `--model-params`의 `api_key` > `dcode auth set`으로 저장한 키 > 환경 변수(`DEEPAGENTS_CODE_OPENROUTER_API_KEY`가 있으면 `OPENROUTER_API_KEY` 대신 읽힌다). 저장 키와 접두 변수가 함께 있을 때 어느 쪽이 쓰이는지는 수업 저장소 문서도 확인하지 못했다. 한 가지 방법만 쓴다 | 〔코드〕 `model_config.py:2582-2616`, 〔문서〕 `Day09/CONFIG_REFERENCE.md` |
-| 다른 게이트웨이 | `config.toml`의 `[models.providers.<이름>]`에 `class_path`, `models`를 적는다(수업 스크립트의 가짜 모델이 이 방식이다). OpenRouter 주소는 `OPENROUTER_API_BASE`로 바꾼다 | 〔코드〕 `Day09/scripts/smoke_dcode.sh:27-34`, `model_config.py:1107-1140` |
+| 키 우선순위 | `--model-params`의 `api_key` > `dcode auth set`으로 저장한 키 > 환경 변수(`DEEPAGENTS_CODE_OPENROUTER_API_KEY`가 있으면 `OPENROUTER_API_KEY` 대신 읽힌다). 저장 키와 접두 변수가 함께 있을 때 어느 쪽이 쓰이는지는 기준 저장소 문서도 확인하지 못했다. 한 가지 방법만 쓴다 | 〔코드〕 `model_config.py:2582-2616`, 〔문서〕 `Day09/CONFIG_REFERENCE.md` |
+| 다른 게이트웨이 | `config.toml`의 `[models.providers.<이름>]`에 `class_path`, `models`를 적는다(저장소 스크립트의 가짜 모델이 이 방식이다). OpenRouter 주소는 `OPENROUTER_API_BASE`로 바꾼다 | 〔코드〕 `Day09/scripts/smoke_dcode.sh:27-34`, `model_config.py:1107-1140` |
 | 금지 모델 강제 | `[models] allowed = ["openrouter:*"]`처럼 공급자 전체, 또는 정확한 `provider:model`. 메인·채점·분류기·서브에이전트 `model`을 기동 때 검사하고 걸리면 기동이 실패한다 | 〔코드〕 `model_config.py:553-620`, `:3819`, `agent.py:3084-3147`, `:3777-3778` |
 | `-n`의 승인 | 승인 모드가 없다. 셸 허용 목록 없음: 셸 꺼짐, **나머지 도구(파일 쓰기·편집·삭제)는 전부 그냥 실행**. 제한 목록: 셸 명령만 미들웨어가 검사. `all`: 전부 실행. `PermissionRequest` 훅이 있으면 이 지름길이 꺼지고 승인 대상 호출이 모두 클라이언트로 온다 | 〔코드〕 `client/non_interactive.py:3106-3150` 〔저장소 실행 기록〕 |
 | 셸 허용 목록 | `-S`가 없어도 `DEEPAGENTS_CODE_SHELL_ALLOW_LIST`나 `config.toml`의 `[shell] allow_list`가 있으면 셸이 켜진다. `&&`, `\|\|`, `\|`, `;`로 나눈 구간마다 첫 단어를 본다. `>`, `<`, `$(`, 백틱, `${`가 있으면 무조건 거부라 **`2>&1`도 막힌다** | 〔코드〕 `config_manifest.py:2670-2682`, `config.py:4439-4454`, `:4537-4592` |
@@ -171,10 +172,10 @@ export DEEPAGENTS_HOME=/abs/profile
 - 안쪽에서 인터럽트(승인, 훅)가 걸리면 `GraphBubbleUp`이 올라온다. 오류로 세지 않게 먼저 다시 던진다(`model_retry.py:667`, `:717`) 〔코드. 재개 때 감싸기가 몇 번 다시 불리는지는 미확인〕.
 - `sessions.db`를 직접 읽을 때 마지막 체크포인트에는 메시지가 없다(쓰기 기록을 되풀이해 복원한다) 〔저장소 실행 기록〕 `Day09/TRACE_WALKTHROUGH.md` 7절.
 
-### 수업 저장소에서 가져다 쓸 수 있는 구현
+### 기준 저장소에서 가져다 쓸 수 있는 구현
 직접 열어 읽은 파일만 적었다. 전부 실습용 업무 에이전트(상담·주문)에 맞춰져 있어 그대로는 못 쓴다. 공통으로 고칠 것: 동기 훅만 있다(`awrap_*` 추가), 거부 메시지에 `status="error"`가 없다, 상대 import, 타입·docstring 부족(기준 1), 메모리 안 객체에 기록한다(파일로).
 
-| 기준 | 수업 저장소 경로 | 하는 일 | dcode에 맞추려면 |
+| 기준 | 기준 저장소 경로 | 하는 일 | dcode에 맞추려면 |
 |---|---|---|---|
 | 2-4 게이트 | `Day08_new/guard_lab/gate.py` (`Gate.decide`, `GateMiddleware`) | 도구 호출마다 최종 결정 하나를 내고 기록한다. 컨텍스트가 없으면 차단. 부모 미들웨어에만 두면 서브에이전트 호출을 놓친다는 것을 보여 준다 | 판정 내용을 업무 규칙에서 "승인 기록·범위·보호 경로"로 바꾼다 |
 | 2-4 승인 기록 | `Day08/guardlab/components.py` (`ApprovalStore`, `args_hash`) | 승인을 도구·인자 해시·요청자·만료에 묶고 불일치·재사용·만료를 사유 코드로 가른다 | 메모리 안 사전 → `design/approvals/<plan_id>.json`, 인자 해시 → 계획 본문 해시, 쓰는 주체 → 사람이 돌리는 명령 |
@@ -206,8 +207,8 @@ export DEEPAGENTS_HOME=/abs/profile
 ## 6. 함정
 
 1. 서버 코드에서 `Path.cwd()`, `os.getcwd()`, `find_project_root()`를 쓰면 cwd 검사가 실패한다. 서버 하나가 여러 작업 폴더를 맡기 때문이다 〔코드〕.
-2. 이 사본에서 `uv sync`, `uv run`, `make`는 쓰지 않는다. `Day09/` 안에서 `uv sync`를 돌리지 말라고 수업 저장소도 적는다 〔문서〕. 소스를 고친 뒤에는 dcode를 다시 실행해야 반영된다(서버가 `--no-reload`로 뜬다 〔저장소 실행 기록〕).
-3. 복사본에 `# [해설]` 줄이 남아 있으면 그 파일은 린트(E501)에 걸릴 것으로 본다 〔추정〕. `agent.py`처럼 고치는 파일은 반드시 지운다. 수업 저장소의 `check_comments_only.py`는 "주석만 바뀌었는가"를 보는 검사라 소스를 고치면 실패하는 것이 정상이다.
+2. 이 사본에서 `uv sync`, `uv run`, `make`는 쓰지 않는다. `Day09/` 안에서 `uv sync`를 돌리지 말라고 기준 저장소도 적는다 〔문서〕. 소스를 고친 뒤에는 dcode를 다시 실행해야 반영된다(서버가 `--no-reload`로 뜬다 〔저장소 실행 기록〕).
+3. 복사본에 `# [해설]` 줄이 남아 있으면 그 파일은 린트(E501)에 걸릴 것으로 본다 〔추정〕. `agent.py`처럼 고치는 파일은 반드시 지운다. 기준 저장소의 `check_comments_only.py`는 "주석만 바뀌었는가"를 보는 검사라 소스를 고치면 실패하는 것이 정상이다.
 4. 메모리와 스킬 목록은 스레드에 없을 때만 로드된다. "다음 작업에 반영"은 새 실행으로 보인다 〔코드: 스킬 / 미확인: 메모리〕.
 5. `-n`에서는 모델(`-M`), 셸(`-S`), 프로젝트 훅(`--trust-project-hooks`), `< /dev/null`이 **매번** 필요하다. 훅을 쓰면 `--max-turns`도 넉넉히 준다. README 확인 명령에 빠뜨리지 않는다 〔코드〕.
 6. `-n`은 파일 쓰기·편집·삭제를 승인 없이 실행한다. 게이트가 없으면 "승인 후 변경"은 지켜지지 않는다 〔저장소 실행 기록〕.
@@ -215,7 +216,7 @@ export DEEPAGENTS_HOME=/abs/profile
 8. 훅 게이트는 스크립트가 예외로 죽으면(종료 1) 열린다. 미들웨어 게이트도 판정 중 예외가 나면 거부로 처리하게 짠다 〔코드 / 설계 권고〕.
 9. 게이트가 `write_file`·`edit_file`만 보면 `delete`, `execute`, 서브에이전트로 뚫린다. 서브에이전트는 두 종류다. 파일 정의 서브에이전트는 `_subagent_cli_middleware` 목록만 쓰고, 기본 `general-purpose`는 부모 목록이 합쳐진다. 둘 다 시험한다 〔코드〕〔저장소 실행 기록〕.
 10. 기록 미들웨어의 `before_agent`·`after_agent`가 fork 서브에이전트 안에서도 돈다. 가르지 않으면 요청 끝 이벤트가 두 번 남는다 〔저장소 실행 기록에서 낸 추정〕.
-11. dcode는 **`.git`이 있는 상위 폴더**의 `AGENTS.md`, `.deepagents/`, `.agents/skills`, `.claude/skills`를 읽고 홈의 `~/.agents/skills`, `~/.claude/skills`도 읽는다(`agent.py:2550-2615`). 소스 폴더나 수업 저장소 안에서 시연하면 그쪽 설정이 섞인다. 시연은 `git init`한 별도 폴더에서 하고 `DEEPAGENTS_HOME`으로 프로필도 나눈다 〔코드〕.
+11. dcode는 **`.git`이 있는 상위 폴더**의 `AGENTS.md`, `.deepagents/`, `.agents/skills`, `.claude/skills`를 읽고 홈의 `~/.agents/skills`, `~/.claude/skills`도 읽는다(`agent.py:2550-2615`). 소스 폴더나 기준 저장소 안에서 시연하면 그쪽 설정이 섞인다. 시연은 `git init`한 별도 폴더에서 하고 `DEEPAGENTS_HOME`으로 프로필도 나눈다 〔코드〕.
 12. 로컬 셸에는 경계가 없다. `-S all`로 시연하지 않는다. 테스트 명령에 `2>&1`이나 `> 파일`을 쓰면 허용 목록이 거부한다 〔코드〕.
 13. 리뷰어(`model`)와 채점 모델(`--rubric-model`, 기본은 메인 모델)을 허용된 모델로 지정하고 `[models] allowed`로 강제한다 〔코드〕.
 14. `auto_save` 기본값에서는 `-n`의 모델이 검증한 사실을 `AGENTS.md`에 `edit_file`로 저장하라는 안내를 받는다. 규칙 저장소가 사람 승인 없이 바뀔 수 있다 〔코드〕.
@@ -231,23 +232,23 @@ export DEEPAGENTS_HOME=/abs/profile
 | `Day09/ARCHITECTURE.md` 6.4의 "서브에이전트 스택은 메인과 따로" | fork를 끈 경우에만 맞다. 기본 `general-purpose`는 부모 스택을 따른다 | 〔저장소 실행 기록〕 `Day09/CLAIM_CHECKS.md` |
 | 가짜 모델 docstring은 위임 표지를 주면 서브에이전트가 파일을 쓴다고 적는다(`_testing_models.py:267`) | 기본값(fork)의 `-n`에서는 쓰지 않았다. `DEEPAGENTS_CODE_FORKED_SUBAGENTS=0`에서만 썼다 | 〔저장소 실행 기록〕 `Day09/TRACE_WALKTHROUGH.md` 6절 |
 | 설정 표시에 나오는 `--set-default-model` | 실제 플래그는 `--default-model`이다 | 〔문서〕 `Day09/CONFIG_REFERENCE.md`, 〔코드〕 `main.py:2739-2749` |
-| 사본의 `DEVELOPMENT.md`와 `Makefile`은 `uv sync`·`make`를 쓴다 | 모노레포 전체가 있을 때의 방법이다. 이 사본에는 맞지 않는다. 같은 문서의 "Local dev installs"(`uv venv` + `uv pip install -e`)가 수업 스크립트와 같은 방식이다 | 〔문서〕 `DEVELOPMENT.md:207-240` |
+| 사본의 `DEVELOPMENT.md`와 `Makefile`은 `uv sync`·`make`를 쓴다 | 모노레포 전체가 있을 때의 방법이다. 이 사본에는 맞지 않는다. 같은 문서의 "Local dev installs"(`uv venv` + `uv pip install -e`)가 저장소 스크립트와 같은 방식이다 | 〔문서〕 `DEVELOPMENT.md:207-240` |
 
 ### 0.1.69 문서에서 달라진 점
 - 기준 사본이 `Day08/dcode-analysis`(0.1.69, SDK 0.7.14, Python 3.12 이상)에서 `Day09/`(0.2.5, SDK 0.7.34 PyPI, Python 3.14 전용)로 바뀌었다. 줄 번호 인용을 전부 다시 맞췄다.
-- 출발 소스 권고가 "원본 커밋을 받아 모노레포 구조를 유지"에서 "`Day09/` 사본을 복사해 해설 줄을 지운다"로 바뀌었다. 빌드가 `uv sync`·`make`에서 수업 스크립트(`uv pip install --no-sources`)로 바뀌었고 검사 도구를 따로 깔아야 한다.
+- 출발 소스 권고가 "원본 커밋을 받아 모노레포 구조를 유지"에서 "`Day09/` 사본을 복사해 해설 줄을 지운다"로 바뀌었다. 빌드가 `uv sync`·`make`에서 저장소 스크립트(`uv pip install --no-sources`)로 바뀌었고 검사 도구를 따로 깔아야 한다.
 - 키 우선순위를 고쳤다. 저장한 키가 환경 변수보다 앞이다(이전 문서는 접두 변수가 가장 앞이라고 적었다).
 - 모델을 반드시 지정해야 한다(`-M` 또는 `[models].default`). `[models] allowed`의 와일드카드는 `provider:*`로 확인됐다.
 - `-n`에 `-r <ID>` 이어 가기가 생겼다. `-n` 전용 메모리 안내문이 생겨 기본값에서 모델이 메모리 파일을 고치도록 유도된다.
 - 미들웨어 목록 맨 앞에 `GitTraceMiddleware`·`EmptyTruncatedReplyMiddleware`가 생겼다. 요청 식별에 `config["metadata"]`의 `thread_id`·`turn_id`를 쓰는 본보기가 생겼다.
 - "게이트를 사람 승인 앞에 두면 승인 창 전에 거부한다"는 이전 설명을 뺐다. 승인 창은 `after_model` 단계라 `wrap_tool_call` 게이트보다 먼저 뜬다.
-- fork 서브에이전트가 부모 미들웨어를 따른다는 것, `-n` 기본 그래프에 승인 미들웨어가 없다는 것, 인터프리터가 기본으로 켜진다는 것이 수업 저장소의 실행 기록으로 뒷받침됐다.
+- fork 서브에이전트가 부모 미들웨어를 따른다는 것, `-n` 기본 그래프에 승인 미들웨어가 없다는 것, 인터프리터가 기본으로 켜진다는 것이 기준 저장소의 실행 기록으로 뒷받침됐다.
 - 끼어들 자리에 Python 확장(실험 기능)과 `--allow-fs-tools` 읽기 전용 실행을 더했다. 이전 문서가 빠뜨린 것이고 0.1.69에도 있던 기능이다.
 - 셸 허용 목록이 `-S` 말고도 환경 변수·`config.toml`에서 켜진다는 것, `-n`의 stdin 처리(`< /dev/null`), `SubagentStop`의 종료 2가 컨텍스트 추가라는 것, 매처 이름 `Glob`·`Grep`·`LS`를 더했다.
 
 ## 8. 실행해서 확인할 것
 
-**아래는 아무것도 돌려 보지 않았다.** "기대"는 코드와 수업 저장소 문서를 읽고 쓴 것이라 문구와 수치가 다를 수 있다. 다르면 이 문서를 고친다. 1~2번은 수업 저장소 루트에서, 3~12번은 제출용 복사본의 `libs/code`에서(`V`는 가상환경의 `bin`), 13번부터는 `git init`한 시연 폴더에서 `DEEPAGENTS_HOME`을 새 폴더로 두고 돌린다. `<dcode>`는 실행 스크립트의 절대 경로다. 13·14번은 부록 E의 가짜 모델 설정을 쓰므로 비용이 없다.
+**아래는 아무것도 돌려 보지 않았다.** "기대"는 코드와 기준 저장소 문서를 읽고 쓴 것이라 문구와 수치가 다를 수 있다. 다르면 이 문서를 고친다. 1~2번은 기준 저장소 루트에서, 3~12번은 제출용 복사본의 `libs/code`에서(`V`는 가상환경의 `bin`), 13번부터는 `git init`한 시연 폴더에서 `DEEPAGENTS_HOME`을 새 폴더로 두고 돌린다. `<dcode>`는 실행 스크립트의 절대 경로다. 13·14번은 부록 E의 가짜 모델 설정을 쓰므로 비용이 없다.
 
 | # | 명령 | 기대 | 확인하는 것 |
 |---|---|---|---|
