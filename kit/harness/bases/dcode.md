@@ -29,7 +29,7 @@
 | 모델 | `-M provider:model`이나 `[models].default`가 있어야 한다. 없으면 `No model configured` 오류가 난다 〔코드. `-n`에서 어떻게 끝나는지는 미확인〕. 과제의 모델 제한은 〔미확인〕. 수업 저장소가 OpenRouter ID로 쓰는 문자열은 `z-ai/glm-5.3-flash`, `deepseek/deepseek-v4.1-flash`, `qwen/qwen3.8-flash`다 〔문서. dcode에서 동작하는지는 미확인〕 | `config.py:6059-6093`, `Day08/README.md`, `Day08_new/guard_lab/lm_guards.py:32-38` |
 
 ```bash
-# 수업 저장소 루트에서. 여기까지는 모델을 부르지 않는다
+# 수업 저장소 루트에서(제출용 복사본의 같은 절차는 부록 B). 여기까지는 모델을 부르지 않는다
 bash Day09/scripts/setup_dcode.sh        # Day09/.venv(3.14) + 사본 editable 설치. 검사 도구·OpenRouter는 안 깔린다
 bash Day09/scripts/smoke_dcode.sh        # 가짜 모델로 서버 기동 → 응답 → 종료
 cd Day09/deepagents/libs/code            # 아래 한 줄은 저장소 기록에 없는 조합이다 〔추정〕
@@ -69,10 +69,10 @@ export DEEPAGENTS_HOME=/abs/profile
 | 방법 | 어디에 두나 | 쓰기 좋은 곳 | 주의 |
 |---|---|---|---|
 | **미들웨어** (소스 수정) | `agent.py`의 `create_cli_agent`(`:2622`)가 만드는 `agent_middleware` 목록(`:3191`). **파일로 정의한 서브에이전트에도 걸려면 같은 함수 안의 `_subagent_cli_middleware()`(`:2989-3070`)에도 넣는다.** 새 모듈은 `deepagents_code/` 아래 | 기록, 지표, 계획 게이트, 메모리 검색·주입 | 서버 프로세스에서 돈다. 클래스마다 `trace_policy = TracePolicy(process_inputs=omit_payload)`를 둔다 〔문서〕 `AGENTS.md:136-150`. `Path.cwd()`, `os.getcwd()`, `find_project_root()` 호출은 cwd 검사에 걸린다(`scripts/check_process_cwd.py:14-19`). 큰 값을 상태 채널에 넣지 않는다. `wrap_*`는 동기·비동기 둘 다 만든다 〔코드〕 |
-| **Python 확장** (소스 수정 없음, 실험 기능) | `<프로필>/extensions/*.py`, `-e 경로`, `{프로젝트 루트}/.deepagents/extensions/`(`--trust-project-extensions`). `async def extension(d)` 안에서 `d.register_middleware(…)`, `d.register_tool(…)` | 빠른 시험 | `DEEPAGENTS_CODE_EXPERIMENTAL=1`이 없으면 통째로 무시된다(`agent.py:2866-2869`). 확장 미들웨어는 메인 목록 끝에만 붙고 `_subagent_cli_middleware`에는 안 들어간다(`:3851-3875`) 〔코드〕. 제출물의 게이트로는 쓰지 않는다 |
+| **Python 확장** (소스 수정 없음, 실험 기능) | `<프로필>/extensions/*.py`, `-e 경로`, `{프로젝트 루트}/.deepagents/extensions/`(`--trust-project-extensions`). `async def extension(d)` 안에서 `d.register_middleware(…)`, `d.register_tool(…)` 〔문서〕 `EXTENSIONS.md` | 빠른 시험 | `DEEPAGENTS_CODE_EXPERIMENTAL=1`이 없으면 통째로 무시된다(`agent.py:2866-2869`). 확장 미들웨어는 메인 목록 끝에만 붙고 `_subagent_cli_middleware`에는 안 들어간다(`:3851-3875`) 〔코드〕. 제출물의 게이트로는 쓰지 않는다 |
 | **훅** (소스 수정 없음) | `<프로필>/hooks.json`, `{프로젝트 루트}/.deepagents/hooks.json`, 플러그인 | 빠른 시험, 입력 제출 때 컨텍스트 추가 | 아래 "훅의 종료 코드" 표. `-n`은 저장된 신뢰를 보지 않아 **매번 `--trust-project-hooks`** 가 필요하다(`hooks/trust.py:416-440`, `client/non_interactive.py:3136`) 〔코드〕 |
 | **스킬** | `{프로젝트 루트}/.deepagents/skills/<이름>/SKILL.md` | 계획 작성 절차, 개선안 문안 | 목록은 스레드 상태에 없을 때만 로드한다(`plugins/adapters/skills_middleware.py:119`, `:619-632`). `allowed-tools`는 표시 코드만 찾았고(`skills/commands.py:136`) 강제 여부는 〔미확인〕. 대화형 `/skill:<이름>`, `-n`은 `-s 이름` 〔코드〕 |
-| **서브에이전트** | `{프로젝트 루트}/.deepagents/agents/<이름>/AGENTS.md` (머리말 `description` 필수, `name`·`model` 선택. 폴더 없이 `<이름>.md`로 두면 무시) | 계획 리뷰어(독립 컨텍스트, 다른 모델) | 머리말에 도구 목록 칸이 없다(`subagents.py:54-74`, `:192-240`) 〔코드〕. 부모의 도구를 물려받는다 〔문서〕 `Day09/TOOLS_REFERENCE.md` 5장. fork 표시는 `general-purpose`에만 붙으므로(`agent.py:3180-3182`) 파일 정의 서브에이전트는 새 대화로 시작한다 〔코드〕 |
+| **서브에이전트** | `{프로젝트 루트}/.deepagents/agents/<이름>/AGENTS.md` (머리말 `description` 필수, `name`·`model` 선택. 폴더 없이 `<이름>.md`로 두면 무시) | 계획 리뷰어(독립 컨텍스트, 다른 모델) | 머리말에 도구 목록 칸이 없다(`subagents.py:54-74`, `:192-240`) 〔코드〕. 부모의 도구를 물려받는다 〔문서〕 `Day09/TOOLS_REFERENCE.md` 5장. fork 표시는 `general-purpose`에만 붙는다(`agent.py:3180-3182`) 〔코드〕. fork가 아닌 서브에이전트는 `task`의 `description`만 새 메시지로 받는다 〔저장소 실행 기록〕 |
 | **별도 읽기 전용 실행** | `dcode -n "…" --allow-fs-tools read_file,ls,glob,grep` (셸 허용 목록 없이) | 도구가 제한된 독립 리뷰어 | 쓰기·편집·삭제·셸 도구가 메인과 동기 서브에이전트 모두에서 빠진다 〔코드〕 `main.py:3011-3021`, `agent.py:2726-2735`, `:3592-3624`. `fetch_url`, `task`, `js_eval`은 남는다. 실제 도구 목록은 8절 13번으로 확인 |
 | **메모리** | `<프로필>/<에이전트>/AGENTS.md`, `{프로젝트 루트}/.deepagents/AGENTS.md`, `{프로젝트 루트}/AGENTS.md` | 항상 지킬 규칙 | 검색 없이 전문 주입. 새 `-n` 실행은 새 스레드라 다시 읽는다. `-r`로 이어 간 스레드에서 다시 읽는지는 〔미확인〕. `auto_save`가 켜져 있으면(기본) `-n`에서도 모델에게 `edit_file`로 저장하라고 시킨다 〔코드〕 `agent.py:3256-3281` |
 | **목표·채점** | 대화형 `/goal`, `/rubric`. `-n`은 `--rubric "기준"` 또는 `--rubric @파일`(12,000자) | 완료 조건을 채점에 연결 | `-n`의 `--goal`은 종료 2. `--rubric`은 `-r`과 함께 못 쓴다. 채점 결과는 콘솔 문구로만 나온다 〔코드〕 `main.py:6134-6143`, `:6183-6191`, `goal_state_limits.py:29` |
@@ -82,7 +82,7 @@ export DEEPAGENTS_HOME=/abs/profile
 | 넣을 것 | 위치 (사본 줄 / 원본 검색어) | 이유 |
 |---|---|---|
 | 기록 | `:3204` 목록 리터럴이 끝난 바로 뒤, `if not interactive:`(`:3205`) 앞. 검색어 `agent_middleware: list[` | 뒤에 붙는 모든 미들웨어보다 바깥이라 안쪽에서 거부된 결과까지 본다. `after_agent`는 역순이라 거의 마지막에 돈다 |
-| 계획 게이트 | 기록 바로 뒤 | 기록이 차단을 본다. `wrap_tool_call`이므로 대화형 승인 창과 `PreToolUse` 훅(둘 다 `after_model` 단계, `:2295-2343`)보다 늦게 돈다. 승인 창보다 먼저 거부하려면 `after_model`도 구현해야 한다 〔추정〕 |
+| 계획 게이트 | 기록 바로 뒤 | 기록이 차단을 본다. `wrap_tool_call`이므로 대화형 승인 창(`:2295-2343`)과 `PreToolUse` 훅(`hooks/server_middleware.py:422-447`)보다 늦게 돈다. 둘 다 `after_model` 단계다. 승인 창보다 먼저 거부하려면 `after_model`도 구현해야 한다 〔추정〕 |
 | 시도 계수 | `:3681-3686` `CodeModelRetryMiddleware`·`ToolErrorMiddleware`를 `extend`하는 줄 뒤 | 재시도 미들웨어 안쪽이라 시도마다 불린다. 한 목록에 같은 이름의 미들웨어를 둘 수 없으니 클래스를 나눈다 〔문서〕 `Day09/ARCHITECTURE.md` 6.3 |
 | 서브에이전트용 | `:3022` `middleware.append(CodeModelRetryMiddleware(max_retries=model_retries))` 뒤에 **새 인스턴스** | 파일 정의 서브에이전트와 fork를 끈 `general-purpose`는 이 목록만 쓴다. 기본값(fork)의 `general-purpose`에는 부모 목록이 이름 기준으로 합쳐진다 〔저장소 실행 기록〕 `Day09/TRACE_WALKTHROUGH.md` 6절. 같은 이름이 양쪽에 있을 때 어느 인스턴스가 남는지는 〔미확인〕(기존 `GitTrace`·`CodeModelRetry`도 양쪽에 있다) |
 
@@ -218,7 +218,7 @@ export DEEPAGENTS_HOME=/abs/profile
 11. dcode는 **`.git`이 있는 상위 폴더**의 `AGENTS.md`, `.deepagents/`, `.agents/skills`, `.claude/skills`를 읽고 홈의 `~/.agents/skills`, `~/.claude/skills`도 읽는다(`agent.py:2550-2615`). 소스 폴더나 수업 저장소 안에서 시연하면 그쪽 설정이 섞인다. 시연은 `git init`한 별도 폴더에서 하고 `DEEPAGENTS_HOME`으로 프로필도 나눈다 〔코드〕.
 12. 로컬 셸에는 경계가 없다. `-S all`로 시연하지 않는다. 테스트 명령에 `2>&1`이나 `> 파일`을 쓰면 허용 목록이 거부한다 〔코드〕.
 13. 리뷰어(`model`)와 채점 모델(`--rubric-model`, 기본은 메인 모델)을 허용된 모델로 지정하고 `[models] allowed`로 강제한다 〔코드〕.
-14. `auto_save` 기본값에서는 `-n`의 모델이 `AGENTS.md`를 직접 고친다. 규칙 저장소가 사람 승인 없이 바뀐다 〔코드〕.
+14. `auto_save` 기본값에서는 `-n`의 모델이 검증한 사실을 `AGENTS.md`에 `edit_file`로 저장하라는 안내를 받는다. 규칙 저장소가 사람 승인 없이 바뀔 수 있다 〔코드〕.
 15. `-r <ID> -n`은 그 스레드를 만든 작업 폴더에서만 된다. 다른 폴더면 종료 1이다 〔코드〕 `client/non_interactive.py:2636-2667`, `:3028-3032`.
 
 ## 7. 문서와 코드가 다른 곳
@@ -227,7 +227,7 @@ export DEEPAGENTS_HOME=/abs/profile
 |---|---|---|
 | 과제 안내문(`Day08/project_guide.md`)은 소스 참고 위치를 `Day08/dcode-analysis`(0.1.69)로 적는다 | `Day09/README.md`는 그 분석이 이전 버전이고 다르면 `Day09/`의 코드가 맞다고 적는다. 실행 스크립트도 `Day09/` 사본을 설치한다 | 〔문서〕 |
 | 사본의 `AGENTS.md:3`은 화면 없는 실행을 `-x`라고 적는다 | 플래그는 `-n`/`--non-interactive`다 | 〔코드〕 `main.py:2783-2790` |
-| `create_cli_agent`의 인자 기본값은 `enable_interpreter=False`다 | CLI 설정 기본값은 켜짐이라 `-n`·대화형 기본 그래프에 인터프리터가 들어간다 | 〔코드〕 `config_manifest.py:74` 〔저장소 실행 기록〕 |
+| `create_cli_agent`의 서명과 docstring은 `enable_interpreter`의 기본값을 `False`로 둔다(`agent.py:2642`) | CLI 설정 기본값은 켜짐이라 `-n`·대화형 기본 그래프에 인터프리터가 들어간다 | 〔코드〕 `config_manifest.py:74` 〔저장소 실행 기록〕 |
 | `Day09/ARCHITECTURE.md` 6.4의 "서브에이전트 스택은 메인과 따로" | fork를 끈 경우에만 맞다. 기본 `general-purpose`는 부모 스택을 따른다 | 〔저장소 실행 기록〕 `Day09/CLAIM_CHECKS.md` |
 | 가짜 모델 docstring은 위임 표지를 주면 서브에이전트가 파일을 쓴다고 적는다(`_testing_models.py:267`) | 기본값(fork)의 `-n`에서는 쓰지 않았다. `DEEPAGENTS_CODE_FORKED_SUBAGENTS=0`에서만 썼다 | 〔저장소 실행 기록〕 `Day09/TRACE_WALKTHROUGH.md` 6절 |
 | 설정 표시에 나오는 `--set-default-model` | 실제 플래그는 `--default-model`이다 | 〔문서〕 `Day09/CONFIG_REFERENCE.md`, 〔코드〕 `main.py:2739-2749` |

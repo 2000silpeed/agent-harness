@@ -10,10 +10,10 @@
 | `R4-evals.md` | 과제 형식, 채점, 비교 규칙과 통계, 기준선 | `kit/harness/reference/eval.md`, METHOD S1, 스킬 `golden-dataset`·`agent-eval` |
 | `R5-control-security-observability.md` | 계획·승인 게이트, 층별 방어, 위협 점검, 기록 형식 | `kit/harness/reference/{plan-gate,security,trace}.md`, METHOD S5·S2 |
 | `R6-memory-improve-optimize.md` | 메모리 저장·조회, 개선안 채택 절차, 최적화, 배포·운영 | `kit/harness/reference/memory-improve.md`, METHOD S3·S6·S7·S8 |
-| `R7-dcode-static.md` | dcode 소스 정적 확인 (실행하지 않음) | `kit/harness/bases/dcode.md` |
+| `R7-dcode-static.md` | dcode **0.1.69** 소스 정적 확인 (실행하지 않음). 과제 기준이 0.2.5(`Day09/`)로 확인돼 `bases/dcode.md`는 그 사본으로 다시 확인했다. 이 보고서의 설치 명령·줄 번호·키 우선순위는 옛 버전 것이다 | (이전 판) `kit/harness/bases/dcode.md` |
 
 읽을 때 주의
 - 보고서마다 인용 신뢰도 표시가 있다. "직접"은 원문을 내려받아 대조한 것이고, "요약 경유"는 요약 도구를 거쳐 얻은 것이라 문자 단위로 대조하지 못했다. 결과물에는 인용문을 넣지 않았다.
 - 보고서의 "제안"·"직접 계산" 표시는 출처에 없는 우리 쪽 판단과 계산이다. 결과물에서는 "(제안값)"으로 표시했다.
 - 각 보고서 끝의 "확인 못 한 것"은 아직 열려 있다.
-- `R7`은 소스를 읽기만 한 결과다. 빌드·린트·테스트 실행으로 확인해야 할 항목은 `kit/harness/bases/dcode.md`의 확인 명령 절에 모았다.
+- `R7`은 0.1.69 소스를 읽기만 한 결과이고 지금의 `bases/dcode.md`(0.2.5 기준)와 다르다. 실행으로 확인해야 할 항목은 `kit/harness/bases/dcode.md` 8절에 모았다.
