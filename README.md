@@ -5,7 +5,7 @@
 | 축 | 질문 | 읽을 문서 |
 |---|---|---|
 | ① 내 Claude 세팅 | 내 Claude Code를 어떻게 세팅해서 쓰면 좋은가 | [`claude-setup/GUIDE.md`](claude-setup/GUIDE.md) |
-| ② 회사 코딩 에이전트 구축 | 어떤 순서로 만들고, 단계마다 무엇을 고민하고, 어떻게 검증하고, 언제 끝났다고 보고, 무엇을 병렬로 할 수 있는가 | [`kit/harness/METHOD.md`](kit/harness/METHOD.md) |
+| ② 회사 코딩 에이전트 구축 | 어떤 순서로 만들고, 단계마다 무엇을 고민하고, 어떻게 검증하고, 언제 끝났다고 보고, 무엇을 병렬로 할 수 있는가 | [`kit/harness/METHOD.md`](kit/harness/METHOD.md), 통과해야 할 기준은 [`kit/harness/CRITERIA.md`](kit/harness/CRITERIA.md) |
 
 두 문서 모두 단계마다 **왜 / 고민할 것 / 진행 / 검증 / 끝났다는 기준 / 순서와 병렬**을 적었다. 특정 프레임워크를 전제하지 않는다.
 
@@ -20,6 +20,7 @@ agent-harness/
 ├── kit/                    # 축 ②: 코딩 에이전트 프로젝트에 설치하는 것
 │   ├── harness/
 │   │   ├── METHOD.md       # S0~S8 방법론 본문
+│   │   ├── CRITERIA.md     # 인수 기준 16개 항목(40점) → 단계 → 만들 것 → 증명
 │   │   ├── HARNESS.md      # Claude가 매 세션 따르는 작업 규칙
 │   │   ├── templates/      # 단계별 산출물 양식 (결정 사항, 검증 기록, 완료 기준)
 │   │   └── scripts/        # phase.sh(단계 상태·병렬 가능 여부), start-phase.sh(선행 단계 확인)

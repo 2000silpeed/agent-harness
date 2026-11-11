@@ -7,7 +7,6 @@
 | `day5-8-repo-rules.md` | 5~6일차 (일부 4일차 Jev) | Day05 평가 파이프라인, Day05_new 자기개선 루프, Day06 하네스 6책임·근거 수준, Jev 게이트 → 규칙 R1~R32. **5일차 반영 후 남은 것:** §2 자기개선 루프 세부(Day05_new 06, 강의에서 다루지 않음), §3 하네스 6책임·근거 수준(6일차 강의에서 다루지 않음 — 저장소 `Day06/AGENTS.md` 분석 트랙에만 있음), §4.3 Jev fail-closed 게이트 세부, R5·R6·R15·R18~R27 |
 | `day8-dcode-map.md` | 8일차 | dcode 소스 확장 지점 분석. 최종 과제용이며 이 하네스와는 별개 |
 | `skills/self-improve-loop/` | 6~8일차 (5일차 강의에서 세부 미다룸) | 자기개선 루프 스킬 초안 |
-| `skills/criteria-check/` | 5·8일차 | 인수 기준 자가 점검 스킬 초안 |
 
 ## 옮긴 기록
 
@@ -17,3 +16,4 @@
 | 5일차 | §1 평가 파이프라인 중 강의·교재로 확인된 원칙(시나리오 계약, 필수 관문, 반례 검증, Judge vs 사람 라벨, 조건 잠금·한 조건 변경, pass@k, holdout 분리, 승인 기준 사전 고정) | `kit/harness/METHOD.md` S1, `golden-dataset`·`agent-eval` 스킬 |
 | 6일차 | 옮긴 것 없음. 6일차 강의는 Claude Code 하네스 구성(메모리·스킬·훅)을 다뤘고, 보류 자료의 여섯 책임·근거 수준·자기개선 루프는 강의에서 다루지 않았다 | — |
 | 7일차 | 옮긴 것 없음. 7일차는 모델 서빙(vLLM)을 다뤘고 보류 자료와 겹치는 주제가 없다 | — |
+| 미니 PJT 공지 | `skills/criteria-check/` (평가 기준 슬라이드를 받아 `harness/CRITERIA.md` 기준으로 고쳐 씀) | `kit/.claude/skills/criteria-check/` |

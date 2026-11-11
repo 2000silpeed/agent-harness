@@ -1,6 +1,6 @@
 # 코딩 에이전트 구축 — 작업 규칙
 
-이 프로젝트는 `harness/METHOD.md`의 S0~S8 단계로 회사 코딩 에이전트를 만든다. 아래 규칙은 매 세션 적용된다.
+이 프로젝트는 `harness/METHOD.md`의 S0~S8 단계로 회사 코딩 에이전트를 만든다. 완성품이 통과해야 하는 기준은 `harness/CRITERIA.md`에 있다. 아래 규칙은 매 세션 적용된다.
 
 <workflow>
 - 세션을 시작하면 SessionStart 훅이 단계 상태(완료, 진행 중, 지금 시작할 수 있는 것)를 보여준다. 안 보이면 `bash harness/scripts/phase.sh`를 실행한다.
@@ -51,5 +51,6 @@
 - `skill-authoring`, `tool-design-review`: S4. 스킬과 도구를 쓰고 점검한다.
 - `hook-design`: S5. 규칙을 지침·스킬·훅 중 어디에 둘지 정하고 훅을 설계한다.
 - `plan-review`: 코드 변경 전 매번. 계획 → 독립 리뷰 → 승인.
+- `criteria-check`: S8과 중간 점검. 인수 기준(`harness/CRITERIA.md`) 항목마다 증거를 확인한다.
 - `optimize-agent`: S7. 동작을 유지한 채 최적화하고 근거를 남긴다.
 </skills>

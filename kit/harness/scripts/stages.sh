@@ -10,7 +10,7 @@ STAGES=(
   "5|05-control|S5 실행 제어|2|hook-design, plan-review"
   "6|06-improve|S6 자기개선|1 2 3 5|agent-eval"
   "7|07-optimize|S7 최적화|3 4 5|optimize-agent, serving-plan"
-  "8|08-release|S8 배포·운영|6 7|agent-eval"
+  "8|08-release|S8 배포·운영|6 7|agent-eval, criteria-check"
 )
 
 # 완료 기준 절의 미체크 항목 출력
