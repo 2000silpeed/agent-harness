@@ -20,7 +20,8 @@
 
 ## 수업 저장소 안내문과 비교 (`Day08/project_guide.md`, 2026-11-11 기준)
 - 평가 기준 15개 항목과 배점은 같다.
-- **제출 링크가 다르다.** 슬라이드는 `https://bit.ly/sds-ax-ad-pjt`, 저장소 안내문은 `https://bit.ly/sds-ax-advanced-project`. 어느 쪽이 맞는지 확인이 필요하다.
+- 제출 링크는 표기만 다르고 같은 곳이다. 슬라이드의 `https://bit.ly/sds-ax-ad-pjt`와 저장소 안내문의 `https://bit.ly/sds-ax-advanced-project`는 둘 다 같은 구글 폼(`docs.google.com/forms/d/e/1FAIpQLSfhFw8fmqoDrB498oYLNFPUqGAv1J2luwLoSpc1cdafOE6BKg/viewform`)으로 넘어간다(2026-11-11 리다이렉트 확인).
+- 이 폼에 프로젝트 평가 가이드라인도 실려 있다고 한다. 폼은 구글 로그인이 필요해 내용을 읽지 못했다(미확인). 폼의 가이드라인 원문을 받으면 `kit/harness/CRITERIA.md`와 대조한다.
 - 저장소 안내문에만 있는 내용: 주제가 "dcode 소스코드를 활용하여 Coding Assistant 만들기"라고 적혀 있고, 평가자가 제출 소스를 빌드해 실행하므로 테스트 케이스가 담긴 `README.md`를 꼭 쓰라고 한다.
 
 ## 기반
