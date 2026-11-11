@@ -22,6 +22,7 @@ ignore() { touch "$DST/.gitignore"; grep -qxF "$1" "$DST/.gitignore" || echo "$1
 copy_new "$SETUP/templates/CLAUDE.md" "$DST/CLAUDE.md"
 copy_new "$SETUP/templates/rules/testing.md" "$DST/.claude/rules/testing.md"
 copy_new "$SETUP/templates/settings.local.example.json" "$DST/.claude/settings.local.example.json"
+copy_new "$SETUP/templates/mcp.example.json" "$DST/.claude/mcp.example.json"
 copy_tree "$SETUP/hooks" "$DST/.claude/hooks"
 chmod +x "$DST/.claude/hooks/"*.py "$DST/.claude/hooks/"*.sh
 ignore ".claude/settings.local.json"; ignore "CLAUDE.local.md"

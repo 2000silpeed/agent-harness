@@ -1,6 +1,6 @@
 {
+  "model": "<별칭(sonnet·opus·haiku 등) 또는 전체 모델 ID>",
   "env": {
-    "ANTHROPIC_BASE_URL": "https://<사내 게이트웨이 또는 프록시 주소>",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "<이 프로젝트에서 쓸 모델 이름>"
+    "ANTHROPIC_BASE_URL": "https://<사내 게이트웨이 또는 프록시 주소>"
   }
 }

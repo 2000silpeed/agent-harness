@@ -12,6 +12,7 @@
 | 6일차 | Claude Code 하네스: 메모리·스킬·훅 | [day6/README.md](day6/README.md) |
 | 7일차 | 모델 서빙: 양자화·KV 캐시·vLLM | [day7/README.md](day7/README.md) |
 | 미니 PJT | Coding Assistant 개발 공지와 평가 기준 | [project/README.md](project/README.md) |
+| 조사 | 공식 문서·1차 자료로 결과물을 다시 점검한 보고서 (R1~R7) | [research/README.md](research/README.md) |
 
 이 노트에서 두 가지 목적에 필요한 것만 골라 정리한 것이 [`../claude-setup/GUIDE.md`](../claude-setup/GUIDE.md)(내 Claude 세팅)와 [`../kit/harness/METHOD.md`](../kit/harness/METHOD.md)(코딩 에이전트 구축 방법론)다.
 
