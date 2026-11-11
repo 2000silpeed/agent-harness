@@ -11,6 +11,7 @@
 | 5일차 | 에이전트 평가(Golden Set·Trace·Judge), 판단 모델을 LLM 앞으로 | [day5/README.md](day5/README.md) |
 | 6일차 | Claude Code 하네스: 메모리·스킬·훅 | [day6/README.md](day6/README.md) |
 | 7일차 | 모델 서빙: 양자화·KV 캐시·vLLM | [day7/README.md](day7/README.md) |
+| 8일차 | Agent Guardrails: 판정 주체(코드·LM·Decision)와 실행 강제, 미니 PJT 제출 안내 | [day8/README.md](day8/README.md) |
 | 미니 PJT | Coding Assistant 개발 공지와 평가 기준 | [project/README.md](project/README.md) |
 | 조사 | 공식 문서·1차 자료로 결과물을 다시 점검한 보고서 (R1~R7) | [research/README.md](research/README.md) |
 

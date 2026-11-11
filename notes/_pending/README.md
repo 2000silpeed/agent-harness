@@ -18,3 +18,5 @@
 | 미니 PJT 공지 | `day8-dcode-map.md` (과제를 dcode로 하기로 해서 단계 중심으로 다시 씀) | `kit/harness/bases/dcode.md` |
 | 조사 반영 (2026-11-11) | `skills/self-improve-loop/` (강의에서 세부를 다루지 않았으나 인수 기준 3-3·3-4에 필요해 공개 자료 조사로 고쳐 씀: 읽기용·판정용 과제 분리, 사전 고정, 사람 승인, 되돌리기) | `kit/.claude/skills/self-improve-loop/` |
 | 조사 반영 (2026-11-11) | `day5-8-repo-rules.md` §4.3 게이트의 실패 시 차단 원칙(공식 문서로 확인된 범위만) | `kit/harness/reference/security.md`, `claude-setup/hooks/` |
+| 8일차 | `day5-8-repo-rules.md` §4.3 Jev 게이트의 실패 시 차단 원칙(강의와 `Day08_new/guard_lab/gate.py`·`contracts.py`로 확인: 판정 실패는 REVIEW, 두 문턱값, 코드가 결정) | `kit/harness/reference/security.md` 8절 |
+| 8일차 | 남은 것: §2 자기개선 루프 세부, §3 하네스 6책임·근거 수준, R5·R6·R15·R18~R27. 8일차까지 강의에서 다루지 않았다. 자기개선 루프는 공개 자료 조사로 따로 반영했다(위 조사 반영 행) | — |

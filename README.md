@@ -1,6 +1,6 @@
 # agent-harness
 
-8일 과정 강의와 수업 저장소([HyunjunJeon/sds_ax_advanced_2026](https://github.com/HyunjunJeon/sds_ax_advanced_2026))에서 **두 가지 목적에 필요한 것만** 골라, 공식 문서와 공개 1차 자료로 다시 점검해 정리한 저장소다. 강의가 올라올 때마다 [`UPDATING.md`](UPDATING.md) 절차로 갱신한다. 현재 2~7일차까지 반영했다.
+8일 과정 강의와 수업 저장소([HyunjunJeon/sds_ax_advanced_2026](https://github.com/HyunjunJeon/sds_ax_advanced_2026))에서 **두 가지 목적에 필요한 것만** 골라, 공식 문서와 공개 1차 자료로 다시 점검해 정리한 저장소다. 강의가 올라올 때마다 [`UPDATING.md`](UPDATING.md) 절차로 갱신한다. 현재 2~8일차까지 반영했다.
 
 | 축 | 질문 | 읽을 문서 |
 |---|---|---|

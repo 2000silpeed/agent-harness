@@ -164,12 +164,13 @@ A9·A10은 끝이 없는 습관이다. 매주 회고하면서 조정한다.
 
 **할 일**
 - **`.claude/settings.json`** 은 팀 공유(커밋): 권한 규칙(`deny`·`ask`·`allow`), 훅, 플러그인, 팀 공통 `model`·`env`. 템플릿: [`templates/settings.json`](templates/settings.json)
-- **MCP 서버는 설정 파일에 두지 않는다.** `settings.json`은 `mcpServers` 키를 읽지 않는다. 팀 공유 서버는 저장소 루트의 `.mcp.json`에 두고(예시: [`templates/mcp.example.json`](templates/mcp.example.json)), 개인 서버는 `claude mcp add --scope user`로 넣는다. `.mcp.json`의 서버는 팀원이 각자 승인해야 연결된다. 서버를 붙이면 그 서버의 도구가 전부 열린다. 쓰는 도구만 남기고 나머지는 `deny`에 `mcp__<서버>__<도구>`로 막는다.
+- **MCP 서버는 설정 파일에 두지 않는다.** `settings.json`은 `mcpServers` 키를 읽지 않는다. 팀 공유 서버는 저장소 루트의 `.mcp.json`에 두고(예시: [`templates/mcp.example.json`](templates/mcp.example.json)), 개인 서버는 `claude mcp add --scope user`로 넣는다. `.mcp.json`의 서버는 팀원이 각자 승인해야 연결된다. 서버를 붙이면 그 서버의 도구가 전부 열린다. 쓰는 도구만 남기고 나머지는 `deny`에 `mcp__<서버>__<도구>`로 막는다. 서버가 주는 도구 설명도 내 컨텍스트에 들어오는 남의 글이다. 버전을 고정하고, 서버 전체를 묻지 않고 허용하는 설정은 피하고, 토큰은 가장 좁은 범위로 발급한다.
 - **`.claude/settings.local.json`** 은 나만(커밋 제외). 템플릿: [`templates/settings.local.example.json`](templates/settings.local.example.json). 손으로 만들었으면 `.gitignore`에 직접 넣는다. Claude Code가 이 파일을 처음 쓸 때만 자동으로 전역 git 제외 목록에 들어간다.
 - 규칙 문법을 지킨다. 형식은 `도구` 또는 `도구(지정자)`이고 평가 순서는 `deny` → `ask` → `allow`다.
   - Bash: `Bash(npm run *)`. 허용 규칙 하나가 `a && b` 같은 복합 명령 전체를 허용하지는 않는다.
   - 파일: `Read(./.env)`, `Read(./secrets/**)`. 쓰기 금지는 `Edit(...)`, 검색 금지는 `Read(...)`로 쓴다. `Write(...)`와 `Grep(...)` 규칙은 동작하지 않는다. `Read` 금지는 같은 경로의 수정·생성도 막는다.
   - 경로: `//절대경로`, `~/홈 기준`, `/설정 파일 기준`, `./현재 디렉터리 기준`. 파일 이름만 쓰면 모든 깊이에 걸린다.
+  - 규칙은 행동을 되돌릴 수 있는지로 나눠 정한다: 읽기와 작업 폴더 안 편집은 `allow`, 푸시·PR·패키지 설치처럼 밖으로 나가거나 공유 상태를 바꾸는 것은 `ask`, 강제 푸시·운영 DB·대량 삭제처럼 되돌릴 수 없는 것은 `deny`에 두고 필요하면 명령을 받아 내가 직접 실행한다.
   - 푸시처럼 막지는 않되 물어야 하는 것은 `ask`에 둔다. `.claudeignore`는 효과가 없으니 내용을 `Read` 금지 규칙으로 옮긴다.
 - **이 프로젝트에서만 다른 모델**을 쓰려면 `model` 키를 둔다(팀 전체면 프로젝트 파일, 나만이면 로컬 파일). **엔드포인트**는 `env`의 `ANTHROPIC_BASE_URL`로 바꾼다. 이 값은 요청을 보낼 곳만 바꾸고 모델은 바꾸지 않는다. 전역은 건드리지 않는다.
 - **인증 값**은 커밋되는 파일에 두지 않는다. 로컬 파일, 셸 환경 변수, `apiKeyHelper` 중 하나를 쓴다. 대화에도 넣지 않는다. 도구가 읽은 값은 대화 기록(`~/.claude/projects/`)에 평문으로 남는다. 이미 들어갔으면 `claude purge <경로> --dry-run`으로 지울 범위를 본다.
@@ -304,6 +305,7 @@ claude --debug-file /tmp/claude-hooks.log && grep 'Hooks:' /tmp/claude-hooks.log
 - [ ] 켠 훅마다 세 가지 입력(정상, 위반, 깨진 입력) 시험 결과가 있고, `claude doctor`에 `Invalid settings`가 없으며 `/hooks`에 훅이 보인다
 - [ ] 실제 세션에서 위반을 시도했을 때 막힌다
 - [ ] 게이트 훅은 스크립트가 없거나 죽어도 막힌다
+- [ ] Claude Code를 올린 뒤에 차단 시험을 다시 돌렸다(훅과 권한 규칙의 동작은 버전에 따라 바뀐다)
 - [ ] 막지 못하는 우회 경로를 적어 뒀다
 
 ## A7. 공개 하네스·플러그인
