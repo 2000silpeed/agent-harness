@@ -34,3 +34,4 @@
 | 7일차 | 모델 서빙: 양자화·KV 캐시·vLLM | `notes/day7/` (6일차 1·2·3·6강 보정본 반영) | P3 캐시를 지키는 프롬프트·컨텍스트 비용, P5 모델·서빙 결정(용량 = 가중치 + KV, 레시피 기준선, 양자화 품질 재측정, 표준 필드), P6 서빙 지표·런북, P8 서빙 최적화, 스킬 `serving-plan` 추가 |
 | (재구성) | 두 축으로 다시 짬 | — | 2~7일차 내용을 ① `claude-setup/GUIDE.md`(A0~A10)와 ② `kit/harness/METHOD.md`(S0~S8)로 재구성. 단계별 양식을 새로 쓰고, `phase.sh`가 선행·병렬 관계를 판정하게 바꿈. 두 축과 무관한 내용은 결과물에서 뺌 |
 | 미니 PJT 공지 | Coding Assistant 평가 기준 16개 항목(40점) | `notes/project/` | `kit/harness/CRITERIA.md`(기준 → 단계 → 만들 것 → 증명, 기준만 놓고 본 진행 순서), METHOD S2에 기록·지표·조회·코드 품질 보강, S5에 린트 강제, S8에 자가 점검, 스킬 `criteria-check` 추가 |
+| 미니 PJT 기반 확정 | dcode로 진행 | `notes/project/` | `kit/harness/bases/dcode.md`(이미 있는 것과 비어 있는 것, 환경·빌드, 끼어들 자리, 인수 기준별 구현 지도, 함정). METHOD는 기반에 묶지 않고 `bases/`를 가리키게 함 |

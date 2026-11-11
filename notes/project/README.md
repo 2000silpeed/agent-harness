@@ -23,6 +23,9 @@
 - **제출 링크가 다르다.** 슬라이드는 `https://bit.ly/sds-ax-ad-pjt`, 저장소 안내문은 `https://bit.ly/sds-ax-advanced-project`. 어느 쪽이 맞는지 확인이 필요하다.
 - 저장소 안내문에만 있는 내용: 주제가 "dcode 소스코드를 활용하여 Coding Assistant 만들기"라고 적혀 있고, 평가자가 제출 소스를 빌드해 실행하므로 테스트 케이스가 담긴 `README.md`를 꼭 쓰라고 한다.
 
+## 기반
+- dcode(deepagents-code)로 진행하기로 했다. dcode에서만 해당하는 내용은 `kit/harness/bases/dcode.md`에 있다.
+
 ## 결과물 반영
 - 기준과 단계의 대응: `kit/harness/CRITERIA.md`
 - 자가 점검: `criteria-check` 스킬, `design/08-release.md` 양식

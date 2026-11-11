@@ -21,6 +21,7 @@ agent-harness/
 │   ├── harness/
 │   │   ├── METHOD.md       # S0~S8 방법론 본문
 │   │   ├── CRITERIA.md     # 인수 기준 16개 항목(40점) → 단계 → 만들 것 → 증명
+│   │   ├── bases/dcode.md  # 기반 참고: dcode에 이미 있는 것과 비어 있는 것, 구현 위치, 함정
 │   │   ├── HARNESS.md      # Claude가 매 세션 따르는 작업 규칙
 │   │   ├── templates/      # 단계별 산출물 양식 (결정 사항, 검증 기록, 완료 기준)
 │   │   └── scripts/        # phase.sh(단계 상태·병렬 가능 여부), start-phase.sh(선행 단계 확인)

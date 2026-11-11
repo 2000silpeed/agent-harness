@@ -1,6 +1,6 @@
 # 코딩 에이전트 구축 — 작업 규칙
 
-이 프로젝트는 `harness/METHOD.md`의 S0~S8 단계로 회사 코딩 에이전트를 만든다. 완성품이 통과해야 하는 기준은 `harness/CRITERIA.md`에 있다. 아래 규칙은 매 세션 적용된다.
+이 프로젝트는 `harness/METHOD.md`의 S0~S8 단계로 회사 코딩 에이전트를 만든다. 완성품이 통과해야 하는 기준은 `harness/CRITERIA.md`에, 기반(dcode)에서만 해당하는 내용은 `harness/bases/dcode.md`에 있다. 아래 규칙은 매 세션 적용된다.
 
 <workflow>
 - 세션을 시작하면 SessionStart 훅이 단계 상태(완료, 진행 중, 지금 시작할 수 있는 것)를 보여준다. 안 보이면 `bash harness/scripts/phase.sh`를 실행한다.
