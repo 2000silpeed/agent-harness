@@ -141,6 +141,9 @@
 | [Invariant Labs — GitHub MCP toxic agent flow](https://invariantlabs.ai/blog/mcp-github-vulnerability) | 한 세션이 닿는 저장소를 하나로 두고 토큰 범위를 좁힌다. | 요약 경유 |
 | [Zhong·Raghunathan·Carlini — ImpossibleBench (arXiv 2510.20270)](https://arxiv.org/abs/2510.20270) | 테스트를 고쳐 통과시키는 편법을 막기 위해 테스트 파일 수정을 위험 표시로 다룬다. | 요약 경유 |
 | [Spracklen 외 — We Have a Package for You! (USENIX Security 2025)](https://www.usenix.org/conference/usenixsecurity25/presentation/spracklen) | 모델이 지어낸 패키지 이름이 설치되지 않도록 의존성 추가를 사람 승인 대상으로 둔다. | 요약 경유 |
+| [Claude Code Docs — Sandboxing](https://code.claude.com/docs/en/sandboxing) | 격리의 기본 읽기 범위에 자격증명 파일이 들어 있으므로 따로 막고, 자격증명은 자리표시 값만 보여 준 뒤 허용한 대상으로 나가는 요청에서 바꿔 넣는다. | 직접 |
+| [Claude Code Docs — Hooks (PreToolUse decision control)](https://code.claude.com/docs/en/hooks) | 실행 전 검사는 차단·묻기·허용·보류를 정할 수 있고 입력을 고쳐 실행할 수도 있지만, 기본은 고치지 않고 사유를 붙여 막는다. | 직접 |
+| [LangChain Docs — Built-in middleware](https://docs.langchain.com/oss/python/langchain/middleware/built-in) · [Custom middleware](https://docs.langchain.com/oss/python/langchain/middleware/custom) | 실행 전 메시지 검사, 도구 호출 감싸기, 검토에서만 멈추는 사람 승인, 호출 수 제한, 민감 값 가림을 항상 지나가는 경로에 둔다. | 요약 경유 |
 
 ## S2 관측
 

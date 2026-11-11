@@ -164,7 +164,7 @@ A9·A10은 끝이 없는 습관이다. 매주 회고하면서 조정한다.
 
 **할 일**
 - **`.claude/settings.json`** 은 팀 공유(커밋): 권한 규칙(`deny`·`ask`·`allow`), 훅, 플러그인, 팀 공통 `model`·`env`. 템플릿: [`templates/settings.json`](templates/settings.json)
-- **MCP 서버는 설정 파일에 두지 않는다.** `settings.json`은 `mcpServers` 키를 읽지 않는다. 팀 공유 서버는 저장소 루트의 `.mcp.json`에 두고(예시: [`templates/mcp.example.json`](templates/mcp.example.json)), 개인 서버는 `claude mcp add --scope user`로 넣는다. `.mcp.json`의 서버는 팀원이 각자 승인해야 연결된다.
+- **MCP 서버는 설정 파일에 두지 않는다.** `settings.json`은 `mcpServers` 키를 읽지 않는다. 팀 공유 서버는 저장소 루트의 `.mcp.json`에 두고(예시: [`templates/mcp.example.json`](templates/mcp.example.json)), 개인 서버는 `claude mcp add --scope user`로 넣는다. `.mcp.json`의 서버는 팀원이 각자 승인해야 연결된다. 서버를 붙이면 그 서버의 도구가 전부 열린다. 쓰는 도구만 남기고 나머지는 `deny`에 `mcp__<서버>__<도구>`로 막는다.
 - **`.claude/settings.local.json`** 은 나만(커밋 제외). 템플릿: [`templates/settings.local.example.json`](templates/settings.local.example.json). 손으로 만들었으면 `.gitignore`에 직접 넣는다. Claude Code가 이 파일을 처음 쓸 때만 자동으로 전역 git 제외 목록에 들어간다.
 - 규칙 문법을 지킨다. 형식은 `도구` 또는 `도구(지정자)`이고 평가 순서는 `deny` → `ask` → `allow`다.
   - Bash: `Bash(npm run *)`. 허용 규칙 하나가 `a && b` 같은 복합 명령 전체를 허용하지는 않는다.
@@ -174,6 +174,8 @@ A9·A10은 끝이 없는 습관이다. 매주 회고하면서 조정한다.
 - **이 프로젝트에서만 다른 모델**을 쓰려면 `model` 키를 둔다(팀 전체면 프로젝트 파일, 나만이면 로컬 파일). **엔드포인트**는 `env`의 `ANTHROPIC_BASE_URL`로 바꾼다. 이 값은 요청을 보낼 곳만 바꾸고 모델은 바꾸지 않는다. 전역은 건드리지 않는다.
 - **인증 값**은 커밋되는 파일에 두지 않는다. 로컬 파일, 셸 환경 변수, `apiKeyHelper` 중 하나를 쓴다. 대화에도 넣지 않는다. 도구가 읽은 값은 대화 기록(`~/.claude/projects/`)에 평문으로 남는다. 이미 들어갔으면 `claude purge <경로> --dry-run`으로 지울 범위를 본다.
 - **샌드박스**를 검토한다. 기본은 꺼져 있고 `/sandbox`나 `sandbox.enabled`로 켠다. 셸 명령만 감싸며(파일 도구·MCP 서버·훅은 밖) `Read` 금지 경로를 셸 명령도 못 읽게 한다. macOS·Linux·WSL2에서 동작하고 Linux는 `bubblewrap`과 `socat`이 필요하다. 쓸 수 없는 환경에서는 알림 없이 샌드박스 밖에서 실행되므로, 반드시 필요하면 `sandbox.failIfUnavailable: true`를 둔다.
+  - 샌드박스를 켜도 기본 읽기 범위에는 `~/.ssh`, `~/.aws/credentials` 같은 자격증명 파일이 들어 있다. `sandbox.credentials`에 파일과 환경 변수를 적어 막는다. `"mode": "deny"`는 읽기를 막고 변수를 지운다. `"mode": "mask"`는 명령에 자리표시 값만 보여 주고, 허용한 호스트로 나가는 요청에서 프록시가 실제 값으로 바꿔 넣는다(파일 가림은 v2.1.221+, `network.tlsTerminate` 필요, 사용자·관리 설정에서만 유효).
+  - 에이전트가 읽을 수 있는 곳에 둔 키는 이미 노출된 것으로 보고, 바로 교체할 수 있게 관리한다. 작업 폴더의 `.env`에는 그 프로젝트 전용의 권한이 좁은 키만 둔다.
 
 **확인**
 ```bash
@@ -191,7 +193,7 @@ claude doctor
 - [ ] 금지 규칙이 못 막는 경로를 알고 있고, 필요하면 샌드박스나 훅으로 보완했다
 - [ ] 커밋된 파일에 인증 값이 없고, 전역 설정에 프로젝트 전용 값이 없다
 
-**흔한 함정:** MCP 서버를 `settings.json`에 적기. 하위 폴더에서 `claude`를 시작하기(공유 프로젝트 설정은 시작 디렉터리의 `.claude/`에서만 읽고 상위로 올라가지 않는다). `Read(./.env)`가 하위 폴더의 `.env`도 막는다고 믿기(시작 디렉터리만 막는다. 전부 막으려면 `Read(**/.env)`). 금지 규칙만으로 비밀이 안전하다고 믿기.
+**흔한 함정:** 샌드박스를 켰으니 자격증명 파일이 안 읽힌다고 믿기(기본 읽기 범위에 들어 있다). MCP 서버를 `settings.json`에 적기. 하위 폴더에서 `claude`를 시작하기(공유 프로젝트 설정은 시작 디렉터리의 `.claude/`에서만 읽고 상위로 올라가지 않는다). `Read(./.env)`가 하위 폴더의 `.env`도 막는다고 믿기(시작 디렉터리만 막는다. 전부 막으려면 `Read(**/.env)`). 금지 규칙만으로 비밀이 안전하다고 믿기.
 
 ## A4. 기록 붙이기
 
@@ -263,7 +265,7 @@ claude doctor
 
 **할 일**
 - **언제 동작해야 하는지**부터 정한다.
-  - 실행 전(PreToolUse)은 **막는다.** 막기, 사람에게 묻기, 확인 창 건너뛰기를 결정할 수 있다.
+  - 실행 전(PreToolUse)은 **막는다.** 막기, 사람에게 묻기, 확인 창 건너뛰기를 결정할 수 있다. 결정 값은 `deny`(막고 사유를 Claude에게 보여 준다), `ask`(사용자에게 묻는다), `allow`(확인 창을 건너뛴다), `defer`(`-p` 실행에서 턴을 끝내고 나중에 재개)이고, 여러 훅의 결정이 다르면 `deny` > `defer` > `ask` > `allow` 순으로 이긴다. `updatedInput`으로 도구 입력을 고쳐서 실행하게 할 수도 있는데, 입력 전체를 바꿔 쓰는 방식이라 모델이 요청한 것과 다른 명령이 실행된다. 기본은 고치지 않고 사유를 붙여 막는 쪽으로 둔다.
   - 실행 후(PostToolUse)는 **고치게 한다.** 성공한 호출 뒤에만 돌고 되돌리지 못한다. exit 2와 stderr로 모델에 알린다. 무거운 검사는 묶음당 한 번 도는 PostToolBatch나 Stop으로 옮긴다.
   - 끝내기 전(Stop)은 **확인한다.** 작업이 끝날 때가 아니라 응답이 끝날 때마다 돈다(사용자가 중단하면 안 돈다). 입력의 `stop_hook_active`가 true면 다시 막지 않는다. 8번 연속 막으면 하네스가 턴을 끝낸다.
   - 입력 제출(UserPromptSubmit)은 모델에 가기 전이다. 현재 브랜치처럼 **그때그때 달라지는 상태**를 사실 진술로 짧게 붙인다. 변하지 않는 지침은 `CLAUDE.md`에 둔다. 예약 작업이나 백그라운드 서브에이전트 보고에도 돌고, 붙인 글은 요청마다 대화 기록에 쌓인다.
