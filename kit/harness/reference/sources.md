@@ -207,7 +207,8 @@
 | [`erp-knowledge-tools.md`](erp-knowledge-tools.md) | C3 지식·대화 상태, C4 도구 | 40 |
 | [`erp-pipeline-ops.md`](erp-pipeline-ops.md) | C0 유형, C2 흐름, C7 비용, C8 운영 | 27 |
 | [`erp-control.md`](erp-control.md) | C5 제어·승인·감사 | 16 |
-| [`../bases/sap.md`](../bases/sap.md) | SAP에서의 구체 방법 | 문서 참조 |
+| [`../bases/sap.md`](../bases/sap.md) | SAP에서의 구체 방법 | 29 |
+| [`../bases/sap-connected.md`](../bases/sap-connected.md) | SAP에 접속할 수 있는 환경에서의 확인 순서 | 8 |
 
 ## 확인하지 못한 것
 

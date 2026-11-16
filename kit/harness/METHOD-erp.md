@@ -563,5 +563,6 @@ C0 범위·유형·기반 ─┬─► C1 대화 시험지·채점기 ───�
 | [`reference/erp-pipeline-ops.md`](reference/erp-pipeline-ops.md) | 유형 표, 한 턴의 흐름, 지연 예산, 비용 식, 확대 단계, 축소 응답 |
 | [`reference/erp-control.md`](reference/erp-control.md) | ERP 어시스턴트의 위협 점검표, 응답 유형별 처리, 승인과 감사, 차단 시험 |
 | [`bases/sap.md`](bases/sap.md) | SAP에서의 소스 접근, 이관, 검사 도구, 권한, 데이터 추출, 화면 스크립팅 |
+| [`bases/sap-connected.md`](bases/sap-connected.md) | SAP에 접속할 수 있는 환경에서 확인하고 채울 것: 순서, 같이 있어야 하는 사람, 결과를 적는 곳 |
 | [`reference/eval.md`](reference/eval.md), [`security.md`](reference/security.md), [`plan-gate.md`](reference/plan-gate.md), [`trace.md`](reference/trace.md), [`memory-improve.md`](reference/memory-improve.md) | 코딩 에이전트 방법론과 함께 쓰는 공통 규격 |
 | [`reference/sources.md`](reference/sources.md) | 근거 자료 목록 |

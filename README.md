@@ -6,7 +6,7 @@
 |---|---|---|
 | ① 내 Claude 세팅 | 내 Claude Code를 어떻게 세팅해서 쓰면 좋은가 | [`claude-setup/GUIDE.md`](claude-setup/GUIDE.md) |
 | ② 코딩 에이전트 구축 | 어떤 순서로 만들고, 단계마다 무엇을 고민하고, 어떻게 검증하고, 언제 끝났다고 보고, 무엇을 병렬로 할 수 있는가 | [`kit/harness/METHOD.md`](kit/harness/METHOD.md), 통과해야 할 기준은 [`kit/harness/CRITERIA.md`](kit/harness/CRITERIA.md) |
-| ③ ERP 어시스턴트 구축 | 사내 지식 검색을 바탕으로 ERP의 소스 분석·수정, 데이터 추출, 화면 조작까지 하는 사내 어시스턴트를 같은 틀로 어떻게 만드는가 | [`kit/harness/METHOD-erp.md`](kit/harness/METHOD-erp.md), SAP에서의 구체 방법은 [`kit/harness/bases/sap.md`](kit/harness/bases/sap.md) |
+| ③ ERP 어시스턴트 구축 | 사내 지식 검색을 바탕으로 ERP의 소스 분석·수정, 데이터 추출, 화면 조작까지 하는 사내 어시스턴트를 같은 틀로 어떻게 만드는가 | [`kit/harness/METHOD-erp.md`](kit/harness/METHOD-erp.md), SAP에서의 구체 방법은 [`kit/harness/bases/sap.md`](kit/harness/bases/sap.md), 접속할 수 있는 환경에서 이어서 할 일은 [`kit/harness/bases/sap-connected.md`](kit/harness/bases/sap-connected.md) |
 
 세 문서 모두 단계마다 **왜 / 고민할 것 / 진행 / 검증 / 끝났다는 기준 / 순서와 병렬**을 적었다. 특정 프레임워크를 전제하지 않는다. 내용은 공식 문서와 공개 1차 자료로 점검했고, 숫자 옆의 "(제안값)"은 자료에서 나온 값이 아니라 시작점으로 잡은 값이다.
 
@@ -24,7 +24,7 @@ agent-harness/
 │   │   ├── METHOD-erp.md   # ERP 어시스턴트: C0~C8 방법론 본문 (유형별로 한 바퀴씩)
 │   │   ├── CRITERIA.md     # 인수 기준 15개 항목(40점) → 단계 → 만들 것 → 증명
 │   │   ├── reference/      # 그대로 가져다 쓰는 규격: 평가, 기록, 계획 게이트, 보안, 메모리·개선, ERP 어시스턴트용(erp-*), 근거 자료 목록
-│   │   ├── bases/          # 기반별 참고: dcode(코딩 에이전트), SAP(ERP 어시스턴트)
+│   │   ├── bases/          # 기반별 참고: dcode(코딩 에이전트), SAP(ERP 어시스턴트), 접속 환경에서 할 일(sap-connected)
 │   │   ├── HARNESS.md      # Claude가 매 세션 따르는 작업 규칙
 │   │   ├── templates/      # 단계별 산출물 양식 (결정 사항, 검증 기록, 완료 기준)
 │   │   └── scripts/        # phase.sh(단계 상태·병렬 가능 여부), start-phase.sh(선행 단계 확인)
@@ -73,9 +73,20 @@ S0 범위·기반 ─┬─► S1 시험지·채점기 ────────�
 
 단계별 양식과 `phase.sh` 연동은 아직 코딩 에이전트용만 있다. ERP 어시스턴트의 완료 기준은 `METHOD-erp.md` 본문에 있다.
 
+## 접속할 수 있는 환경에서 이어서 할 일
+
+이 저장소의 기반 문서는 실제 시스템 없이 썼다. 시스템에 닿는 환경에서는 아래를 따라 확인하고, 문서의 기대와 달랐던 점만 이 저장소로 되돌린다(`UPDATING.md`).
+
+| 기반 | 할 일이 적힌 곳 | 내용 |
+|---|---|---|
+| dcode (코딩 에이전트) | `kit/harness/bases/dcode.md` 8절 | 설치, 린트, 테스트로 확인할 명령 |
+| SAP (ERP 어시스턴트) | [`kit/harness/bases/sap-connected.md`](kit/harness/bases/sap-connected.md) | 서버 조사 → 담당자에게 받는 답 → 개발 시스템 읽기 → 쓰기 → 데이터 추출 → 화면 조작 → 평가 환경 순서의 확인표와, 결과를 적는 곳 |
+
+실제 시스템에서 얻은 값(호스트 이름, 계정, 소스 원문, 업무 데이터, 계약 조건)은 이 저장소에 넣지 않는다.
+
 ## 근거
 
 - 조사 보고서: [`research/`](research/README.md). 공식 문서와 공개 자료를 읽고 정리한 기록이다.
 - 자료 목록: [`kit/harness/reference/sources.md`](kit/harness/reference/sources.md), `claude-setup/GUIDE.md` 끝의 "참고 자료".
-- 기반 문서(`kit/harness/bases/`)는 소스와 공개 문서를 읽기만 한 결과다. 직접 확인할 항목은 `dcode.md` 8절과 `sap.md` 11절에 있다.
+- 기반 문서(`kit/harness/bases/`)는 소스와 공개 문서를 읽기만 한 결과다. 직접 확인할 항목은 `dcode.md` 8절과 `sap.md` 11절에 있고, SAP 쪽의 확인 순서는 `sap-connected.md`에 있다.
 - 법규·계약에 관한 내용은 법률 자문이 아니다. 적용 여부는 회사의 담당자와 공급사가 확인한다.
