@@ -197,6 +197,18 @@
 | [Claude Code Docs — 플러그인 마켓플레이스 운영](https://code.claude.com/docs/en/plugins/host-marketplace) | 스킬·훅·지침 묶음을 버전을 고정해 배포하고, 안정 채널과 선행 채널을 나눈다. | 직접 |
 | [Claude Code Docs — 조직 플러그인 관리](https://code.claude.com/docs/en/plugins/org) | 조직 차원의 강제는 사용자가 끌 수 없는 관리 설정으로 하고, 설치·로드 이벤트를 감사한다. | 직접 |
 
+## ERP 어시스턴트 방법론
+
+`METHOD-erp.md`의 근거 자료는 문서마다 끝의 "참고 자료"에 확인 수준과 함께 적었다. 여기에 다시 옮기지 않는다.
+
+| 문서 | 다루는 단계 | 자료 수 |
+|---|---|---|
+| [`erp-eval.md`](erp-eval.md) | C1 평가 (C2·C6·C8의 평가 부분) | 36 |
+| [`erp-knowledge-tools.md`](erp-knowledge-tools.md) | C3 지식·대화 상태, C4 도구 | 40 |
+| [`erp-pipeline-ops.md`](erp-pipeline-ops.md) | C0 유형, C2 흐름, C7 비용, C8 운영 | 27 |
+| [`erp-control.md`](erp-control.md) | C5 제어·승인·감사 | 16 |
+| [`../bases/sap.md`](../bases/sap.md) | SAP에서의 구체 방법 | 문서 참조 |
+
 ## 확인하지 못한 것
 
 - "요약 경유"로 적은 자료의 문장은 원문과 글자 단위로 대조하지 못했다. 인용문으로 옮기려면 링크에서 다시 확인한다. 한 페이지에서 일부만 직접 읽은 자료(Hooks, Sandboxing)는 가져온 내용이 직접 읽은 부분이면 "직접"으로 적었다.
